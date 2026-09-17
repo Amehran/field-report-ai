@@ -60,6 +60,9 @@ jobs:
 
       - name: Build and Lint Android
         run: ./gradlew lintDebug assembleDebug --parallel --build-cache
+        
+      - name: Run Android Unit Tests & Coverage
+        run: ./gradlew testDebugUnitTest createDebugUnitTestCoverageReport --parallel --build-cache
 
   build-backend:
     name: Build & Lint Backend
@@ -87,5 +90,8 @@ jobs:
         
       - name: Build backend
         run: npm run build
+        
+      - name: Run Backend Tests & Coverage
+        run: npm run test:coverage
 
 
