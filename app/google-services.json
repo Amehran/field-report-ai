@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "598464152783",
+    "project_id": "field-report-ai-bb27e",
+    "storage_bucket": "field-report-ai-bb27e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598464152783:android:e06c1c93c35485957ba3ba",
+        "android_client_info": {
+          "package_name": "com.fieldreport.ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXwtoebalJeuVGfKtGX5dPnqkleKciln4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
