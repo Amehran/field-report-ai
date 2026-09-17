@@ -21,7 +21,7 @@ export const verifyAuth = async (request: FastifyRequest, reply: FastifyReply) =
     // Attach decoded token to request for downstream use
     (request as any).user = decodedToken;
   } catch (error) {
-    request.log.error('Firebase token verification failed:', error);
+    request.log.error({ err: error }, 'Firebase token verification failed');
     reply.status(401).send({ error: 'Unauthorized' });
   }
 };
