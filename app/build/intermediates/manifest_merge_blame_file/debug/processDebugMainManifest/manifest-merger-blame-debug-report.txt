@@ -17,537 +17,545 @@
 13    <uses-permission android:name="android.permission.CAMERA" />
 13-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:6:5-65
 13-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:6:22-62
-14    <uses-permission android:name="android.permission.WAKE_LOCK" />
-14-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:7:5-68
-14-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:7:22-65
-15    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-15-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:24:5-79
-15-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:24:22-76
-16    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-16-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:25:5-81
-16-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:25:22-78
-17    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-17-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:26:5-77
-17-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:26:22-74
-18    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-18-->[com.google.android.recaptcha:recaptcha:18.4.0] /Users/arminmehran/.gradle/caches/transforms-3/641ad4a5228fb7049aa745b860ea4e4b/transformed/recaptcha-18.4.0/AndroidManifest.xml:9:5-98
-18-->[com.google.android.recaptcha:recaptcha:18.4.0] /Users/arminmehran/.gradle/caches/transforms-3/641ad4a5228fb7049aa745b860ea4e4b/transformed/recaptcha-18.4.0/AndroidManifest.xml:9:22-95
-19
-20    <permission
-20-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
-21        android:name="com.fieldreport.ai.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-21-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
-22        android:protectionLevel="signature" />
-22-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
-23
-24    <uses-permission android:name="com.fieldreport.ai.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-24-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
-24-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
-25
-26    <application
-26-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:9:5-36:19
-27        android:allowBackup="true"
-27-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:10:9-35
-28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-28-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
-29        android:debuggable="true"
-30        android:extractNativeLibs="false"
-31        android:icon="@android:drawable/sym_def_app_icon"
-31-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:11:9-58
-32        android:label="Field Report AI"
-32-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:12:9-40
-33        android:supportsRtl="true"
-33-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:13:9-35
-34        android:theme="@android:style/Theme.Material.NoActionBar" >
-34-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:14:9-66
-35        <activity
-35-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:16:9-25:20
-36            android:name="com.fieldreport.ai.MainActivity"
-36-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:17:13-41
-37            android:exported="true"
-37-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:18:13-36
-38            android:theme="@android:style/Theme.Material.NoActionBar"
-38-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:20:13-70
-39            android:windowSoftInputMode="adjustResize" >
-39-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:19:13-55
-40            <intent-filter>
-40-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:21:13-24:29
-41                <action android:name="android.intent.action.MAIN" />
-41-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:22:17-69
-41-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:22:25-66
-42
-43                <category android:name="android.intent.category.LAUNCHER" />
-43-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:23:17-77
-43-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:23:27-74
-44            </intent-filter>
-45        </activity>
-46
-47        <provider
-47-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:27:9-35:20
-48            android:name="androidx.core.content.FileProvider"
-48-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:28:13-62
-49            android:authorities="com.fieldreport.ai.fileprovider"
-49-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:29:13-66
-50            android:exported="false"
-50-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:30:13-37
-51            android:grantUriPermissions="true" >
-51-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:31:13-47
-52            <meta-data
-52-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:32:13-34:54
-53                android:name="android.support.FILE_PROVIDER_PATHS"
-53-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:33:17-67
-54                android:resource="@xml/file_paths" />
-54-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:34:17-51
-55        </provider>
-56        <provider
-56-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:29:9-37:20
-57            android:name="androidx.startup.InitializationProvider"
-57-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:30:13-67
-58            android:authorities="com.fieldreport.ai.androidx-startup"
-58-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:31:13-68
-59            android:exported="false" >
-59-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:32:13-37
-60            <meta-data
-60-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:34:13-36:52
-61                android:name="androidx.work.WorkManagerInitializer"
-61-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:35:17-68
-62                android:value="androidx.startup" />
-62-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:36:17-49
-63            <meta-data
-63-->[androidx.emoji2:emoji2:1.3.0] /Users/arminmehran/.gradle/caches/transforms-3/83b50d1e234534fe93dfb9174c79e7f1/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
-64                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-64-->[androidx.emoji2:emoji2:1.3.0] /Users/arminmehran/.gradle/caches/transforms-3/83b50d1e234534fe93dfb9174c79e7f1/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
-65                android:value="androidx.startup" />
-65-->[androidx.emoji2:emoji2:1.3.0] /Users/arminmehran/.gradle/caches/transforms-3/83b50d1e234534fe93dfb9174c79e7f1/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
-66            <meta-data
-66-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/arminmehran/.gradle/caches/transforms-3/8e36ddd7efd12a499606bb3be5f57540/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
-67                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-67-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/arminmehran/.gradle/caches/transforms-3/8e36ddd7efd12a499606bb3be5f57540/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
-68                android:value="androidx.startup" />
-68-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/arminmehran/.gradle/caches/transforms-3/8e36ddd7efd12a499606bb3be5f57540/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
-69            <meta-data
-69-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
-70                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-70-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
-71                android:value="androidx.startup" />
-71-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
-72        </provider>
-73
-74        <service
-74-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:39:9-45:35
-75            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
-75-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:40:13-88
-76            android:directBootAware="false"
-76-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:41:13-44
-77            android:enabled="@bool/enable_system_alarm_service_default"
-77-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:42:13-72
-78            android:exported="false" />
-78-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:43:13-37
+14
+15    <uses-feature
+15-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:7:5-85
+16        android:name="android.hardware.camera"
+16-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:7:19-57
+17        android:required="false" />
+17-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:7:58-82
+18
+19    <uses-permission android:name="android.permission.WAKE_LOCK" />
+19-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:8:5-68
+19-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:8:22-65
+20    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+20-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:24:5-79
+20-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:24:22-76
+21    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+21-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:25:5-81
+21-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:25:22-78
+22    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+22-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:26:5-77
+22-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:26:22-74
+23    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+23-->[com.google.android.recaptcha:recaptcha:18.4.0] /Users/arminmehran/.gradle/caches/transforms-3/641ad4a5228fb7049aa745b860ea4e4b/transformed/recaptcha-18.4.0/AndroidManifest.xml:9:5-98
+23-->[com.google.android.recaptcha:recaptcha:18.4.0] /Users/arminmehran/.gradle/caches/transforms-3/641ad4a5228fb7049aa745b860ea4e4b/transformed/recaptcha-18.4.0/AndroidManifest.xml:9:22-95
+24
+25    <permission
+25-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+26        android:name="com.fieldreport.ai.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.fieldreport.ai.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+29-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+30
+31    <application
+31-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:10:5-37:19
+32        android:allowBackup="true"
+32-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:11:9-35
+33        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+33-->[androidx.core:core:1.12.0] /Users/arminmehran/.gradle/caches/transforms-3/b7e301d3b0c883982981fa3e334bb227/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+34        android:debuggable="true"
+35        android:extractNativeLibs="false"
+36        android:icon="@android:drawable/sym_def_app_icon"
+36-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:12:9-58
+37        android:label="Field Report AI"
+37-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:13:9-40
+38        android:supportsRtl="true"
+38-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:14:9-35
+39        android:theme="@android:style/Theme.Material.NoActionBar" >
+39-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:15:9-66
+40        <activity
+40-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:17:9-26:20
+41            android:name="com.fieldreport.ai.MainActivity"
+41-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:18:13-41
+42            android:exported="true"
+42-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:19:13-36
+43            android:theme="@android:style/Theme.Material.NoActionBar"
+43-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:21:13-70
+44            android:windowSoftInputMode="adjustResize" >
+44-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:20:13-55
+45            <intent-filter>
+45-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:22:13-25:29
+46                <action android:name="android.intent.action.MAIN" />
+46-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:23:17-69
+46-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:23:25-66
+47
+48                <category android:name="android.intent.category.LAUNCHER" />
+48-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:24:17-77
+48-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:24:27-74
+49            </intent-filter>
+50        </activity>
+51
+52        <provider
+52-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:28:9-36:20
+53            android:name="androidx.core.content.FileProvider"
+53-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:29:13-62
+54            android:authorities="com.fieldreport.ai.fileprovider"
+54-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:30:13-66
+55            android:exported="false"
+55-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:31:13-37
+56            android:grantUriPermissions="true" >
+56-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:32:13-47
+57            <meta-data
+57-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:33:13-35:54
+58                android:name="android.support.FILE_PROVIDER_PATHS"
+58-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:34:17-67
+59                android:resource="@xml/file_paths" />
+59-->/Users/arminmehran/dev/field-report-ai/app/src/main/AndroidManifest.xml:35:17-51
+60        </provider>
+61        <provider
+61-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:29:9-37:20
+62            android:name="androidx.startup.InitializationProvider"
+62-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:30:13-67
+63            android:authorities="com.fieldreport.ai.androidx-startup"
+63-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:31:13-68
+64            android:exported="false" >
+64-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:32:13-37
+65            <meta-data
+65-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:34:13-36:52
+66                android:name="androidx.work.WorkManagerInitializer"
+66-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:35:17-68
+67                android:value="androidx.startup" />
+67-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:36:17-49
+68            <meta-data
+68-->[androidx.emoji2:emoji2:1.3.0] /Users/arminmehran/.gradle/caches/transforms-3/83b50d1e234534fe93dfb9174c79e7f1/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+69                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+69-->[androidx.emoji2:emoji2:1.3.0] /Users/arminmehran/.gradle/caches/transforms-3/83b50d1e234534fe93dfb9174c79e7f1/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+70                android:value="androidx.startup" />
+70-->[androidx.emoji2:emoji2:1.3.0] /Users/arminmehran/.gradle/caches/transforms-3/83b50d1e234534fe93dfb9174c79e7f1/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+71            <meta-data
+71-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/arminmehran/.gradle/caches/transforms-3/8e36ddd7efd12a499606bb3be5f57540/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+72                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+72-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/arminmehran/.gradle/caches/transforms-3/8e36ddd7efd12a499606bb3be5f57540/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+73                android:value="androidx.startup" />
+73-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/arminmehran/.gradle/caches/transforms-3/8e36ddd7efd12a499606bb3be5f57540/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+74            <meta-data
+74-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+75                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+75-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+76                android:value="androidx.startup" />
+76-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+77        </provider>
+78
 79        <service
-79-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:46:9-52:35
-80            android:name="androidx.work.impl.background.systemjob.SystemJobService"
-80-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:47:13-84
+79-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:39:9-45:35
+80            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+80-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:40:13-88
 81            android:directBootAware="false"
-81-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:48:13-44
-82            android:enabled="@bool/enable_system_job_service_default"
-82-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:49:13-70
-83            android:exported="true"
-83-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:50:13-36
-84            android:permission="android.permission.BIND_JOB_SERVICE" />
-84-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:51:13-69
-85        <service
-85-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:53:9-59:35
-86            android:name="androidx.work.impl.foreground.SystemForegroundService"
-86-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:54:13-81
-87            android:directBootAware="false"
-87-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:55:13-44
-88            android:enabled="@bool/enable_system_foreground_service_default"
-88-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:56:13-77
-89            android:exported="false" />
-89-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:57:13-37
-90
-91        <receiver
-91-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:61:9-66:35
-92            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
-92-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:62:13-88
-93            android:directBootAware="false"
-93-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:63:13-44
-94            android:enabled="true"
-94-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:64:13-35
-95            android:exported="false" />
-95-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:65:13-37
+81-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:41:13-44
+82            android:enabled="@bool/enable_system_alarm_service_default"
+82-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:42:13-72
+83            android:exported="false" />
+83-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:43:13-37
+84        <service
+84-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:46:9-52:35
+85            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+85-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:47:13-84
+86            android:directBootAware="false"
+86-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:48:13-44
+87            android:enabled="@bool/enable_system_job_service_default"
+87-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:49:13-70
+88            android:exported="true"
+88-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:50:13-36
+89            android:permission="android.permission.BIND_JOB_SERVICE" />
+89-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:51:13-69
+90        <service
+90-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:53:9-59:35
+91            android:name="androidx.work.impl.foreground.SystemForegroundService"
+91-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:54:13-81
+92            android:directBootAware="false"
+92-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:55:13-44
+93            android:enabled="@bool/enable_system_foreground_service_default"
+93-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:56:13-77
+94            android:exported="false" />
+94-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:57:13-37
+95
 96        <receiver
-96-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:67:9-77:20
-97            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
-97-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:68:13-106
+96-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:61:9-66:35
+97            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+97-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:62:13-88
 98            android:directBootAware="false"
-98-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:69:13-44
-99            android:enabled="false"
-99-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:70:13-36
-100            android:exported="false" >
-100-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:71:13-37
-101            <intent-filter>
-101-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:73:13-76:29
-102                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-102-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:74:17-87
-102-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:74:25-84
-103                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-103-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:75:17-90
-103-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:75:25-87
-104            </intent-filter>
-105        </receiver>
-106        <receiver
-106-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:78:9-88:20
-107            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
-107-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:79:13-104
-108            android:directBootAware="false"
-108-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:80:13-44
-109            android:enabled="false"
-109-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:81:13-36
-110            android:exported="false" >
-110-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:82:13-37
-111            <intent-filter>
-111-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:84:13-87:29
-112                <action android:name="android.intent.action.BATTERY_OKAY" />
-112-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:85:17-77
-112-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:85:25-74
-113                <action android:name="android.intent.action.BATTERY_LOW" />
-113-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:86:17-76
-113-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:86:25-73
-114            </intent-filter>
-115        </receiver>
-116        <receiver
-116-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:89:9-99:20
-117            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
-117-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:90:13-104
-118            android:directBootAware="false"
-118-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:91:13-44
-119            android:enabled="false"
-119-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:92:13-36
-120            android:exported="false" >
-120-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:93:13-37
-121            <intent-filter>
-121-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:95:13-98:29
-122                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
-122-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:96:17-83
-122-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:96:25-80
-123                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
-123-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:97:17-82
-123-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:97:25-79
-124            </intent-filter>
-125        </receiver>
-126        <receiver
-126-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:100:9-109:20
-127            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
-127-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:101:13-103
-128            android:directBootAware="false"
-128-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:102:13-44
-129            android:enabled="false"
-129-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:103:13-36
-130            android:exported="false" >
-130-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:104:13-37
-131            <intent-filter>
-131-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:106:13-108:29
-132                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-132-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:107:17-79
-132-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:107:25-76
-133            </intent-filter>
-134        </receiver>
-135        <receiver
-135-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:110:9-121:20
-136            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
-136-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:111:13-88
-137            android:directBootAware="false"
-137-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:112:13-44
-138            android:enabled="false"
-138-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:113:13-36
-139            android:exported="false" >
-139-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:114:13-37
-140            <intent-filter>
-140-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:116:13-120:29
-141                <action android:name="android.intent.action.BOOT_COMPLETED" />
-141-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:117:17-79
-141-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:117:25-76
-142                <action android:name="android.intent.action.TIME_SET" />
-142-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:118:17-73
-142-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:118:25-70
-143                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-143-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:119:17-81
-143-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:119:25-78
-144            </intent-filter>
-145        </receiver>
-146        <receiver
-146-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:122:9-131:20
-147            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
-147-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:123:13-99
-148            android:directBootAware="false"
-148-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:124:13-44
-149            android:enabled="@bool/enable_system_alarm_service_default"
-149-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:125:13-72
-150            android:exported="false" >
-150-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:126:13-37
-151            <intent-filter>
-151-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:128:13-130:29
-152                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
-152-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:129:17-98
-152-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:129:25-95
-153            </intent-filter>
-154        </receiver>
-155        <receiver
-155-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:132:9-142:20
-156            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
-156-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:133:13-78
-157            android:directBootAware="false"
-157-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:134:13-44
-158            android:enabled="true"
-158-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:135:13-35
-159            android:exported="true"
-159-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:136:13-36
-160            android:permission="android.permission.DUMP" >
-160-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:137:13-57
-161            <intent-filter>
-161-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:139:13-141:29
-162                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
-162-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:140:17-88
-162-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:140:25-85
-163            </intent-filter>
-164        </receiver>
-165
-166        <service
-166-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:8:9-14:19
-167            android:name="com.google.firebase.components.ComponentDiscoveryService"
-167-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:9:13-84
-168            android:directBootAware="true"
-168-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:32:13-43
-169            android:exported="false" >
-169-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:10:13-37
-170            <meta-data
-170-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:11:13-13:85
-171                android:name="com.google.firebase.components:com.google.firebase.auth.ktx.FirebaseAuthLegacyRegistrar"
-171-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:12:17-119
-172                android:value="com.google.firebase.components.ComponentRegistrar" />
-172-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:13:17-82
-173            <meta-data
-173-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:69:13-71:85
-174                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
-174-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:70:17-109
-175                android:value="com.google.firebase.components.ComponentRegistrar" />
-175-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:71:17-82
-176            <meta-data
-176-->[com.google.firebase:firebase-storage-ktx:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/46611342f6ebfac39937f008c740a265/transformed/firebase-storage-ktx-20.3.0/AndroidManifest.xml:12:13-14:85
-177                android:name="com.google.firebase.components:com.google.firebase.storage.ktx.FirebaseStorageLegacyRegistrar"
-177-->[com.google.firebase:firebase-storage-ktx:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/46611342f6ebfac39937f008c740a265/transformed/firebase-storage-ktx-20.3.0/AndroidManifest.xml:13:17-125
-178                android:value="com.google.firebase.components.ComponentRegistrar" />
-178-->[com.google.firebase:firebase-storage-ktx:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/46611342f6ebfac39937f008c740a265/transformed/firebase-storage-ktx-20.3.0/AndroidManifest.xml:14:17-82
-179            <meta-data
-179-->[com.google.firebase:firebase-firestore-ktx:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/8c063059275bc655cc5c0f529fe0426f/transformed/firebase-firestore-ktx-24.11.0/AndroidManifest.xml:12:13-14:85
-180                android:name="com.google.firebase.components:com.google.firebase.firestore.ktx.FirebaseFirestoreLegacyRegistrar"
-180-->[com.google.firebase:firebase-firestore-ktx:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/8c063059275bc655cc5c0f529fe0426f/transformed/firebase-firestore-ktx-24.11.0/AndroidManifest.xml:13:17-129
-181                android:value="com.google.firebase.components.ComponentRegistrar" />
-181-->[com.google.firebase:firebase-firestore-ktx:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/8c063059275bc655cc5c0f529fe0426f/transformed/firebase-firestore-ktx-24.11.0/AndroidManifest.xml:14:17-82
-182            <meta-data
-182-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:30:13-32:85
-183                android:name="com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar"
-183-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:31:17-118
-184                android:value="com.google.firebase.components.ComponentRegistrar" />
-184-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:32:17-82
-185            <meta-data
-185-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:33:13-35:85
-186                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
-186-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:34:17-107
-187                android:value="com.google.firebase.components.ComponentRegistrar" />
-187-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:35:17-82
-188            <meta-data
-188-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:17:13-19:85
-189                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
-189-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:18:17-122
-190                android:value="com.google.firebase.components.ComponentRegistrar" />
-190-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:19:17-82
-191            <meta-data
-191-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:20:13-22:85
-192                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
-192-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:21:17-111
-193                android:value="com.google.firebase.components.ComponentRegistrar" />
-193-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:22:17-82
-194            <meta-data
-194-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:25:13-27:85
-195                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar"
-195-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:26:17-120
-196                android:value="com.google.firebase.components.ComponentRegistrar" />
-196-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:27:17-82
-197            <meta-data
-197-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:28:13-30:85
-198                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar"
-198-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:29:17-117
-199                android:value="com.google.firebase.components.ComponentRegistrar" />
-199-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:30:17-82
-200            <meta-data
-200-->[com.google.firebase:firebase-common-ktx:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/e6ef838417053bbe149f3e0989d79d34/transformed/firebase-common-ktx-20.4.3/AndroidManifest.xml:12:13-14:85
-201                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
-201-->[com.google.firebase:firebase-common-ktx:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/e6ef838417053bbe149f3e0989d79d34/transformed/firebase-common-ktx-20.4.3/AndroidManifest.xml:13:17-116
-202                android:value="com.google.firebase.components.ComponentRegistrar" />
-202-->[com.google.firebase:firebase-common-ktx:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/e6ef838417053bbe149f3e0989d79d34/transformed/firebase-common-ktx-20.4.3/AndroidManifest.xml:14:17-82
-203            <meta-data
-203-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:35:13-37:85
-204                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
-204-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:36:17-109
-205                android:value="com.google.firebase.components.ComponentRegistrar" />
-205-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:37:17-82
-206        </service>
-207
-208        <activity
-208-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:29:9-46:20
-209            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
-209-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:30:13-80
-210            android:excludeFromRecents="true"
-210-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:31:13-46
-211            android:exported="true"
-211-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:32:13-36
-212            android:launchMode="singleTask"
-212-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:33:13-44
-213            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-213-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:34:13-72
-214            <intent-filter>
-214-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:35:13-45:29
-215                <action android:name="android.intent.action.VIEW" />
-215-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:17-69
-215-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:25-66
-216
-217                <category android:name="android.intent.category.DEFAULT" />
-217-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:17-76
-217-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:27-73
-218                <category android:name="android.intent.category.BROWSABLE" />
-218-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:17-78
-218-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:27-75
-219
-220                <data
-220-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:41:17-44:51
-221                    android:host="firebase.auth"
-221-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:42:21-49
-222                    android:path="/"
-222-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:43:21-37
-223                    android:scheme="genericidp" />
-223-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:44:21-48
-224            </intent-filter>
-225        </activity>
-226        <activity
-226-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:47:9-64:20
-227            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
-227-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:48:13-79
-228            android:excludeFromRecents="true"
-228-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:49:13-46
-229            android:exported="true"
-229-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:50:13-36
-230            android:launchMode="singleTask"
-230-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:51:13-44
-231            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-231-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:52:13-72
-232            <intent-filter>
-232-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:53:13-63:29
-233                <action android:name="android.intent.action.VIEW" />
-233-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:17-69
-233-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:25-66
-234
-235                <category android:name="android.intent.category.DEFAULT" />
-235-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:17-76
-235-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:27-73
-236                <category android:name="android.intent.category.BROWSABLE" />
-236-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:17-78
-236-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:27-75
-237
-238                <data
-238-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:41:17-44:51
-239                    android:host="firebase.auth"
-239-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:42:21-49
-240                    android:path="/"
-240-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:43:21-37
-241                    android:scheme="recaptcha" />
-241-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:44:21-48
-242            </intent-filter>
-243        </activity>
-244
-245        <provider
-245-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:23:9-28:39
-246            android:name="com.google.firebase.provider.FirebaseInitProvider"
-246-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:24:13-77
-247            android:authorities="com.fieldreport.ai.firebaseinitprovider"
-247-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:25:13-72
-248            android:directBootAware="true"
-248-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:26:13-43
-249            android:exported="false"
-249-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:27:13-37
-250            android:initOrder="100" />
-250-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:28:13-36
-251
-252        <service
-252-->[androidx.room:room-runtime:2.6.1] /Users/arminmehran/.gradle/caches/transforms-3/64c58022148238fb6d9adef0b478f77f/transformed/room-runtime-2.6.1/AndroidManifest.xml:24:9-28:63
-253            android:name="androidx.room.MultiInstanceInvalidationService"
-253-->[androidx.room:room-runtime:2.6.1] /Users/arminmehran/.gradle/caches/transforms-3/64c58022148238fb6d9adef0b478f77f/transformed/room-runtime-2.6.1/AndroidManifest.xml:25:13-74
-254            android:directBootAware="true"
-254-->[androidx.room:room-runtime:2.6.1] /Users/arminmehran/.gradle/caches/transforms-3/64c58022148238fb6d9adef0b478f77f/transformed/room-runtime-2.6.1/AndroidManifest.xml:26:13-43
-255            android:exported="false" />
-255-->[androidx.room:room-runtime:2.6.1] /Users/arminmehran/.gradle/caches/transforms-3/64c58022148238fb6d9adef0b478f77f/transformed/room-runtime-2.6.1/AndroidManifest.xml:27:13-37
+98-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:63:13-44
+99            android:enabled="true"
+99-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:64:13-35
+100            android:exported="false" />
+100-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:65:13-37
+101        <receiver
+101-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:67:9-77:20
+102            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+102-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:68:13-106
+103            android:directBootAware="false"
+103-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:69:13-44
+104            android:enabled="false"
+104-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:70:13-36
+105            android:exported="false" >
+105-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:71:13-37
+106            <intent-filter>
+106-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:73:13-76:29
+107                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+107-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:74:17-87
+107-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:74:25-84
+108                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+108-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:75:17-90
+108-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:75:25-87
+109            </intent-filter>
+110        </receiver>
+111        <receiver
+111-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:78:9-88:20
+112            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+112-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:79:13-104
+113            android:directBootAware="false"
+113-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:80:13-44
+114            android:enabled="false"
+114-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:81:13-36
+115            android:exported="false" >
+115-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:82:13-37
+116            <intent-filter>
+116-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:84:13-87:29
+117                <action android:name="android.intent.action.BATTERY_OKAY" />
+117-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:85:17-77
+117-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:85:25-74
+118                <action android:name="android.intent.action.BATTERY_LOW" />
+118-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:86:17-76
+118-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:86:25-73
+119            </intent-filter>
+120        </receiver>
+121        <receiver
+121-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:89:9-99:20
+122            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+122-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:90:13-104
+123            android:directBootAware="false"
+123-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:91:13-44
+124            android:enabled="false"
+124-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:92:13-36
+125            android:exported="false" >
+125-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:93:13-37
+126            <intent-filter>
+126-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:95:13-98:29
+127                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+127-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:96:17-83
+127-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:96:25-80
+128                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+128-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:97:17-82
+128-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:97:25-79
+129            </intent-filter>
+130        </receiver>
+131        <receiver
+131-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:100:9-109:20
+132            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+132-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:101:13-103
+133            android:directBootAware="false"
+133-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:102:13-44
+134            android:enabled="false"
+134-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:103:13-36
+135            android:exported="false" >
+135-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:104:13-37
+136            <intent-filter>
+136-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:106:13-108:29
+137                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+137-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:107:17-79
+137-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:107:25-76
+138            </intent-filter>
+139        </receiver>
+140        <receiver
+140-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:110:9-121:20
+141            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+141-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:111:13-88
+142            android:directBootAware="false"
+142-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:112:13-44
+143            android:enabled="false"
+143-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:113:13-36
+144            android:exported="false" >
+144-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:114:13-37
+145            <intent-filter>
+145-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:116:13-120:29
+146                <action android:name="android.intent.action.BOOT_COMPLETED" />
+146-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:117:17-79
+146-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:117:25-76
+147                <action android:name="android.intent.action.TIME_SET" />
+147-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:118:17-73
+147-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:118:25-70
+148                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+148-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:119:17-81
+148-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:119:25-78
+149            </intent-filter>
+150        </receiver>
+151        <receiver
+151-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:122:9-131:20
+152            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+152-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:123:13-99
+153            android:directBootAware="false"
+153-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:124:13-44
+154            android:enabled="@bool/enable_system_alarm_service_default"
+154-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:125:13-72
+155            android:exported="false" >
+155-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:126:13-37
+156            <intent-filter>
+156-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:128:13-130:29
+157                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+157-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:129:17-98
+157-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:129:25-95
+158            </intent-filter>
+159        </receiver>
+160        <receiver
+160-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:132:9-142:20
+161            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+161-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:133:13-78
+162            android:directBootAware="false"
+162-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:134:13-44
+163            android:enabled="true"
+163-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:135:13-35
+164            android:exported="true"
+164-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:136:13-36
+165            android:permission="android.permission.DUMP" >
+165-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:137:13-57
+166            <intent-filter>
+166-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:139:13-141:29
+167                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+167-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:140:17-88
+167-->[androidx.work:work-runtime:2.9.0] /Users/arminmehran/.gradle/caches/transforms-3/b6a92ad4230a9a8287c32820d6a6b70f/transformed/work-runtime-2.9.0/AndroidManifest.xml:140:25-85
+168            </intent-filter>
+169        </receiver>
+170
+171        <service
+171-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:8:9-14:19
+172            android:name="com.google.firebase.components.ComponentDiscoveryService"
+172-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:9:13-84
+173            android:directBootAware="true"
+173-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:32:13-43
+174            android:exported="false" >
+174-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:10:13-37
+175            <meta-data
+175-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:11:13-13:85
+176                android:name="com.google.firebase.components:com.google.firebase.auth.ktx.FirebaseAuthLegacyRegistrar"
+176-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:12:17-119
+177                android:value="com.google.firebase.components.ComponentRegistrar" />
+177-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/3a1c2555c754f7fa4e921accdd157306/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:13:17-82
+178            <meta-data
+178-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:69:13-71:85
+179                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+179-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:70:17-109
+180                android:value="com.google.firebase.components.ComponentRegistrar" />
+180-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:71:17-82
+181            <meta-data
+181-->[com.google.firebase:firebase-storage-ktx:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/46611342f6ebfac39937f008c740a265/transformed/firebase-storage-ktx-20.3.0/AndroidManifest.xml:12:13-14:85
+182                android:name="com.google.firebase.components:com.google.firebase.storage.ktx.FirebaseStorageLegacyRegistrar"
+182-->[com.google.firebase:firebase-storage-ktx:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/46611342f6ebfac39937f008c740a265/transformed/firebase-storage-ktx-20.3.0/AndroidManifest.xml:13:17-125
+183                android:value="com.google.firebase.components.ComponentRegistrar" />
+183-->[com.google.firebase:firebase-storage-ktx:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/46611342f6ebfac39937f008c740a265/transformed/firebase-storage-ktx-20.3.0/AndroidManifest.xml:14:17-82
+184            <meta-data
+184-->[com.google.firebase:firebase-firestore-ktx:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/8c063059275bc655cc5c0f529fe0426f/transformed/firebase-firestore-ktx-24.11.0/AndroidManifest.xml:12:13-14:85
+185                android:name="com.google.firebase.components:com.google.firebase.firestore.ktx.FirebaseFirestoreLegacyRegistrar"
+185-->[com.google.firebase:firebase-firestore-ktx:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/8c063059275bc655cc5c0f529fe0426f/transformed/firebase-firestore-ktx-24.11.0/AndroidManifest.xml:13:17-129
+186                android:value="com.google.firebase.components.ComponentRegistrar" />
+186-->[com.google.firebase:firebase-firestore-ktx:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/8c063059275bc655cc5c0f529fe0426f/transformed/firebase-firestore-ktx-24.11.0/AndroidManifest.xml:14:17-82
+187            <meta-data
+187-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:30:13-32:85
+188                android:name="com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar"
+188-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:31:17-118
+189                android:value="com.google.firebase.components.ComponentRegistrar" />
+189-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:32:17-82
+190            <meta-data
+190-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:33:13-35:85
+191                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+191-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:34:17-107
+192                android:value="com.google.firebase.components.ComponentRegistrar" />
+192-->[com.google.firebase:firebase-storage:20.3.0] /Users/arminmehran/.gradle/caches/transforms-3/a2585bda62390b93adc1c9adfd621fad/transformed/firebase-storage-20.3.0/AndroidManifest.xml:35:17-82
+193            <meta-data
+193-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:17:13-19:85
+194                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+194-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:18:17-122
+195                android:value="com.google.firebase.components.ComponentRegistrar" />
+195-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:19:17-82
+196            <meta-data
+196-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:20:13-22:85
+197                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+197-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:21:17-111
+198                android:value="com.google.firebase.components.ComponentRegistrar" />
+198-->[com.google.firebase:firebase-firestore:24.11.0] /Users/arminmehran/.gradle/caches/transforms-3/def3ca4cde35663dac5ad161bbe111b4/transformed/firebase-firestore-24.11.0/AndroidManifest.xml:22:17-82
+199            <meta-data
+199-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:25:13-27:85
+200                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar"
+200-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:26:17-120
+201                android:value="com.google.firebase.components.ComponentRegistrar" />
+201-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:27:17-82
+202            <meta-data
+202-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:28:13-30:85
+203                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar"
+203-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:29:17-117
+204                android:value="com.google.firebase.components.ComponentRegistrar" />
+204-->[com.google.firebase:firebase-appcheck:17.1.2] /Users/arminmehran/.gradle/caches/transforms-3/94d2c6b1a380410f6cf8c76c160b01c2/transformed/firebase-appcheck-17.1.2/AndroidManifest.xml:30:17-82
+205            <meta-data
+205-->[com.google.firebase:firebase-common-ktx:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/e6ef838417053bbe149f3e0989d79d34/transformed/firebase-common-ktx-20.4.3/AndroidManifest.xml:12:13-14:85
+206                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+206-->[com.google.firebase:firebase-common-ktx:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/e6ef838417053bbe149f3e0989d79d34/transformed/firebase-common-ktx-20.4.3/AndroidManifest.xml:13:17-116
+207                android:value="com.google.firebase.components.ComponentRegistrar" />
+207-->[com.google.firebase:firebase-common-ktx:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/e6ef838417053bbe149f3e0989d79d34/transformed/firebase-common-ktx-20.4.3/AndroidManifest.xml:14:17-82
+208            <meta-data
+208-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:35:13-37:85
+209                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+209-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:36:17-109
+210                android:value="com.google.firebase.components.ComponentRegistrar" />
+210-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:37:17-82
+211        </service>
+212
+213        <activity
+213-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:29:9-46:20
+214            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+214-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:30:13-80
+215            android:excludeFromRecents="true"
+215-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:31:13-46
+216            android:exported="true"
+216-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:32:13-36
+217            android:launchMode="singleTask"
+217-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:33:13-44
+218            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+218-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:34:13-72
+219            <intent-filter>
+219-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:35:13-45:29
+220                <action android:name="android.intent.action.VIEW" />
+220-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:17-69
+220-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:25-66
+221
+222                <category android:name="android.intent.category.DEFAULT" />
+222-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:17-76
+222-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:27-73
+223                <category android:name="android.intent.category.BROWSABLE" />
+223-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:17-78
+223-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:27-75
+224
+225                <data
+225-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:41:17-44:51
+226                    android:host="firebase.auth"
+226-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:42:21-49
+227                    android:path="/"
+227-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:43:21-37
+228                    android:scheme="genericidp" />
+228-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:44:21-48
+229            </intent-filter>
+230        </activity>
+231        <activity
+231-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:47:9-64:20
+232            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+232-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:48:13-79
+233            android:excludeFromRecents="true"
+233-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:49:13-46
+234            android:exported="true"
+234-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:50:13-36
+235            android:launchMode="singleTask"
+235-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:51:13-44
+236            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+236-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:52:13-72
+237            <intent-filter>
+237-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:53:13-63:29
+238                <action android:name="android.intent.action.VIEW" />
+238-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:17-69
+238-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:25-66
+239
+240                <category android:name="android.intent.category.DEFAULT" />
+240-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:17-76
+240-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:27-73
+241                <category android:name="android.intent.category.BROWSABLE" />
+241-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:17-78
+241-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:27-75
+242
+243                <data
+243-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:41:17-44:51
+244                    android:host="firebase.auth"
+244-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:42:21-49
+245                    android:path="/"
+245-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:43:21-37
+246                    android:scheme="recaptcha" />
+246-->[com.google.firebase:firebase-auth:22.3.1] /Users/arminmehran/.gradle/caches/transforms-3/4468a8a8253ca30b4e797b19fdb3cebd/transformed/firebase-auth-22.3.1/AndroidManifest.xml:44:21-48
+247            </intent-filter>
+248        </activity>
+249
+250        <provider
+250-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:23:9-28:39
+251            android:name="com.google.firebase.provider.FirebaseInitProvider"
+251-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:24:13-77
+252            android:authorities="com.fieldreport.ai.firebaseinitprovider"
+252-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:25:13-72
+253            android:directBootAware="true"
+253-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:26:13-43
+254            android:exported="false"
+254-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:27:13-37
+255            android:initOrder="100" />
+255-->[com.google.firebase:firebase-common:20.4.3] /Users/arminmehran/.gradle/caches/transforms-3/5d32d3b8414c855653b2e0cda733698f/transformed/firebase-common-20.4.3/AndroidManifest.xml:28:13-36
 256
-257        <activity
-257-->[com.google.android.gms:play-services-base:18.1.0] /Users/arminmehran/.gradle/caches/transforms-3/2b535c14a35c37f7cc3cc84fbab58fc0/transformed/play-services-base-18.1.0/AndroidManifest.xml:20:9-22:45
-258            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-258-->[com.google.android.gms:play-services-base:18.1.0] /Users/arminmehran/.gradle/caches/transforms-3/2b535c14a35c37f7cc3cc84fbab58fc0/transformed/play-services-base-18.1.0/AndroidManifest.xml:20:19-85
-259            android:exported="false"
-259-->[com.google.android.gms:play-services-base:18.1.0] /Users/arminmehran/.gradle/caches/transforms-3/2b535c14a35c37f7cc3cc84fbab58fc0/transformed/play-services-base-18.1.0/AndroidManifest.xml:22:19-43
-260            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-260-->[com.google.android.gms:play-services-base:18.1.0] /Users/arminmehran/.gradle/caches/transforms-3/2b535c14a35c37f7cc3cc84fbab58fc0/transformed/play-services-base-18.1.0/AndroidManifest.xml:21:19-78
+257        <service
+257-->[androidx.room:room-runtime:2.6.1] /Users/arminmehran/.gradle/caches/transforms-3/64c58022148238fb6d9adef0b478f77f/transformed/room-runtime-2.6.1/AndroidManifest.xml:24:9-28:63
+258            android:name="androidx.room.MultiInstanceInvalidationService"
+258-->[androidx.room:room-runtime:2.6.1] /Users/arminmehran/.gradle/caches/transforms-3/64c58022148238fb6d9adef0b478f77f/transformed/room-runtime-2.6.1/AndroidManifest.xml:25:13-74
+259            android:directBootAware="true"
+259-->[androidx.room:room-runtime:2.6.1] /Users/arminmehran/.gradle/caches/transforms-3/64c58022148238fb6d9adef0b478f77f/transformed/room-runtime-2.6.1/AndroidManifest.xml:26:13-43
+260            android:exported="false" />
+260-->[androidx.room:room-runtime:2.6.1] /Users/arminmehran/.gradle/caches/transforms-3/64c58022148238fb6d9adef0b478f77f/transformed/room-runtime-2.6.1/AndroidManifest.xml:27:13-37
 261
-262        <meta-data
-262-->[com.google.android.gms:play-services-basement:18.3.0] /Users/arminmehran/.gradle/caches/transforms-3/b6fd4c5e0f8997a9b63ae21219181311/transformed/play-services-basement-18.3.0/AndroidManifest.xml:21:9-23:69
-263            android:name="com.google.android.gms.version"
-263-->[com.google.android.gms:play-services-basement:18.3.0] /Users/arminmehran/.gradle/caches/transforms-3/b6fd4c5e0f8997a9b63ae21219181311/transformed/play-services-basement-18.3.0/AndroidManifest.xml:22:13-58
-264            android:value="@integer/google_play_services_version" />
-264-->[com.google.android.gms:play-services-basement:18.3.0] /Users/arminmehran/.gradle/caches/transforms-3/b6fd4c5e0f8997a9b63ae21219181311/transformed/play-services-basement-18.3.0/AndroidManifest.xml:23:13-66
-265
-266        <activity
-266-->[androidx.compose.ui:ui-tooling-android:1.6.1] /Users/arminmehran/.gradle/caches/transforms-3/ed27f82a9a285f2ac465f0cae513ef49/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
-267            android:name="androidx.compose.ui.tooling.PreviewActivity"
-267-->[androidx.compose.ui:ui-tooling-android:1.6.1] /Users/arminmehran/.gradle/caches/transforms-3/ed27f82a9a285f2ac465f0cae513ef49/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
-268            android:exported="true" />
-268-->[androidx.compose.ui:ui-tooling-android:1.6.1] /Users/arminmehran/.gradle/caches/transforms-3/ed27f82a9a285f2ac465f0cae513ef49/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
-269
-270        <receiver
-270-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
-271            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-271-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
-272            android:directBootAware="false"
-272-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
-273            android:enabled="true"
-273-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
-274            android:exported="true"
-274-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
-275            android:permission="android.permission.DUMP" >
-275-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
-276            <intent-filter>
-276-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
-277                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-277-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
-277-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
-278            </intent-filter>
-279            <intent-filter>
-279-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
-280                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-280-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
-280-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
-281            </intent-filter>
-282            <intent-filter>
-282-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
-283                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-283-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
-283-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
-284            </intent-filter>
-285            <intent-filter>
-285-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
-286                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-286-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
-286-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
-287            </intent-filter>
-288        </receiver>
-289    </application>
-290
-291</manifest>
+262        <activity
+262-->[com.google.android.gms:play-services-base:18.1.0] /Users/arminmehran/.gradle/caches/transforms-3/2b535c14a35c37f7cc3cc84fbab58fc0/transformed/play-services-base-18.1.0/AndroidManifest.xml:20:9-22:45
+263            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+263-->[com.google.android.gms:play-services-base:18.1.0] /Users/arminmehran/.gradle/caches/transforms-3/2b535c14a35c37f7cc3cc84fbab58fc0/transformed/play-services-base-18.1.0/AndroidManifest.xml:20:19-85
+264            android:exported="false"
+264-->[com.google.android.gms:play-services-base:18.1.0] /Users/arminmehran/.gradle/caches/transforms-3/2b535c14a35c37f7cc3cc84fbab58fc0/transformed/play-services-base-18.1.0/AndroidManifest.xml:22:19-43
+265            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+265-->[com.google.android.gms:play-services-base:18.1.0] /Users/arminmehran/.gradle/caches/transforms-3/2b535c14a35c37f7cc3cc84fbab58fc0/transformed/play-services-base-18.1.0/AndroidManifest.xml:21:19-78
+266
+267        <meta-data
+267-->[com.google.android.gms:play-services-basement:18.3.0] /Users/arminmehran/.gradle/caches/transforms-3/b6fd4c5e0f8997a9b63ae21219181311/transformed/play-services-basement-18.3.0/AndroidManifest.xml:21:9-23:69
+268            android:name="com.google.android.gms.version"
+268-->[com.google.android.gms:play-services-basement:18.3.0] /Users/arminmehran/.gradle/caches/transforms-3/b6fd4c5e0f8997a9b63ae21219181311/transformed/play-services-basement-18.3.0/AndroidManifest.xml:22:13-58
+269            android:value="@integer/google_play_services_version" />
+269-->[com.google.android.gms:play-services-basement:18.3.0] /Users/arminmehran/.gradle/caches/transforms-3/b6fd4c5e0f8997a9b63ae21219181311/transformed/play-services-basement-18.3.0/AndroidManifest.xml:23:13-66
+270
+271        <activity
+271-->[androidx.compose.ui:ui-tooling-android:1.6.1] /Users/arminmehran/.gradle/caches/transforms-3/ed27f82a9a285f2ac465f0cae513ef49/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
+272            android:name="androidx.compose.ui.tooling.PreviewActivity"
+272-->[androidx.compose.ui:ui-tooling-android:1.6.1] /Users/arminmehran/.gradle/caches/transforms-3/ed27f82a9a285f2ac465f0cae513ef49/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
+273            android:exported="true" />
+273-->[androidx.compose.ui:ui-tooling-android:1.6.1] /Users/arminmehran/.gradle/caches/transforms-3/ed27f82a9a285f2ac465f0cae513ef49/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
+274
+275        <receiver
+275-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+276            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+276-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+277            android:directBootAware="false"
+277-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+278            android:enabled="true"
+278-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+279            android:exported="true"
+279-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+280            android:permission="android.permission.DUMP" >
+280-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+281            <intent-filter>
+281-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+282                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+282-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+282-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+283            </intent-filter>
+284            <intent-filter>
+284-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+285                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+285-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+285-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+286            </intent-filter>
+287            <intent-filter>
+287-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+288                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+288-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+288-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+289            </intent-filter>
+290            <intent-filter>
+290-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+291                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+291-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+291-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/arminmehran/.gradle/caches/transforms-3/bb07979067f2b615271f5bc016f64cec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+292            </intent-filter>
+293        </receiver>
+294    </application>
+295
+296</manifest>
