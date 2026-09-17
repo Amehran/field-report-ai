@@ -31,7 +31,6 @@
         android:icon="@android:drawable/sym_def_app_icon"
         android:label="Field Report AI"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@android:style/Theme.Material.NoActionBar" >
         <activity
             android:name="com.fieldreport.ai.MainActivity"

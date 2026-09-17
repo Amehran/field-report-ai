@@ -172,11 +172,13 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                 .build()
                 
             try {
-                val response = kotlinx.coroutines.Dispatchers.IO.invoke { client.newCall(request).execute() }
+                val response = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { 
+                    client.newCall(request).execute() 
+                }
                 if (response.isSuccessful) {
                     val responseBody = response.body?.string()
-                    if (responseBody != null) {
-                        val draftJson = JSONObject(responseBody)
+                    if (!responseBody.isNullOrBlank()) {
+                        val draftJson = JSONObject(responseBody as String)
                         val newReport = report.copy(
                             workCompletedJson = draftJson.optString("workCompletedJson", ""),
                             findingsJson = draftJson.optString("findingsJson", ""),
