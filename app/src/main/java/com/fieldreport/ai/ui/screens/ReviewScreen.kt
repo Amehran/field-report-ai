@@ -192,31 +192,6 @@ fun ReviewScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // AI Review Banner
-                Surface(
-                    color = Amber100,
-                    shape = RoundedCornerShape(100.dp),
-                    modifier = Modifier.padding(bottom = 16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Default.Warning,
-                            contentDescription = "Warning",
-                            tint = Amber800,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "STRUCTURED REPORT — REVIEW & EDIT",
-                            color = Amber800,
-                            style = MaterialTheme.typography.labelMedium
-                        )
-                    }
-                }
-
                 // SECTION 1: HEADER INFO CARD (Technician, Customer/Job, Date)
                 Card(
                     modifier = Modifier.fillMaxWidth(),
