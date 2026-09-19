@@ -7,7 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -50,7 +50,20 @@ fun ReviewScreen(
     }
 
     if (report?.status == ReportStatus.GENERATING) {
-        Scaffold(containerColor = Slate50) { innerPadding ->
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Drafting report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                )
+            },
+            containerColor = Slate50
+        ) { innerPadding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -79,10 +92,10 @@ fun ReviewScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Review report", style = MaterialTheme.typography.headlineMedium) },
+                title = { Text("Review report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)

@@ -89,14 +89,14 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
             else repository.getMediaForReport(id)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun startNewReport(customerName: String, jobTitle: String, address: String? = null) {
+    fun startNewReport(customerName: String = "", jobTitle: String = "", address: String? = null) {
         val newId = UUID.randomUUID().toString()
         val newReport = ReportEntity(
             id = newId,
             userId = "usr_demo",
             status = ReportStatus.DRAFT,
-            customerName = customerName.ifBlank { "Miller Residence" },
-            jobTitle = jobTitle.ifBlank { "Kitchen repair" },
+            customerName = customerName,
+            jobTitle = jobTitle,
             address = address
         )
         viewModelScope.launch {
@@ -145,8 +145,8 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     fun updateReportHeader(customerName: String, jobTitle: String) {
         val current = currentReport.value ?: return
         val updated = current.copy(
-            customerName = customerName.ifBlank { "Miller Residence" },
-            jobTitle = jobTitle.ifBlank { "General repair" },
+            customerName = customerName,
+            jobTitle = jobTitle,
             updatedAt = System.currentTimeMillis()
         )
         viewModelScope.launch {
@@ -172,8 +172,8 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         
         viewModelScope.launch {
             val report = currentReport.value
-            val finalCustomerName = customerName.ifBlank { report?.customerName ?: "Miller Residence" }
-            val finalJobTitle = jobTitle.ifBlank { report?.jobTitle ?: "General repair" }
+            val finalCustomerName = customerName.ifBlank { report?.customerName?.takeIf { it.isNotBlank() } ?: "Customer" }
+            val finalJobTitle = jobTitle.ifBlank { report?.jobTitle?.takeIf { it.isNotBlank() } ?: "General Service" }
 
             // Ensure header is updated in DB prior to draft generation
             if (report != null) {
@@ -283,6 +283,12 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                                 val newReport = latestReport.copy(
                                     customerName = finalCustomerName,
                                     jobTitle = finalJobTitle,
+                                    typedNotes = typedNotes ?: latestReport.typedNotes,
+                                    initialStatus = draftJson.optString("initialStatus", ""),
+                                    resolutionStepsJson = draftJson.optString("resolutionStepsJson", ""),
+                                    currentOperationalState = draftJson.optString("currentOperationalState", ""),
+                                    laborCost = if (draftJson.has("estimatedLaborCost")) draftJson.optDouble("estimatedLaborCost") else latestReport.laborCost,
+                                    partsCost = if (draftJson.has("estimatedPartsCost")) draftJson.optDouble("estimatedPartsCost") else latestReport.partsCost,
                                     workCompletedJson = draftJson.optString("workCompletedJson", ""),
                                     findingsJson = draftJson.optString("findingsJson", ""),
                                     recommendationsJson = draftJson.optString("recommendationsJson", ""),
@@ -394,6 +400,18 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         } catch (e: Exception) {
             e.printStackTrace()
             android.widget.Toast.makeText(context, "Could not open PDF share sheet: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun deleteReport(reportId: String) {
+        viewModelScope.launch {
+            repository.deleteReportWithFiles(getApplication(), reportId)
+        }
+    }
+
+    fun deleteAllReports() {
+        viewModelScope.launch {
+            repository.deleteAllReportsWithFiles(getApplication())
         }
     }
 }

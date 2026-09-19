@@ -24,6 +24,12 @@ interface ReportDao {
     @Query("DELETE FROM reports WHERE id = :reportId")
     suspend fun deleteReport(reportId: String)
     
+    @Query("DELETE FROM reports")
+    suspend fun deleteAllReports()
+
+    @Query("SELECT * FROM reports")
+    suspend fun getAllReportsList(): List<ReportEntity>
+    
     @Query("UPDATE reports SET status = :status WHERE id = :reportId")
     suspend fun updateStatus(reportId: String, status: com.fieldreport.ai.data.model.ReportStatus)
 

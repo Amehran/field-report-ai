@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -31,11 +32,53 @@ fun ReportReadyScreen(
     val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
     val report by viewModel.currentReport.collectAsState()
+    var showDeletePrompt by remember { mutableStateOf(false) }
+
+    val handleShare = {
+        viewModel.shareReportPdf(context)
+        showDeletePrompt = true
+    }
+
+    if (showDeletePrompt) {
+        AlertDialog(
+            onDismissRequest = { showDeletePrompt = false },
+            title = { Text("Delete Report Data?") },
+            text = {
+                Text("You have shared this report. Would you like to delete the report record and all associated media (photos, audio) from your device?")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeletePrompt = false
+                        report?.id?.let { viewModel.deleteReport(it) }
+                        onDone()
+                    }
+                ) {
+                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDeletePrompt = false
+                        onDone()
+                    }
+                ) {
+                    Text("Keep")
+                }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Report ready", style = MaterialTheme.typography.headlineMedium) },
+                title = { Text("Report ready", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+                navigationIcon = {
+                    IconButton(onClick = onDone) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                    }
+                },
                 actions = {
                     Surface(
                         color = Emerald100,
@@ -75,9 +118,7 @@ fun ReportReadyScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Button(
-                            onClick = {
-                                viewModel.shareReportPdf(context)
-                            },
+                            onClick = { handleShare() },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(56.dp),
@@ -178,7 +219,7 @@ fun ReportReadyScreen(
                         Spacer(modifier = Modifier.height(20.dp))
 
                         TextButton(
-                            onClick = { viewModel.shareReportPdf(context) },
+                            onClick = { handleShare() },
                             modifier = Modifier.align(Alignment.Start)
                         ) {
                             Text("VIEW FULL REPORT →", color = Teal600, style = MaterialTheme.typography.labelLarge)

@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material3.*
@@ -39,6 +40,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -88,8 +90,8 @@ fun CaptureScreen(
     onClose: () -> Unit
 ) {
     val context = LocalContext.current
-    var customerName by remember { mutableStateOf("Miller Residence") }
-    var jobTitle by remember { mutableStateOf("Kitchen repair") }
+    var customerName by remember { mutableStateOf("") }
+    var jobTitle by remember { mutableStateOf("") }
     var typedNotes by remember { mutableStateOf("") }
     var isTypingNotes by remember { mutableStateOf(false) }
 
@@ -102,11 +104,15 @@ fun CaptureScreen(
 
     LaunchedEffect(currentReport) {
         currentReport?.let { report ->
-            if (report.customerName.isNotBlank() && report.customerName != customerName) {
+            if (report.customerName.isNotBlank() && customerName.isEmpty()) {
                 customerName = report.customerName
             }
-            if (report.jobTitle.isNotBlank() && report.jobTitle != jobTitle) {
+            if (report.jobTitle.isNotBlank() && jobTitle.isEmpty()) {
                 jobTitle = report.jobTitle
+            }
+            if (report.typedNotes != null && report.typedNotes.isNotBlank() && typedNotes.isEmpty()) {
+                typedNotes = report.typedNotes
+                isTypingNotes = true
             }
         }
     }
@@ -199,10 +205,10 @@ fun CaptureScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("New report", style = MaterialTheme.typography.headlineMedium) },
-                actions = {
+                title = { Text("New report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+                navigationIcon = {
                     IconButton(onClick = onClose) {
-                        Icon(Icons.Default.Close, contentDescription = "Close")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
@@ -269,7 +275,18 @@ fun CaptureScreen(
                             customerName = it 
                             viewModel.updateReportHeader(it, jobTitle)
                         },
-                        label = { Text("Customer / Job Name") },
+                        label = { Text("Customer Name") },
+                        placeholder = { Text("e.g. Miller Residence or John Smith") },
+                        trailingIcon = {
+                            if (customerName.isNotEmpty()) {
+                                IconButton(onClick = { 
+                                    customerName = ""
+                                    viewModel.updateReportHeader("", jobTitle) 
+                                }) {
+                                    Icon(androidx.compose.material.icons.Icons.Default.Clear, contentDescription = "Clear")
+                                }
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp)
                     )
@@ -280,7 +297,18 @@ fun CaptureScreen(
                             jobTitle = it
                             viewModel.updateReportHeader(customerName, it)
                         },
-                        label = { Text("Work Description / Trade") },
+                        label = { Text("Job Name / Trade") },
+                        placeholder = { Text("e.g. Kitchen Repair or HVAC Service") },
+                        trailingIcon = {
+                            if (jobTitle.isNotEmpty()) {
+                                IconButton(onClick = { 
+                                    jobTitle = ""
+                                    viewModel.updateReportHeader(customerName, "") 
+                                }) {
+                                    Icon(androidx.compose.material.icons.Icons.Default.Clear, contentDescription = "Clear")
+                                }
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp)
                     )
@@ -370,7 +398,15 @@ fun CaptureScreen(
                 OutlinedTextField(
                     value = typedNotes,
                     onValueChange = { typedNotes = it },
+                    label = { Text("Work Description") },
                     placeholder = { Text("Describe the work completed, findings, and recommendations...") },
+                    trailingIcon = {
+                        if (typedNotes.isNotEmpty()) {
+                            IconButton(onClick = { typedNotes = "" }) {
+                                Icon(androidx.compose.material.icons.Icons.Default.Clear, contentDescription = "Clear")
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(140.dp),

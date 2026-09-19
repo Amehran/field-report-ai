@@ -12,6 +12,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +29,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+import com.fieldreport.ai.ui.theme.Slate900
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReportListScreen(
@@ -35,14 +40,32 @@ fun ReportListScreen(
     onNavigateToReview: (String) -> Unit
 ) {
     val reports by viewModel.allReports.collectAsState(initial = emptyList())
+    var showMenu by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Saved Reports") },
+                title = { Text("Saved Reports", style = MaterialTheme.typography.titleLarge, color = Slate900) },
                 actions = {
                     IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
+                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Slate900)
+                    }
+                    Box {
+                        IconButton(onClick = { showMenu = !showMenu }) {
+                            Icon(androidx.compose.material.icons.Icons.Default.MoreVert, contentDescription = "More options", tint = Slate900)
+                        }
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Delete All", color = Color.Red) },
+                                onClick = {
+                                    viewModel.deleteAllReports()
+                                    showMenu = false
+                                }
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
@@ -89,11 +112,14 @@ fun ReportListScreen(
                         report = report,
                         onClick = {
                             viewModel.setCurrentReportId(report.id)
-                            if (report.status == ReportStatus.DRAFT) {
+                            if (report.status == ReportStatus.DRAFT || report.status == ReportStatus.NEEDS_REVIEW) {
                                 onNavigateToCapture()
                             } else {
                                 onNavigateToReview(report.id)
                             }
+                        },
+                        onDelete = {
+                            viewModel.deleteReport(report.id)
                         }
                     )
                 }
@@ -103,7 +129,7 @@ fun ReportListScreen(
 }
 
 @Composable
-fun ReportListItem(report: ReportEntity, onClick: () -> Unit) {
+fun ReportListItem(report: ReportEntity, onClick: () -> Unit, onDelete: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -112,37 +138,44 @@ fun ReportListItem(report: ReportEntity, onClick: () -> Unit) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+        Row(
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = report.jobTitle.ifBlank { "Untitled Job" },
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    StatusChip(status = report.status)
+                }
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = report.jobTitle.ifBlank { "Untitled Job" },
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
+                    text = report.customerName.ifBlank { "Unknown Customer" },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                StatusChip(status = report.status)
+                Spacer(modifier = Modifier.height(8.dp))
+                val dateStr = SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(Date(report.createdAt))
+                Text(
+                    text = dateStr,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = report.customerName.ifBlank { "Unknown Customer" },
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            val dateStr = SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(Date(report.createdAt))
-            Text(
-                text = dateStr,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            IconButton(onClick = onDelete) {
+                Icon(androidx.compose.material.icons.Icons.Default.Delete, contentDescription = "Delete Report", tint = Color.Gray)
+            }
         }
     }
 }

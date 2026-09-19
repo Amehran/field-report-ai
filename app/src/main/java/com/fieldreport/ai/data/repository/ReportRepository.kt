@@ -120,4 +120,57 @@ class ReportRepository(private val reportDao: ReportDao) {
         )
         reportDao.updateReport(updated)
     }
+
+    suspend fun deleteReport(reportId: String) {
+        reportDao.deleteReport(reportId)
+    }
+
+    suspend fun deleteReportWithFiles(context: android.content.Context, reportId: String) {
+        val report = reportDao.getReportById(reportId)
+        val mediaItems = reportDao.getMediaItemsForReport(reportId)
+
+        report?.audioLocalUri?.let { deleteFileFromUri(context, it) }
+        mediaItems.forEach { deleteFileFromUri(context, it.localUri) }
+
+        val pdfFile = java.io.File(context.cacheDir, "reports/Report_${reportId}.pdf")
+        if (pdfFile.exists()) {
+            pdfFile.delete()
+        }
+
+        reportDao.deleteReport(reportId)
+    }
+
+    suspend fun deleteAllReports() {
+        reportDao.deleteAllReports()
+    }
+
+    suspend fun deleteAllReportsWithFiles(context: android.content.Context) {
+        val reports = reportDao.getAllReportsList()
+        reports.forEach { report ->
+            deleteReportWithFiles(context, report.id)
+        }
+        reportDao.deleteAllReports()
+    }
+
+    private fun deleteFileFromUri(context: android.content.Context, uriStr: String) {
+        try {
+            val uri = android.net.Uri.parse(uriStr)
+            if (uri.scheme == "content") {
+                try {
+                    context.contentResolver.delete(uri, null, null)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            val path = uri.path
+            if (path != null) {
+                val file = java.io.File(path)
+                if (file.exists()) {
+                    file.delete()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }

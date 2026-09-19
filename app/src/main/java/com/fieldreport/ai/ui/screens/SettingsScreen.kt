@@ -2,7 +2,7 @@ package com.fieldreport.ai.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.fieldreport.ai.data.model.AiAgentMode
 import com.fieldreport.ai.ui.theme.Slate50
+import com.fieldreport.ai.ui.theme.Slate900
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,10 +26,10 @@ fun SettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Settings") },
+                title = { Text("Settings", style = MaterialTheme.typography.titleLarge, color = Slate900) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
