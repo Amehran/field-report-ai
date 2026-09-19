@@ -39,21 +39,45 @@ class ReportRepository(private val reportDao: ReportDao) {
         reportDao.updateReportAudioStoragePath(reportId, path)
     }
 
-    // Mock local draft generation for Phase 1 Walking Skeleton
+    suspend fun setAudioRecording(reportId: String, uriString: String) {
+        reportDao.updateAudioLocalUri(reportId, uriString)
+    }
+
+    // Dynamic local draft generation for offline/fallback mode
     suspend fun generateLocalMockDraft(reportId: String, typedNotes: String?) {
         val existing = reportDao.getReportById(reportId) ?: return
 
-        val workCompleted = listOf(
-            "Replaced damaged cabinet hinge and realigned door assembly.",
-            "Tested door movement and verified smooth latching operation."
-        )
-        val findings = listOf(
-            "Minor moisture marks visible near cabinet base from prior minor sink overflow."
-        )
+        val job = existing.jobTitle.ifBlank { "Service Work" }
+        val notes = typedNotes?.takeIf { it.isNotBlank() }
+        val hasAudio = existing.audioLocalUri != null
+
+        val workCompleted = mutableListOf<String>()
+        if (notes != null) {
+            workCompleted.add(notes)
+            workCompleted.add("Performed inspection and verified operational status for $job.")
+        } else if (hasAudio) {
+            workCompleted.add("Completed recorded voice note tasks for $job.")
+            workCompleted.add("Inspected equipment and verified smooth operation.")
+        } else {
+            workCompleted.add("Completed primary service tasks for $job.")
+            workCompleted.add("Verified quality of work and tested functionality.")
+        }
+
+        val findings = mutableListOf<String>()
+        if (notes != null) {
+            findings.add("Notes recorded: \"$notes\"")
+        } else if (hasAudio) {
+            findings.add("Voice note audio recording captured and stored.")
+        } else {
+            findings.add("All system components inspected during $job.")
+        }
+
         val recommendations = listOf(
-            "Monitor adjacent under-sink piping and schedule an inspection if moisture returns."
+            "Perform regular maintenance check for $job within 6 months.",
+            "Contact technician if any unusual issues or noise return."
         )
-        val summary = "Completed kitchen cabinet hinge replacement and aligned cabinet door. Checked surrounding area for moisture."
+
+        val summary = "Completed $job for ${existing.customerName}."
 
         val updated = existing.copy(
             status = ReportStatus.NEEDS_REVIEW,
@@ -61,7 +85,7 @@ class ReportRepository(private val reportDao: ReportDao) {
             workCompletedJson = workCompleted.joinToString("||"),
             findingsJson = findings.joinToString("||"),
             recommendationsJson = recommendations.joinToString("||"),
-            rawTranscript = typedNotes ?: "Replaced damaged cabinet hinge and realigned door assembly.",
+            rawTranscript = notes ?: (if (hasAudio) "Voice recording captured." else "Technician notes for $job."),
             updatedAt = System.currentTimeMillis()
         )
         reportDao.updateReport(updated)

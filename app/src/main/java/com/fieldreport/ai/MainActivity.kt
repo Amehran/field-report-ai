@@ -60,6 +60,7 @@ class MainActivity : ComponentActivity() {
 
                         composable("voice_capture") {
                             VoiceCaptureScreen(
+                                viewModel = reportViewModel,
                                 onStopRecording = {
                                     navController.popBackStack()
                                 },

@@ -25,18 +25,113 @@ import kotlinx.coroutines.delay
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.media.MediaRecorder
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import com.fieldreport.ai.ui.viewmodel.ReportViewModel
+import java.io.File
+import java.io.FileOutputStream
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VoiceCaptureScreen(
+    viewModel: ReportViewModel,
     onStopRecording: () -> Unit,
     onBack: () -> Unit
 ) {
+    val context = LocalContext.current
     var secondsElapsed by remember { mutableStateOf(0) }
+    var isRecording by remember { mutableStateOf(false) }
+    var recorder by remember { mutableStateOf<MediaRecorder?>(null) }
+    var audioFile by remember { mutableStateOf<File?>(null) }
+
+    fun stopAndSaveRecording() {
+        try {
+            recorder?.stop()
+            recorder?.release()
+            recorder = null
+            audioFile?.let { file ->
+                if (file.exists() && file.length() > 0) {
+                    viewModel.setAudioRecording(file.toURI().toString())
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        onStopRecording()
+    }
+
+    fun startNativeRecording() {
+        try {
+            val recordDir = File(context.cacheDir, "recordings").apply { if (!exists()) mkdirs() }
+            val file = File(recordDir, "voice_${System.currentTimeMillis()}.m4a")
+            audioFile = file
+
+            val newRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                MediaRecorder(context)
+            } else {
+                @Suppress("DEPRECATION")
+                MediaRecorder()
+            }
+
+            newRecorder.apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                setOutputFile(FileOutputStream(file).fd)
+                prepare()
+                start()
+            }
+            recorder = newRecorder
+            isRecording = true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "Could not start audio recorder.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            startNativeRecording()
+        } else {
+            Toast.makeText(context, "Microphone permission required for voice notes.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     LaunchedEffect(Unit) {
-        while (true) {
-            delay(1000L)
-            secondsElapsed++
+        val permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            startNativeRecording()
+        } else {
+            permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            try {
+                recorder?.stop()
+                recorder?.release()
+            } catch (e: Exception) {
+                // Ignore if already released
+            }
+        }
+    }
+
+    LaunchedEffect(isRecording) {
+        if (isRecording) {
+            while (true) {
+                delay(1000L)
+                secondsElapsed++
+            }
         }
     }
 
@@ -161,7 +256,7 @@ fun VoiceCaptureScreen(
                         .background(Rose600, RoundedCornerShape(16.dp))
                         .clickable {
                             haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
-                            onStopRecording()
+                            stopAndSaveRecording()
                         },
                     contentAlignment = Alignment.Center
                 ) {

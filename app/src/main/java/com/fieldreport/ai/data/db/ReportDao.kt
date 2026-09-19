@@ -30,6 +30,9 @@ interface ReportDao {
     @Query("UPDATE reports SET audioStoragePath = :path WHERE id = :reportId")
     suspend fun updateReportAudioStoragePath(reportId: String, path: String)
 
+    @Query("UPDATE reports SET audioLocalUri = :uri WHERE id = :reportId")
+    suspend fun updateAudioLocalUri(reportId: String, uri: String)
+
     @Query("SELECT * FROM media_items WHERE reportId = :reportId ORDER BY sortOrder ASC")
     fun getMediaForReport(reportId: String): Flow<List<MediaItemEntity>>
 

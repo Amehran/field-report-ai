@@ -109,6 +109,13 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun setAudioRecording(uriString: String) {
+        val reportId = _currentReportId.value ?: return
+        viewModelScope.launch {
+            repository.setAudioRecording(reportId, uriString)
+        }
+    }
+
     fun generateReportDraft(typedNotes: String?) {
         val reportId = _currentReportId.value ?: return
         
