@@ -106,9 +106,28 @@ object PdfReportGenerator {
             y += 24f
         }
 
-        // Work Completed
+        // Work Completed (Legacy Fallback)
         val workItems = report.workCompletedJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
-        if (workItems.isNotEmpty()) {
+        val findingsItems = report.findingsJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
+        val recItems = report.recommendationsJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
+
+        if (!report.initialStatus.isNullOrBlank()) {
+            canvas.drawText("INITIAL STATUS & PROBLEM OBSERVED", 36f, y, sectionTitlePaint)
+            y += 16f
+            canvas.drawText(report.initialStatus, 36f, y, bodyPaint)
+            y += 24f
+        }
+
+        val resSteps = report.resolutionStepsJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
+        if (resSteps.isNotEmpty()) {
+            canvas.drawText("WORK EXECUTED & RESOLUTION", 36f, y, sectionTitlePaint)
+            y += 16f
+            for (item in resSteps) {
+                canvas.drawText("• $item", 44f, y, bodyPaint)
+                y += 14f
+            }
+            y += 12f
+        } else if (workItems.isNotEmpty()) { // Fallback
             canvas.drawText("WORK COMPLETED", 36f, y, sectionTitlePaint)
             y += 16f
             for (item in workItems) {
@@ -118,28 +137,63 @@ object PdfReportGenerator {
             y += 12f
         }
 
-        // Findings
-        val findingsItems = report.findingsJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
-        if (findingsItems.isNotEmpty()) {
-            canvas.drawText("FINDINGS & OBSERVATIONS", 36f, y, sectionTitlePaint)
+        if (!report.currentOperationalState.isNullOrBlank()) {
+            canvas.drawText("CURRENT OPERATIONAL STATE", 36f, y, sectionTitlePaint)
             y += 16f
-            for (item in findingsItems) {
-                canvas.drawText("• $item", 44f, y, bodyPaint)
-                y += 14f
+            canvas.drawText(report.currentOperationalState, 36f, y, bodyPaint)
+            y += 24f
+        } else if (findingsItems.isNotEmpty() || recItems.isNotEmpty()) { // Fallback
+            if (findingsItems.isNotEmpty()) {
+                canvas.drawText("FINDINGS & OBSERVATIONS", 36f, y, sectionTitlePaint)
+                y += 16f
+                for (item in findingsItems) {
+                    canvas.drawText("• $item", 44f, y, bodyPaint)
+                    y += 14f
+                }
+                y += 12f
             }
-            y += 12f
+            if (recItems.isNotEmpty()) {
+                canvas.drawText("RECOMMENDED NEXT STEPS", 36f, y, sectionTitlePaint)
+                y += 16f
+                for (item in recItems) {
+                    canvas.drawText("• $item", 44f, y, bodyPaint)
+                    y += 14f
+                }
+                y += 12f
+            }
         }
 
-        // Recommendations
-        val recItems = report.recommendationsJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
-        if (recItems.isNotEmpty()) {
-            canvas.drawText("RECOMMENDED NEXT STEPS", 36f, y, sectionTitlePaint)
+        // Pricing Block
+        val hasPricing = report.laborCost != null || report.partsCost != null || report.totalCost != null
+        if (hasPricing) {
+            y += 8f
+            canvas.drawText("JOB CHARGES", 36f, y, sectionTitlePaint)
             y += 16f
-            for (item in recItems) {
-                canvas.drawText("• $item", 44f, y, bodyPaint)
-                y += 14f
+            
+            // Draw a simple box
+            val tablePaint = Paint().apply { color = Color.parseColor("#F8FAFC"); style = Paint.Style.FILL }
+            val borderPaint = Paint().apply { color = Color.parseColor("#E2E8F0"); style = Paint.Style.STROKE; strokeWidth = 1f }
+            canvas.drawRect(36f, y, 300f, y + 60f, tablePaint)
+            canvas.drawRect(36f, y, 300f, y + 60f, borderPaint)
+            
+            var tableY = y + 16f
+            if (report.laborCost != null) {
+                canvas.drawText("Labor:", 44f, tableY, bodyPaint)
+                canvas.drawText(String.format("$%.2f", report.laborCost), 240f, tableY, bodyPaint)
+                tableY += 14f
             }
-            y += 12f
+            if (report.partsCost != null) {
+                canvas.drawText("Parts:", 44f, tableY, bodyPaint)
+                canvas.drawText(String.format("$%.2f", report.partsCost), 240f, tableY, bodyPaint)
+                tableY += 14f
+            }
+            if (report.totalCost != null) {
+                canvas.drawLine(44f, tableY - 4f, 292f, tableY - 4f, borderPaint)
+                val boldPaint = Paint(bodyPaint).apply { typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) }
+                canvas.drawText("Total:", 44f, tableY + 10f, boldPaint)
+                canvas.drawText(String.format("$%.2f", report.totalCost), 240f, tableY + 10f, boldPaint)
+            }
+            y += 76f
         }
 
         // Footer Disclaimer
