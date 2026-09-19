@@ -12,29 +12,54 @@ export interface DraftGenerationParams {
 }
 
 export interface GeneratedDraft {
-  workCompletedJson: string;
-  findingsJson: string;
-  recommendationsJson: string;
+  workCompletedJson?: string;
+  findingsJson?: string;
+  recommendationsJson?: string;
+  initialStatus: string;
+  resolutionStepsJson: string;
+  currentOperationalState: string;
+  estimatedLaborCost?: number;
+  estimatedPartsCost?: number;
 }
 
 // Define the expected output schema using the standard Schema interface from @google/genai
 const draftSchema: Schema = {
   type: Type.OBJECT,
   properties: {
+    initialStatus: {
+      type: Type.STRING,
+      description: "A professional summary of the initial problem observed or the reason for the service call."
+    },
+    resolutionStepsJson: {
+      type: Type.STRING,
+      description: "A comprehensive bulleted list (separated by '||') of physical repair, installation, adjustment, or testing actions taken."
+    },
+    currentOperationalState: {
+      type: Type.STRING,
+      description: "A summary of the post-repair status and operational state of the equipment or system."
+    },
+    estimatedLaborCost: {
+      type: Type.NUMBER,
+      description: "Optional estimated labor cost if specifically mentioned in the audio/notes, otherwise omit."
+    },
+    estimatedPartsCost: {
+      type: Type.NUMBER,
+      description: "Optional estimated parts cost if specifically mentioned in the audio/notes, otherwise omit."
+    },
     workCompletedJson: {
       type: Type.STRING,
-      description: "A comprehensive bulleted list (separated by '||') of all work completed by the technician. E.g. 'Replaced cabinet hinge||Realigned kitchen cabinet door'."
+      description: "Legacy field for backward compatibility. Provide the same content as resolutionStepsJson."
     },
     findingsJson: {
       type: Type.STRING,
-      description: "A comprehensive bulleted list (separated by '||') of any findings, observations, or issues noted. E.g. 'Minor moisture marks near the base||Old hinges were heavily rusted'."
+      description: "Legacy field. A comprehensive bulleted list (separated by '||') of any findings or observations."
     },
     recommendationsJson: {
       type: Type.STRING,
-      description: "A comprehensive bulleted list (separated by '||') of recommended next steps for the customer. E.g. 'Monitor for moisture||Apply rust-preventative coating'."
+      description: "Legacy field. A comprehensive bulleted list (separated by '||') of recommended next steps."
     }
   },
-  required: ["workCompletedJson", "findingsJson", "recommendationsJson"]
+  required: ["initialStatus", "resolutionStepsJson", "currentOperationalState"]
 };
 
 async function getInlineMediaData(uri: string): Promise<{ mimeType: string; data: string } | null> {
@@ -95,9 +120,12 @@ export async function generateReportDraft(params: DraftGenerationParams): Promis
     2. THE WORK DESCRIPTION IS THE MOST IMPORTANT CONTEXT: Extract every detail from the technician's notes, voice note audio, and photos to describe the actual physical work performed step-by-step.
     3. ABSOLUTELY NO META-COMMENTARY: Never write phrases like "In the voice note...", "According to the transcript...", "The audio says...", "Inspecting the photos...", or "Notes indicate...". Write directly in the professional active voice of the performing technician detailing the physical service.
     4. SECTION REQUIREMENTS:
-       - workCompletedJson: Detailed, technical bulleted list (separated by '||') of physical repair, installation, adjustment, or testing actions taken specifically for ${jobTitle}.
-       - findingsJson: Professional technical observations (separated by '||') regarding equipment condition, measured parameters (voltage, pressure, temperature, wear), root causes, or system stability.
-       - recommendationsJson: Practical, high-value advice (separated by '||') for ${customerName} regarding system care, maintenance intervals, or operational guidelines.
+       - initialStatus: A professional summary of the initial problem observed or the reason for the service call.
+       - resolutionStepsJson: Detailed, technical bulleted list (separated by '||') of physical repair, installation, adjustment, or testing actions taken specifically for ${jobTitle}.
+       - currentOperationalState: A summary of the post-repair status and operational state of the equipment or system.
+       - estimatedLaborCost (optional): Extract any mentioned labor cost.
+       - estimatedPartsCost (optional): Extract any mentioned parts cost.
+       - workCompletedJson, findingsJson, recommendationsJson: Fill these legacy fields with the same detailed bullet points (separated by '||') for backward compatibility.
   `;
 
   // Prepare contents for the API
