@@ -29,6 +29,8 @@ data class ReportEntity(
     val initialStatus: String? = null,
     val resolutionStepsJson: String? = null,
     val currentOperationalState: String? = null,
+    val technicianName: String? = null,
+    val technicianComments: String? = null,
     val aiAgentMode: AiAgentMode = AiAgentMode.CLOUD,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),

@@ -348,6 +348,27 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun updateReportReviewData(
+        issueDescription: String?,
+        workDoneText: String?,
+        technicianComments: String?,
+        technicianName: String?
+    ) {
+        val report = currentReport.value ?: return
+        viewModelScope.launch {
+            repository.updateReport(
+                report.copy(
+                    initialStatus = issueDescription,
+                    resolutionStepsJson = workDoneText,
+                    workCompletedJson = workDoneText,
+                    technicianComments = technicianComments,
+                    technicianName = technicianName,
+                    updatedAt = System.currentTimeMillis()
+                )
+            )
+        }
+    }
+
     fun approveReport() {
         val reportId = _currentReportId.value ?: return
         viewModelScope.launch {

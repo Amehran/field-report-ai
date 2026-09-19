@@ -83,11 +83,15 @@ object PdfReportGenerator {
 
         y = 95f
 
-        // Customer Block
-        canvas.drawText(report.customerName, 36f, y, titlePaint)
+        // Technician & Customer Header
+        val techName = report.technicianName.orEmpty().ifBlank { "Lead Service Technician" }
+        canvas.drawText("Technician: $techName", 36f, y, subtitlePaint)
         y += 16f
-        canvas.drawText(report.jobTitle + (if (!report.address.isNullOrBlank()) " • ${report.address}" else ""), 36f, y, subtitlePaint)
-        y += 24f
+        canvas.drawText("${report.customerName} • ${report.jobTitle}", 36f, y, titlePaint)
+        y += 16f
+        val fullDateStr = SimpleDateFormat("MMM dd, yyyy • h:mm a", Locale.US).format(Date(report.createdAt))
+        canvas.drawText("Date: $fullDateStr", 36f, y, subtitlePaint)
+        y += 20f
 
         // Divider
         val dividerPaint = Paint().apply {
@@ -97,80 +101,28 @@ object PdfReportGenerator {
         canvas.drawLine(36f, y, 576f, y, dividerPaint)
         y += 20f
 
-        // Customer Summary
-        val summary = report.customerSummary
-        if (!summary.isNullOrBlank()) {
-            canvas.drawText("SUMMARY", 36f, y, sectionTitlePaint)
-            y += 16f
-            canvas.drawText(summary, 36f, y, bodyPaint)
-            y += 24f
-        }
+        // ISSUE SECTION
+        canvas.drawText("ISSUE", 36f, y, sectionTitlePaint)
+        y += 16f
+        val issueStr = report.initialStatus.orEmpty().ifBlank { report.findingsJson?.replace("||", "\n• ").orEmpty().ifBlank { "Primary issue identified during initial inspection." } }
+        canvas.drawText(issueStr, 36f, y, bodyPaint)
+        y += 24f
 
-        // Work Completed (Legacy Fallback)
-        val workItems = report.workCompletedJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
-        val findingsItems = report.findingsJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
-        val recItems = report.recommendationsJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
-
-        if (!report.initialStatus.isNullOrBlank()) {
-            canvas.drawText("INITIAL STATUS & PROBLEM OBSERVED", 36f, y, sectionTitlePaint)
-            y += 16f
-            canvas.drawText(report.initialStatus, 36f, y, bodyPaint)
-            y += 24f
-        }
-
-        val resSteps = report.resolutionStepsJson?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
-        if (resSteps.isNotEmpty()) {
-            canvas.drawText("WORK EXECUTED & RESOLUTION", 36f, y, sectionTitlePaint)
-            y += 16f
-            for (item in resSteps) {
-                canvas.drawText("• $item", 44f, y, bodyPaint)
-                y += 14f
-            }
-            y += 12f
-        } else if (workItems.isNotEmpty()) { // Fallback
-            canvas.drawText("WORK COMPLETED", 36f, y, sectionTitlePaint)
-            y += 16f
-            for (item in workItems) {
-                canvas.drawText("• $item", 44f, y, bodyPaint)
-                y += 14f
-            }
-            y += 12f
-        }
-
-        if (!report.currentOperationalState.isNullOrBlank()) {
-            canvas.drawText("CURRENT OPERATIONAL STATE", 36f, y, sectionTitlePaint)
-            y += 16f
-            canvas.drawText(report.currentOperationalState, 36f, y, bodyPaint)
-            y += 24f
-        } else if (findingsItems.isNotEmpty() || recItems.isNotEmpty()) { // Fallback
-            if (findingsItems.isNotEmpty()) {
-                canvas.drawText("FINDINGS & OBSERVATIONS", 36f, y, sectionTitlePaint)
-                y += 16f
-                for (item in findingsItems) {
-                    canvas.drawText("• $item", 44f, y, bodyPaint)
-                    y += 14f
-                }
-                y += 12f
-            }
-            if (recItems.isNotEmpty()) {
-                canvas.drawText("RECOMMENDED NEXT STEPS", 36f, y, sectionTitlePaint)
-                y += 16f
-                for (item in recItems) {
-                    canvas.drawText("• $item", 44f, y, bodyPaint)
-                    y += 14f
-                }
-                y += 12f
-            }
-        }
+        // SERVICE SECTION (Work Done & Costs)
+        canvas.drawText("SERVICE", 36f, y, sectionTitlePaint)
+        y += 16f
+        canvas.drawText("What Work Done:", 36f, y, Paint(bodyPaint).apply { typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) })
+        y += 14f
+        val workDoneStr = report.resolutionStepsJson?.replace("||", "\n• ").orEmpty().ifBlank { report.workCompletedJson?.replace("||", "\n• ").orEmpty().ifBlank { report.typedNotes.orEmpty().ifBlank { report.rawTranscript.orEmpty().ifBlank { "Executed primary repair and testing procedures." } } } }
+        canvas.drawText(workDoneStr, 36f, y, bodyPaint)
+        y += 24f
 
         // Pricing Block
         val hasPricing = report.laborCost != null || report.partsCost != null || report.totalCost != null
         if (hasPricing) {
-            y += 8f
-            canvas.drawText("JOB CHARGES", 36f, y, sectionTitlePaint)
-            y += 16f
+            canvas.drawText("Cost Breakdown:", 36f, y, Paint(bodyPaint).apply { typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) })
+            y += 14f
             
-            // Draw a simple box
             val tablePaint = Paint().apply { color = Color.parseColor("#F8FAFC"); style = Paint.Style.FILL }
             val borderPaint = Paint().apply { color = Color.parseColor("#E2E8F0"); style = Paint.Style.STROKE; strokeWidth = 1f }
             canvas.drawRect(36f, y, 300f, y + 60f, tablePaint)
@@ -194,6 +146,15 @@ object PdfReportGenerator {
                 canvas.drawText(String.format("$%.2f", report.totalCost), 240f, tableY + 10f, boldPaint)
             }
             y += 76f
+        }
+
+        // COMMENTS SECTION
+        val comments = report.technicianComments
+        if (!comments.isNullOrBlank()) {
+            canvas.drawText("COMMENTS", 36f, y, sectionTitlePaint)
+            y += 16f
+            canvas.drawText(comments, 36f, y, bodyPaint)
+            y += 24f
         }
 
         // Footer Disclaimer
