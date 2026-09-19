@@ -72,12 +72,49 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             
-            OutlinedTextField(
-                value = currency,
-                onValueChange = { viewModel.setCurrency(it) },
-                label = { Text("Currency Symbol") },
+            var isCurrencyDropdownExpanded by remember { mutableStateOf(false) }
+            val currencyOptions = remember {
+                listOf("$ USD", "$ CAD", "€ EUR", "£ GBP", "$ AUD", "¥ JPY", "₹ INR", "CHF", "$ NZD", "$ MXN")
+            }
+            val selectedCurrency = when (currency) {
+                "$" -> "$ USD"
+                in currencyOptions -> currency
+                else -> currency.ifBlank { "$ USD" }
+            }
+
+            ExposedDropdownMenuBox(
+                expanded = isCurrencyDropdownExpanded,
+                onExpandedChange = { isCurrencyDropdownExpanded = !isCurrencyDropdownExpanded },
                 modifier = Modifier.fillMaxWidth()
-            )
+            ) {
+                OutlinedTextField(
+                    value = selectedCurrency,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Currency") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isCurrencyDropdownExpanded) },
+                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                )
+
+                ExposedDropdownMenu(
+                    expanded = isCurrencyDropdownExpanded,
+                    onDismissRequest = { isCurrencyDropdownExpanded = false }
+                ) {
+                    currencyOptions.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option) },
+                            onClick = {
+                                viewModel.setCurrency(option)
+                                isCurrencyDropdownExpanded = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        )
+                    }
+                }
+            }
         }
     }
 }
