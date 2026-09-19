@@ -26,6 +26,16 @@ import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.FileProvider
+import coil.compose.AsyncImage
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,18 +45,76 @@ fun CaptureScreen(
     onNavigateToReview: () -> Unit,
     onClose: () -> Unit
 ) {
+    val context = LocalContext.current
     var customerName by remember { mutableStateOf("Miller Residence") }
     var jobTitle by remember { mutableStateOf("Kitchen repair") }
     var typedNotes by remember { mutableStateOf("") }
     var isTypingNotes by remember { mutableStateOf(false) }
 
+    var showPhotoDialog by remember { mutableStateOf(false) }
+    var selectedLabel by remember { mutableStateOf(PhotoLabel.BEFORE) }
+    var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
+
     val currentReport by viewModel.currentReport.collectAsState()
     val mediaItems by viewModel.currentMedia.collectAsState()
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        uri?.let {
+            viewModel.addPhoto(it.toString(), selectedLabel)
+        }
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success: Boolean ->
+        if (success && tempCameraUri != null) {
+            viewModel.addPhoto(tempCameraUri.toString(), selectedLabel)
+        }
+    }
+
+    fun launchCamera() {
+        val imageDir = File(context.cacheDir, "images")
+        if (!imageDir.exists()) imageDir.mkdirs()
+        val file = File(imageDir, "photo_${System.currentTimeMillis()}.jpg")
+        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+        tempCameraUri = uri
+        cameraLauncher.launch(uri)
+    }
+
+    fun launchGallery() {
+        galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
 
     LaunchedEffect(Unit) {
         if (currentReport == null) {
             viewModel.startNewReport(customerName, jobTitle)
         }
+    }
+
+    if (showPhotoDialog) {
+        AlertDialog(
+            onDismissRequest = { showPhotoDialog = false },
+            title = { Text("Add Photo", style = MaterialTheme.typography.titleLarge) },
+            text = { Text("Capture a new photo with your camera or select an existing photo from gallery.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showPhotoDialog = false
+                    launchCamera()
+                }) {
+                    Text("📷 Camera", color = Teal600)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showPhotoDialog = false
+                    launchGallery()
+                }) {
+                    Text("🖼️ Gallery", color = Slate600)
+                }
+            }
+        )
     }
 
     Scaffold(
@@ -148,9 +216,8 @@ fun CaptureScreen(
                     color = Slate900
                 )
                 TextButton(onClick = {
-                    // Demo photo addition
-                    val dummyUri = "android.resource://com.fieldreport.ai/drawable/sample"
-                    viewModel.addPhoto(dummyUri, PhotoLabel.BEFORE)
+                    selectedLabel = PhotoLabel.BEFORE
+                    showPhotoDialog = true
                 }) {
                     Text("+ Add photo", color = Teal600, style = MaterialTheme.typography.labelLarge)
                 }
@@ -162,11 +229,13 @@ fun CaptureScreen(
             if (mediaItems.isEmpty()) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     DummyPhotoCard("BEFORE", Slate100, Slate600) {
-                        viewModel.addPhoto("dummy_before", PhotoLabel.BEFORE)
+                        selectedLabel = PhotoLabel.BEFORE
+                        showPhotoDialog = true
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     DummyPhotoCard("AFTER", Sky100, Sky700) {
-                        viewModel.addPhoto("dummy_after", PhotoLabel.AFTER)
+                        selectedLabel = PhotoLabel.AFTER
+                        showPhotoDialog = true
                     }
                 }
             } else {
@@ -257,8 +326,18 @@ fun PhotoBadgeCard(item: MediaItemEntity, onToggleLabel: () -> Unit) {
             .size(110.dp)
             .background(Slate200, RoundedCornerShape(12.dp))
             .clickable { onToggleLabel() }
-            .padding(8.dp)
     ) {
+        if (!item.localUri.startsWith("dummy_")) {
+            AsyncImage(
+                model = item.localUri,
+                contentDescription = "Photo ${item.label.name}",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Slate200, RoundedCornerShape(12.dp))
+            )
+        }
+
         val (bgColor, textColor) = when (item.label) {
             PhotoLabel.BEFORE -> Slate100 to Slate600
             PhotoLabel.AFTER -> Sky100 to Sky700
@@ -268,7 +347,9 @@ fun PhotoBadgeCard(item: MediaItemEntity, onToggleLabel: () -> Unit) {
         Surface(
             color = bgColor,
             shape = CircleShape,
-            modifier = Modifier.align(Alignment.TopStart)
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(8.dp)
         ) {
             Text(
                 text = item.label.name,
