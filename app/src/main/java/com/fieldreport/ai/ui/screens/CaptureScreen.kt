@@ -95,6 +95,10 @@ fun CaptureScreen(
     var typedNotes by remember { mutableStateOf("") }
     var isTypingNotes by remember { mutableStateOf(false) }
 
+    var laborCostStr by remember { mutableStateOf("") }
+    var partsCostStr by remember { mutableStateOf("") }
+    var totalCostStr by remember { mutableStateOf("") }
+
     var showPhotoDialog by remember { mutableStateOf(false) }
     var selectedLabel by remember { mutableStateOf(PhotoLabel.BEFORE) }
     var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
@@ -102,18 +106,22 @@ fun CaptureScreen(
     val currentReport by viewModel.currentReport.collectAsState()
     val mediaItems by viewModel.currentMedia.collectAsState()
 
-    LaunchedEffect(currentReport) {
+    LaunchedEffect(currentReport?.id) {
         currentReport?.let { report ->
-            if (report.customerName.isNotBlank() && customerName.isEmpty()) {
-                customerName = report.customerName
+            customerName = report.customerName
+            jobTitle = report.jobTitle
+            val notes = when {
+                !report.typedNotes.isNullOrBlank() -> report.typedNotes
+                !report.rawTranscript.isNullOrBlank() -> report.rawTranscript
+                else -> ""
             }
-            if (report.jobTitle.isNotBlank() && jobTitle.isEmpty()) {
-                jobTitle = report.jobTitle
-            }
-            if (report.typedNotes != null && report.typedNotes.isNotBlank() && typedNotes.isEmpty()) {
-                typedNotes = report.typedNotes
+            typedNotes = notes
+            if (notes.isNotBlank()) {
                 isTypingNotes = true
             }
+            laborCostStr = report.laborCost?.toString() ?: ""
+            partsCostStr = report.partsCost?.toString() ?: ""
+            totalCostStr = report.totalCost?.toString() ?: ""
         }
     }
 
@@ -269,6 +277,15 @@ fun CaptureScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
+                    currentReport?.let { report ->
+                        val dateStr = java.text.SimpleDateFormat("MMM d, yyyy • h:mm a", java.util.Locale.getDefault()).format(java.util.Date(report.createdAt))
+                        Text(
+                            text = "Report Date: $dateStr",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = Slate500,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                    }
                     OutlinedTextField(
                         value = customerName,
                         onValueChange = { 
@@ -413,13 +430,14 @@ fun CaptureScreen(
                     shape = RoundedCornerShape(12.dp)
                 )
             } else {
+                val hasAudio = currentReport?.audioLocalUri != null
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onNavigateToRecord() },
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = CardDefaults.outlinedCardBorder().copy(brush = androidx.compose.ui.graphics.SolidColor(Slate200))
+                    colors = CardDefaults.cardColors(containerColor = if (hasAudio) Emerald100.copy(alpha = 0.4f) else Color.White),
+                    border = CardDefaults.outlinedCardBorder().copy(brush = androidx.compose.ui.graphics.SolidColor(if (hasAudio) Emerald700 else Slate200))
                 ) {
                     Row(
                         modifier = Modifier.padding(20.dp),
@@ -428,26 +446,26 @@ fun CaptureScreen(
                         Box(
                             modifier = Modifier
                                 .size(48.dp)
-                                .background(Teal100, CircleShape),
+                                .background(if (hasAudio) Emerald100 else Teal100, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.Mic,
-                                contentDescription = "Record",
-                                tint = Teal600
+                                contentDescription = if (hasAudio) "Voice Note Recorded" else "Record",
+                                tint = if (hasAudio) Emerald700 else Teal600
                             )
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                text = "Record a voice note",
+                                text = if (hasAudio) "Voice note recorded ✓" else "Record a voice note",
                                 style = MaterialTheme.typography.titleLarge,
                                 color = Slate900
                             )
                             Text(
-                                text = "Tap to open voice recorder",
+                                text = if (hasAudio) "Tap to re-record or update voice recording" else "Tap to open voice recorder",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Slate500
+                                color = if (hasAudio) Slate600 else Slate500
                             )
                         }
                     }
@@ -464,18 +482,6 @@ fun CaptureScreen(
             )
 
             Spacer(modifier = Modifier.height(12.dp))
-
-            var laborCostStr by remember { mutableStateOf("") }
-            var partsCostStr by remember { mutableStateOf("") }
-            var totalCostStr by remember { mutableStateOf("") }
-
-            LaunchedEffect(currentReport) {
-                currentReport?.let { report ->
-                    if (report.laborCost != null && laborCostStr.isBlank()) laborCostStr = report.laborCost.toString()
-                    if (report.partsCost != null && partsCostStr.isBlank()) partsCostStr = report.partsCost.toString()
-                    if (report.totalCost != null && totalCostStr.isBlank()) totalCostStr = report.totalCost.toString()
-                }
-            }
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
