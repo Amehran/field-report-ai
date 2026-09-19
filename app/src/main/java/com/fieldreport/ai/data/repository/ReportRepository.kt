@@ -105,7 +105,7 @@ class ReportRepository(private val reportDao: ReportDao) {
             workCompletedJson = workCompleted.joinToString("||"),
             findingsJson = findings.joinToString("||"),
             recommendationsJson = recommendations.joinToString("||"),
-            rawTranscript = notes ?: "Service notes for $job.",
+            rawTranscript = notes ?: "",
             updatedAt = System.currentTimeMillis()
         )
         reportDao.updateReport(updated)

@@ -110,11 +110,7 @@ fun CaptureScreen(
         currentReport?.let { report ->
             customerName = report.customerName
             jobTitle = report.jobTitle
-            val notes = when {
-                !report.typedNotes.isNullOrBlank() -> report.typedNotes
-                !report.rawTranscript.isNullOrBlank() -> report.rawTranscript
-                else -> ""
-            }
+            val notes = report.typedNotes ?: ""
             typedNotes = notes
             if (notes.isNotBlank()) {
                 isTypingNotes = true
