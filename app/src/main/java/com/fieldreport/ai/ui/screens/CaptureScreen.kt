@@ -37,6 +37,11 @@ import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import java.io.File
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CaptureScreen(
@@ -74,13 +79,39 @@ fun CaptureScreen(
         }
     }
 
+    fun startCameraIntent() {
+        try {
+            val imageDir = File(context.cacheDir, "images")
+            if (!imageDir.exists()) imageDir.mkdirs()
+            val file = File(imageDir, "photo_${System.currentTimeMillis()}.jpg")
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+            tempCameraUri = uri
+            cameraLauncher.launch(uri)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "Could not open camera. Opening gallery...", Toast.LENGTH_SHORT).show()
+            galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+    }
+
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            startCameraIntent()
+        } else {
+            Toast.makeText(context, "Camera permission denied. Opening gallery...", Toast.LENGTH_SHORT).show()
+            galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+    }
+
     fun launchCamera() {
-        val imageDir = File(context.cacheDir, "images")
-        if (!imageDir.exists()) imageDir.mkdirs()
-        val file = File(imageDir, "photo_${System.currentTimeMillis()}.jpg")
-        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-        tempCameraUri = uri
-        cameraLauncher.launch(uri)
+        val permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            startCameraIntent()
+        } else {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
     }
 
     fun launchGallery() {
