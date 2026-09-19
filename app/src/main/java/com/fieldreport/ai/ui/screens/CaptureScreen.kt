@@ -327,19 +327,38 @@ fun CaptureScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Input Mode Selector Tabs
+            SingleChoiceSegmentedButtonRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            ) {
+                SegmentedButton(
+                    selected = !isTypingNotes,
+                    onClick = { isTypingNotes = false },
+                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2)
+                ) {
+                    Text("🎙️ Voice Note")
+                }
+                SegmentedButton(
+                    selected = isTypingNotes,
+                    onClick = { isTypingNotes = true },
+                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2)
+                ) {
+                    Text("✏️ Type Notes")
+                }
+            }
+
             if (isTypingNotes) {
                 OutlinedTextField(
                     value = typedNotes,
                     onValueChange = { typedNotes = it },
-                    placeholder = { Text("Type your job notes here...") },
+                    placeholder = { Text("Describe the work completed, findings, and recommendations...") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp),
+                        .height(140.dp),
                     shape = RoundedCornerShape(12.dp)
                 )
-                TextButton(onClick = { isTypingNotes = false }) {
-                    Text("Switch to Voice Note", color = Teal600)
-                }
             } else {
                 Card(
                     modifier = Modifier
@@ -373,10 +392,9 @@ fun CaptureScreen(
                                 color = Slate900
                             )
                             Text(
-                                text = "or type notes instead",
+                                text = "Tap to open voice recorder",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Slate500,
-                                modifier = Modifier.clickable { isTypingNotes = true }
+                                color = Slate500
                             )
                         }
                     }
