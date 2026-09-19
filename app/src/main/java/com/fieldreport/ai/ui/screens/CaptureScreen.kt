@@ -26,21 +26,58 @@ import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import android.Manifest
+import android.app.Activity
+import android.content.ClipData
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import java.io.File
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.widget.Toast
-import androidx.core.content.ContextCompat
+class ExplicitTakePictureContract : ActivityResultContract<Uri, Boolean>() {
+    override fun createIntent(context: Context, input: Uri): Intent {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, input)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            clipData = ClipData.newRawUri("ImageCapture", input)
+        }
+
+        try {
+            val resInfoList = context.packageManager.queryIntentActivities(
+                intent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            )
+            for (resolveInfo in resInfoList) {
+                val packageName = resolveInfo.activityInfo.packageName
+                context.grantUriPermission(
+                    packageName,
+                    input,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return intent
+    }
+
+    override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
+        return resultCode == Activity.RESULT_OK
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +109,7 @@ fun CaptureScreen(
     }
 
     val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture()
+        contract = ExplicitTakePictureContract()
     ) { success: Boolean ->
         if (success && tempCameraUri != null) {
             viewModel.addPhoto(tempCameraUri.toString(), selectedLabel)
@@ -87,7 +124,7 @@ fun CaptureScreen(
             val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
             tempCameraUri = uri
             cameraLauncher.launch(uri)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             e.printStackTrace()
             Toast.makeText(context, "Could not open camera. Opening gallery...", Toast.LENGTH_SHORT).show()
             galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
