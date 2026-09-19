@@ -15,12 +15,15 @@ import com.fieldreport.ai.ui.screens.*
 import com.fieldreport.ai.ui.theme.FieldReportAITheme
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 
+import android.content.pm.ActivityInfo
+
 class MainActivity : ComponentActivity() {
 
     private val reportViewModel: ReportViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContent {
             FieldReportAITheme {
                 Surface(
