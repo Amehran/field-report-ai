@@ -19,6 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fieldreport.ai.ui.theme.*
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
@@ -39,13 +42,20 @@ fun LoginScreen(
         modifier = Modifier.fillMaxSize(),
         color = Slate50
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.Center
         ) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 540.dp)
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
             // Brand Logo Circle
             Box(
                 modifier = Modifier
@@ -157,4 +167,5 @@ fun LoginScreen(
             }
         }
     }
+}
 }

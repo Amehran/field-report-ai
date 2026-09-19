@@ -60,7 +60,7 @@ object PdfReportGenerator {
             isAntiAlias = true
         }
 
-        var y = 40f
+        var y: Float
 
         // Top Header Banner
         canvas.drawRect(0f, 0f, 612f, 70f, primaryPaint)
@@ -98,10 +98,11 @@ object PdfReportGenerator {
         y += 20f
 
         // Customer Summary
-        if (!report.customerSummary.isNullOrBlank()) {
+        val summary = report.customerSummary
+        if (!summary.isNullOrBlank()) {
             canvas.drawText("SUMMARY", 36f, y, sectionTitlePaint)
             y += 16f
-            canvas.drawText(report.customerSummary ?: "", 36f, y, bodyPaint)
+            canvas.drawText(summary, 36f, y, bodyPaint)
             y += 24f
         }
 

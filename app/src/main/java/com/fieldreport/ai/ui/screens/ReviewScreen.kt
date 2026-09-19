@@ -96,7 +96,8 @@ fun ReviewScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     Button(
                         onClick = {
@@ -104,6 +105,7 @@ fun ReviewScreen(
                             onApproveSuccess()
                         },
                         modifier = Modifier
+                            .widthIn(max = 700.dp)
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
@@ -120,13 +122,19 @@ fun ReviewScreen(
         },
         containerColor = Slate50
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.TopCenter
         ) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 700.dp)
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
             // Amber AI Warning Banner
             Surface(
                 color = Amber100,
@@ -180,6 +188,7 @@ fun ReviewScreen(
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
+}
 }
 
 @Composable

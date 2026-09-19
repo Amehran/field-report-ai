@@ -24,6 +24,9 @@ import com.fieldreport.ai.data.model.PhotoLabel
 import com.fieldreport.ai.ui.theme.*
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CaptureScreen(
@@ -66,7 +69,8 @@ fun CaptureScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     Button(
                         onClick = {
@@ -74,6 +78,7 @@ fun CaptureScreen(
                             onNavigateToReview()
                         },
                         modifier = Modifier
+                            .widthIn(max = 700.dp)
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
@@ -90,12 +95,19 @@ fun CaptureScreen(
         },
         containerColor = Slate50
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.TopCenter
         ) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 700.dp)
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
             // Customer & Job Header Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -235,6 +247,7 @@ fun CaptureScreen(
             }
         }
     }
+}
 }
 
 @Composable

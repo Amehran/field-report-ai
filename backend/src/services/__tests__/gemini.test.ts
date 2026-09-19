@@ -56,6 +56,32 @@ describe('Gemini Service', () => {
     expect(callArgs.contents[2].fileData.mimeType).toBe('audio/mp4');
   });
 
+  it('should format typedNotes and handle png, mp3, mp4 media uris correctly', async () => {
+    const mockDraft = {
+      workCompletedJson: "Fixed leak",
+      findingsJson: "Pipe corroded",
+      recommendationsJson: "Replace pipe"
+    };
+
+    mockGenerateContent.mockResolvedValue({
+      text: JSON.stringify(mockDraft)
+    });
+
+    const result = await generateReportDraft({
+      jobTitle: "Plumbing Repair",
+      customerName: "Bob Smith",
+      typedNotes: "Found corrosion on pipe",
+      mediaUris: ["gs://bucket/photo.png", "gs://bucket/audio.mp3", "gs://bucket/video.mp4"]
+    });
+
+    expect(result).toEqual(mockDraft);
+    const callArgs = mockGenerateContent.mock.calls[0][0];
+    expect(callArgs.contents[0].text).toContain("Technician Typed Notes: Found corrosion on pipe");
+    expect(callArgs.contents[1].fileData.mimeType).toBe('image/png');
+    expect(callArgs.contents[2].fileData.mimeType).toBe('audio/mp3');
+    expect(callArgs.contents[3].fileData.mimeType).toBe('video/mp4');
+  });
+
   it('should throw an error if Gemini returns an empty response', async () => {
     mockGenerateContent.mockResolvedValue({ text: null });
 

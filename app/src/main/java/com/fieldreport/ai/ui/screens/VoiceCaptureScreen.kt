@@ -22,6 +22,9 @@ import androidx.compose.ui.unit.sp
 import com.fieldreport.ai.ui.theme.*
 import kotlinx.coroutines.delay
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VoiceCaptureScreen(
@@ -55,14 +58,21 @@ fun VoiceCaptureScreen(
         },
         containerColor = Slate50
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.Center
         ) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 640.dp)
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
             Spacer(modifier = Modifier.height(20.dp))
 
             // Central Mic Ring & Waveform Visualizer
@@ -162,4 +172,5 @@ fun VoiceCaptureScreen(
             }
         }
     }
+}
 }

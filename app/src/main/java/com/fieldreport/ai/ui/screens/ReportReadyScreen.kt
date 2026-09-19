@@ -63,50 +63,62 @@ fun ReportReadyScreen(
                 color = Color.White,
                 shadowElevation = 8.dp
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Button(
-                        onClick = {
-                            viewModel.shareReportPdf(context)
-                        },
+                    Column(
                         modifier = Modifier
+                            .widthIn(max = 700.dp)
                             .fillMaxWidth()
-                            .height(56.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Charcoal900)
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "Share PDF",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = Color.White
-                        )
-                    }
+                        Button(
+                            onClick = {
+                                viewModel.shareReportPdf(context)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Charcoal900)
+                        ) {
+                            Text(
+                                text = "Share PDF",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = Color.White
+                            )
+                        }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                    TextButton(onClick = {
-                        val summaryText = report?.customerSummary ?: "Job completed at ${report?.customerName}."
-                        clipboardManager.setText(AnnotatedString(summaryText))
-                        Toast.makeText(context, "Summary copied to clipboard!", Toast.LENGTH_SHORT).show()
-                    }) {
-                        Text("Copy customer summary", color = Teal600, style = MaterialTheme.typography.labelLarge)
+                        TextButton(onClick = {
+                            val summaryText = report?.customerSummary ?: "Job completed at ${report?.customerName}."
+                            clipboardManager.setText(AnnotatedString(summaryText))
+                            Toast.makeText(context, "Summary copied to clipboard!", Toast.LENGTH_SHORT).show()
+                        }) {
+                            Text("Copy customer summary", color = Teal600, style = MaterialTheme.typography.labelLarge)
+                        }
                     }
                 }
             }
         },
         containerColor = Slate50
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.TopCenter
         ) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 700.dp)
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
             // PDF Preview Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -176,4 +188,5 @@ fun ReportReadyScreen(
             }
         }
     }
+}
 }
