@@ -152,12 +152,17 @@ fun VoiceCaptureScreen(
 
                 Spacer(modifier = Modifier.height(36.dp))
 
+                val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+
                 // Large Red Stop Button
                 Box(
                     modifier = Modifier
                         .size(64.dp)
                         .background(Rose600, RoundedCornerShape(16.dp))
-                        .clickable { onStopRecording() },
+                        .clickable {
+                            haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                            onStopRecording()
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(

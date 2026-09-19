@@ -93,6 +93,8 @@ fun ReviewScreen(
                 color = Color.White,
                 shadowElevation = 8.dp
             ) {
+                val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -101,6 +103,7 @@ fun ReviewScreen(
                 ) {
                     Button(
                         onClick = {
+                            haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
                             viewModel.approveReport()
                             onApproveSuccess()
                         },

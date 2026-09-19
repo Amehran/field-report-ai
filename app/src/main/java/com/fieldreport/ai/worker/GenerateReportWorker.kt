@@ -40,8 +40,12 @@ class GenerateReportWorker(
             for (media in mediaItems) {
                 if (media.isUploaded) continue
                 
-                val fileUri = Uri.parse(media.localUri)
-                // TODO: Apply Image/Audio compression here before upload
+                val rawUri = Uri.parse(media.localUri)
+                val fileUri = if (media.localUri.startsWith("content://") || media.localUri.startsWith("file://")) {
+                    compressImageUri(applicationContext, rawUri)
+                } else {
+                    rawUri
+                }
                 
                 val storageRef = storage.reference.child("users/${user.uid}/reports/$reportId/media/${media.id}")
                 storageRef.putFile(fileUri).await()
@@ -82,6 +86,49 @@ class GenerateReportWorker(
         } catch (e: Exception) {
             e.printStackTrace()
             return Result.retry()
+        }
+    }
+
+    private fun compressImageUri(context: Context, originalUri: Uri): Uri {
+        return try {
+            val inputStream = context.contentResolver.openInputStream(originalUri) ?: return originalUri
+            val options = android.graphics.BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            android.graphics.BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream.close()
+
+            val maxDimension = 1600
+            var sampleSize = 1
+            if (options.outHeight > maxDimension || options.outWidth > maxDimension) {
+                val halfHeight = options.outHeight / 2
+                val halfWidth = options.outWidth / 2
+                while (halfHeight / sampleSize >= maxDimension || halfWidth / sampleSize >= maxDimension) {
+                    sampleSize *= 2
+                }
+            }
+
+            val decodeOptions = android.graphics.BitmapFactory.Options().apply {
+                inSampleSize = sampleSize
+            }
+            val streamForDecode = context.contentResolver.openInputStream(originalUri) ?: return originalUri
+            val bitmap = android.graphics.BitmapFactory.decodeStream(streamForDecode, null, decodeOptions)
+            streamForDecode.close()
+
+            if (bitmap == null) return originalUri
+
+            val compressedDir = File(context.cacheDir, "compressed_media").apply { if (!exists()) mkdirs() }
+            val compressedFile = File(compressedDir, "comp_${System.currentTimeMillis()}.jpg")
+            val outStream = java.io.FileOutputStream(compressedFile)
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 80, outStream)
+            outStream.flush()
+            outStream.close()
+            bitmap.recycle()
+
+            Uri.fromFile(compressedFile)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            originalUri
         }
     }
 }
