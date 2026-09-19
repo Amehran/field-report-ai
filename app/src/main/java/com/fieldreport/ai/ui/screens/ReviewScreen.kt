@@ -46,9 +46,20 @@ fun ReviewScreen(
     val report by viewModel.currentReport.collectAsState()
     val mediaItems by viewModel.currentMedia.collectAsState()
     val currencySymbol by viewModel.currency.collectAsState(initial = "$ USD")
+    val settingsTechName by viewModel.technicianName.collectAsState(initial = "")
 
-    var technicianName by remember(report) {
-        mutableStateOf(report?.technicianName ?: "Lead Service Technician")
+    val initialTechName = remember(report, settingsTechName) {
+        report?.technicianName?.takeIf { it.isNotBlank() } ?: settingsTechName
+    }
+
+    var technicianName by remember(report, initialTechName) {
+        mutableStateOf(initialTechName)
+    }
+
+    LaunchedEffect(initialTechName) {
+        if (technicianName.isBlank() && initialTechName.isNotBlank()) {
+            technicianName = initialTechName
+        }
     }
 
     var issueDescription by remember(report) {

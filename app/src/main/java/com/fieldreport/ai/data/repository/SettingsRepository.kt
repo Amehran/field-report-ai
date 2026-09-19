@@ -17,6 +17,7 @@ class SettingsRepository(private val context: Context) {
     private val PREF_AI_AGENT_MODE = stringPreferencesKey("ai_agent_mode")
     private val PREF_BUSINESS_NAME = stringPreferencesKey("business_name")
     private val PREF_CURRENCY = stringPreferencesKey("currency")
+    private val PREF_TECHNICIAN_NAME = stringPreferencesKey("technician_name")
 
     val aiAgentModeFlow: Flow<AiAgentMode> = context.dataStore.data.map { preferences ->
         val modeStr = preferences[PREF_AI_AGENT_MODE] ?: AiAgentMode.CLOUD.name
@@ -35,6 +36,10 @@ class SettingsRepository(private val context: Context) {
         preferences[PREF_CURRENCY] ?: "$"
     }
 
+    val technicianNameFlow: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[PREF_TECHNICIAN_NAME] ?: ""
+    }
+
     suspend fun setAiAgentMode(mode: AiAgentMode) {
         context.dataStore.edit { preferences ->
             preferences[PREF_AI_AGENT_MODE] = mode.name
@@ -50,6 +55,12 @@ class SettingsRepository(private val context: Context) {
     suspend fun setCurrency(currency: String) {
         context.dataStore.edit { preferences ->
             preferences[PREF_CURRENCY] = currency
+        }
+    }
+
+    suspend fun setTechnicianName(name: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PREF_TECHNICIAN_NAME] = name
         }
     }
 }

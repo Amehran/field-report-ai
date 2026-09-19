@@ -49,6 +49,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     val aiAgentMode = settingsRepository.aiAgentModeFlow
     val businessName = settingsRepository.businessNameFlow
     val currency = settingsRepository.currencyFlow
+    val technicianName = settingsRepository.technicianNameFlow
 
     fun setAiAgentMode(mode: com.fieldreport.ai.data.model.AiAgentMode) {
         viewModelScope.launch {
@@ -65,6 +66,12 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     fun setCurrency(symbol: String) {
         viewModelScope.launch {
             settingsRepository.setCurrency(symbol)
+        }
+    }
+
+    fun setTechnicianName(name: String) {
+        viewModelScope.launch {
+            settingsRepository.setTechnicianName(name)
         }
     }
 

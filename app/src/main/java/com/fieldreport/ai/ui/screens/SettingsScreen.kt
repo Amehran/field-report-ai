@@ -21,6 +21,7 @@ fun SettingsScreen(
 ) {
     val aiAgentMode by viewModel.aiAgentMode.collectAsState(initial = AiAgentMode.CLOUD)
     val businessName by viewModel.businessName.collectAsState(initial = "")
+    val settingsTechnicianName by viewModel.technicianName.collectAsState(initial = "")
     val currency by viewModel.currency.collectAsState(initial = "$")
 
     Scaffold(
@@ -64,7 +65,14 @@ fun SettingsScreen(
             }
             
             Text("Business Information", style = MaterialTheme.typography.titleMedium)
-            
+
+            OutlinedTextField(
+                value = settingsTechnicianName,
+                onValueChange = { viewModel.setTechnicianName(it) },
+                label = { Text("Technician Name") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
             OutlinedTextField(
                 value = businessName,
                 onValueChange = { viewModel.setBusinessName(it) },
