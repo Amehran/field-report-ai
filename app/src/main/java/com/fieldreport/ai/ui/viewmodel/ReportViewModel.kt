@@ -116,20 +116,52 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun generateReportDraft(typedNotes: String?) {
+    fun updateReportHeader(customerName: String, jobTitle: String) {
+        val current = currentReport.value ?: return
+        val updated = current.copy(
+            customerName = customerName.ifBlank { "Miller Residence" },
+            jobTitle = jobTitle.ifBlank { "General repair" },
+            updatedAt = System.currentTimeMillis()
+        )
+        viewModelScope.launch {
+            repository.updateReport(updated)
+        }
+    }
+
+    fun generateReportDraft(customerName: String, jobTitle: String, typedNotes: String?) {
         val reportId = _currentReportId.value ?: return
         
         viewModelScope.launch {
-            val report = currentReport.value ?: return@launch
-            
-            // Set state to generating
-            repository.updateReport(report.copy(status = ReportStatus.GENERATING, updatedAt = System.currentTimeMillis()))
+            val report = currentReport.value
+            val finalCustomerName = customerName.ifBlank { report?.customerName ?: "Miller Residence" }
+            val finalJobTitle = jobTitle.ifBlank { report?.jobTitle ?: "General repair" }
+
+            // Ensure header is updated in DB prior to draft generation
+            if (report != null) {
+                repository.updateReport(
+                    report.copy(
+                        customerName = finalCustomerName,
+                        jobTitle = finalJobTitle,
+                        status = ReportStatus.GENERATING,
+                        updatedAt = System.currentTimeMillis()
+                    )
+                )
+            }
             
             try {
                 val mediaItems = currentMedia.value
                 val auth = FirebaseAuth.getInstance()
-                val user = auth.currentUser
+                var user = auth.currentUser
                 
+                if (user == null) {
+                    try {
+                        val authResult = auth.signInAnonymously().await()
+                        user = authResult.user
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
                 if (user == null) {
                     repository.generateLocalMockDraft(reportId, typedNotes)
                     return@launch
@@ -138,9 +170,14 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                 val storage = FirebaseStorage.getInstance()
                 val storageMediaUris = mutableListOf<String>()
                 
-                // Upload Photo Media safely (only valid file/content URIs)
+                // Helper to match local content/file URIs
+                fun isLocalMediaUri(uriStr: String): Boolean {
+                    return uriStr.startsWith("content://") || uriStr.startsWith("file://") || uriStr.startsWith("file:/")
+                }
+
+                // Upload Photo Media safely
                 for (media in mediaItems) {
-                    if (media.localUri.startsWith("content://") || media.localUri.startsWith("file://")) {
+                    if (isLocalMediaUri(media.localUri)) {
                         if (!media.isUploaded) {
                             try {
                                 val fileUri = Uri.parse(media.localUri)
@@ -156,7 +193,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                 }
                 
                 // Upload Audio safely
-                if (report.audioLocalUri != null && (report.audioLocalUri.startsWith("content://") || report.audioLocalUri.startsWith("file://"))) {
+                if (report?.audioLocalUri != null && isLocalMediaUri(report.audioLocalUri)) {
                     if (report.audioStoragePath == null) {
                         try {
                             val audioUri = Uri.parse(report.audioLocalUri)
@@ -181,8 +218,8 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                         .build()
                         
                     val jsonBody = JSONObject().apply {
-                        put("jobTitle", report.jobTitle)
-                        put("customerName", report.customerName)
+                        put("jobTitle", finalJobTitle)
+                        put("customerName", finalCustomerName)
                         if (typedNotes != null) put("typedNotes", typedNotes)
                         put("mediaUris", JSONArray(storageMediaUris))
                     }
@@ -202,15 +239,20 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                         val responseBody = response.body?.string()
                         if (!responseBody.isNullOrBlank()) {
                             val draftJson = JSONObject(responseBody)
-                            val newReport = report.copy(
-                                workCompletedJson = draftJson.optString("workCompletedJson", ""),
-                                findingsJson = draftJson.optString("findingsJson", ""),
-                                recommendationsJson = draftJson.optString("recommendationsJson", ""),
-                                status = ReportStatus.NEEDS_REVIEW,
-                                updatedAt = System.currentTimeMillis()
-                            )
-                            repository.updateReport(newReport)
-                            return@launch
+                            val latestReport = currentReport.value ?: report
+                            if (latestReport != null) {
+                                val newReport = latestReport.copy(
+                                    customerName = finalCustomerName,
+                                    jobTitle = finalJobTitle,
+                                    workCompletedJson = draftJson.optString("workCompletedJson", ""),
+                                    findingsJson = draftJson.optString("findingsJson", ""),
+                                    recommendationsJson = draftJson.optString("recommendationsJson", ""),
+                                    status = ReportStatus.NEEDS_REVIEW,
+                                    updatedAt = System.currentTimeMillis()
+                                )
+                                repository.updateReport(newReport)
+                                return@launch
+                            }
                         }
                     }
                 }

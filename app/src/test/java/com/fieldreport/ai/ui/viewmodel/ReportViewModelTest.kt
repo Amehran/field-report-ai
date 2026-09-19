@@ -211,4 +211,34 @@ class ReportViewModelTest {
             })
         }
     }
+
+    @Test
+    fun `updateReportHeader updates customerName and jobTitle on current report`() = runTest {
+        val report = ReportEntity(
+            id = "rep-1",
+            userId = "user",
+            status = ReportStatus.DRAFT,
+            customerName = "Old Customer",
+            jobTitle = "Old Repair"
+        )
+        val reportFlow = MutableStateFlow<ReportEntity?>(report)
+        every { anyConstructed<ReportRepository>().getReportById("rep-1") } returns reportFlow
+        coEvery { anyConstructed<ReportRepository>().updateReport(any()) } just Runs
+
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.currentReport.collect()
+        }
+
+        viewModel.setCurrentReportId("rep-1")
+        advanceUntilIdle()
+
+        viewModel.updateReportHeader("New Customer", "Thermostat Repair")
+        advanceUntilIdle()
+
+        coVerify {
+            anyConstructed<ReportRepository>().updateReport(match {
+                it.customerName == "New Customer" && it.jobTitle == "Thermostat Repair"
+            })
+        }
+    }
 }

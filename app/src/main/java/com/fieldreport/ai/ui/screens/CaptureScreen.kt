@@ -100,6 +100,17 @@ fun CaptureScreen(
     val currentReport by viewModel.currentReport.collectAsState()
     val mediaItems by viewModel.currentMedia.collectAsState()
 
+    LaunchedEffect(currentReport) {
+        currentReport?.let { report ->
+            if (report.customerName.isNotBlank() && report.customerName != customerName) {
+                customerName = report.customerName
+            }
+            if (report.jobTitle.isNotBlank() && report.jobTitle != jobTitle) {
+                jobTitle = report.jobTitle
+            }
+        }
+    }
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
@@ -210,7 +221,7 @@ fun CaptureScreen(
                 ) {
                     Button(
                         onClick = {
-                            viewModel.generateReportDraft(typedNotes.ifBlank { null })
+                            viewModel.generateReportDraft(customerName, jobTitle, typedNotes.ifBlank { null })
                             onNavigateToReview()
                         },
                         modifier = Modifier
@@ -254,7 +265,10 @@ fun CaptureScreen(
                 Column(modifier = Modifier.padding(16.dp)) {
                     OutlinedTextField(
                         value = customerName,
-                        onValueChange = { customerName = it },
+                        onValueChange = { 
+                            customerName = it 
+                            viewModel.updateReportHeader(it, jobTitle)
+                        },
                         label = { Text("Customer / Job Name") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp)
@@ -262,7 +276,10 @@ fun CaptureScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         value = jobTitle,
-                        onValueChange = { jobTitle = it },
+                        onValueChange = { 
+                            jobTitle = it
+                            viewModel.updateReportHeader(customerName, it)
+                        },
                         label = { Text("Work Description / Trade") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp)
