@@ -200,14 +200,6 @@ fun ReviewScreen(
                     elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "HEADER INFORMATION",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = Teal600
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
                         OutlinedTextField(
                             value = technicianName,
                             onValueChange = { technicianName = it },
