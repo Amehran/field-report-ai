@@ -35,12 +35,38 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.UUID
 
+import com.fieldreport.ai.data.repository.SettingsRepository
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class ReportViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: ReportRepository = ReportRepository(
         AppDatabase.getDatabase(application).reportDao()
     )
+
+    private val settingsRepository: SettingsRepository = SettingsRepository(application)
+
+    val aiAgentMode = settingsRepository.aiAgentModeFlow
+    val businessName = settingsRepository.businessNameFlow
+    val currency = settingsRepository.currencyFlow
+
+    fun setAiAgentMode(mode: com.fieldreport.ai.data.model.AiAgentMode) {
+        viewModelScope.launch {
+            settingsRepository.setAiAgentMode(mode)
+        }
+    }
+
+    fun setBusinessName(name: String) {
+        viewModelScope.launch {
+            settingsRepository.setBusinessName(name)
+        }
+    }
+
+    fun setCurrency(symbol: String) {
+        viewModelScope.launch {
+            settingsRepository.setCurrency(symbol)
+        }
+    }
 
     val allReports: StateFlow<List<ReportEntity>> = repository.allReports.stateIn(
         viewModelScope,
@@ -121,6 +147,19 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         val updated = current.copy(
             customerName = customerName.ifBlank { "Miller Residence" },
             jobTitle = jobTitle.ifBlank { "General repair" },
+            updatedAt = System.currentTimeMillis()
+        )
+        viewModelScope.launch {
+            repository.updateReport(updated)
+        }
+    }
+
+    fun updateCosts(laborCost: Double?, partsCost: Double?, totalCost: Double?) {
+        val current = currentReport.value ?: return
+        val updated = current.copy(
+            laborCost = laborCost,
+            partsCost = partsCost,
+            totalCost = totalCost,
             updatedAt = System.currentTimeMillis()
         )
         viewModelScope.launch {

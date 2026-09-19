@@ -417,6 +417,80 @@ fun CaptureScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Pricing Section
+            Text(
+                text = "Pricing (Optional)",
+                style = MaterialTheme.typography.titleLarge,
+                color = Slate900
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            var laborCostStr by remember { mutableStateOf("") }
+            var partsCostStr by remember { mutableStateOf("") }
+            var totalCostStr by remember { mutableStateOf("") }
+
+            LaunchedEffect(currentReport) {
+                currentReport?.let { report ->
+                    if (report.laborCost != null && laborCostStr.isBlank()) laborCostStr = report.laborCost.toString()
+                    if (report.partsCost != null && partsCostStr.isBlank()) partsCostStr = report.partsCost.toString()
+                    if (report.totalCost != null && totalCostStr.isBlank()) totalCostStr = report.totalCost.toString()
+                }
+            }
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = laborCostStr,
+                            onValueChange = { 
+                                laborCostStr = it 
+                                viewModel.updateCosts(laborCostStr.toDoubleOrNull(), partsCostStr.toDoubleOrNull(), totalCostStr.toDoubleOrNull())
+                            },
+                            label = { Text("Labor Cost") },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(8.dp),
+                            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number)
+                        )
+                        OutlinedTextField(
+                            value = partsCostStr,
+                            onValueChange = { 
+                                partsCostStr = it 
+                                viewModel.updateCosts(laborCostStr.toDoubleOrNull(), partsCostStr.toDoubleOrNull(), totalCostStr.toDoubleOrNull())
+                            },
+                            label = { Text("Parts Cost") },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(8.dp),
+                            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = totalCostStr,
+                        onValueChange = { 
+                            totalCostStr = it 
+                            viewModel.updateCosts(laborCostStr.toDoubleOrNull(), partsCostStr.toDoubleOrNull(), totalCostStr.toDoubleOrNull())
+                        },
+                        label = { Text("Total Cost") },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number)
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }
