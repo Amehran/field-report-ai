@@ -106,8 +106,6 @@ object PdfReportGenerator {
         // SERVICE SECTION (Work Done & Costs)
         canvas.drawText("SERVICE", 36f, y, sectionTitlePaint)
         y += 16f
-        canvas.drawText("What Work Done:", 36f, y, Paint(bodyPaint).apply { typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) })
-        y += 14f
         val workDoneStr = report.resolutionStepsJson?.replace("||", "\n• ").orEmpty().ifBlank { report.workCompletedJson?.replace("||", "\n• ").orEmpty().ifBlank { report.typedNotes.orEmpty().ifBlank { report.rawTranscript.orEmpty().ifBlank { "Executed primary repair and testing procedures." } } } }
         canvas.drawText(workDoneStr, 36f, y, bodyPaint)
         y += 24f
