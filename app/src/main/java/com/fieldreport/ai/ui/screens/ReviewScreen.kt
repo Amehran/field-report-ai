@@ -64,21 +64,19 @@ fun ReviewScreen(
     }
 
     var issueDescription by remember(report?.id) {
-        mutableStateOf(
-            report?.initialStatus?.takeIf { it.isNotBlank() }
-                ?: report?.findingsJson?.replace("||", "\n• ")?.takeIf { it.isNotBlank() }
-                ?: "Primary issue identified during initial inspection."
-        )
+        val raw = report?.initialStatus?.takeIf { it.isNotBlank() }
+            ?: report?.findingsJson?.takeIf { it.isNotBlank() }
+            ?: "Primary issue identified during initial inspection."
+        mutableStateOf(raw.replace("||", "\n").replace("• ", "").replace("•", ""))
     }
 
     var workDoneText by remember(report?.id) {
-        mutableStateOf(
-            report?.resolutionStepsJson?.replace("||", "\n• ")?.takeIf { it.isNotBlank() }
-                ?: report?.workCompletedJson?.replace("||", "\n• ")?.takeIf { it.isNotBlank() }
-                ?: report?.typedNotes?.takeIf { it.isNotBlank() }
-                ?: report?.rawTranscript?.takeIf { it.isNotBlank() }
-                ?: "Executed primary repair, maintenance, and testing procedures."
-        )
+        val raw = report?.resolutionStepsJson?.takeIf { it.isNotBlank() }
+            ?: report?.workCompletedJson?.takeIf { it.isNotBlank() }
+            ?: report?.typedNotes?.takeIf { it.isNotBlank() }
+            ?: report?.rawTranscript?.takeIf { it.isNotBlank() }
+            ?: "Executed primary repair, maintenance, and testing procedures."
+        mutableStateOf(raw.replace("||", "\n").replace("• ", "").replace("•", ""))
     }
 
     var technicianComments by remember(report?.id) {

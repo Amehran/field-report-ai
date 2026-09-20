@@ -100,14 +100,16 @@ object PdfReportGenerator {
         // ISSUE SECTION
         canvas.drawText("ISSUE:", 36f, y, sectionTitlePaint)
         y += 16f
-        val issueStr = report.initialStatus.orEmpty().ifBlank { report.findingsJson?.replace("||", "\n• ").orEmpty().ifBlank { "Primary issue identified during initial inspection." } }
+        val rawIssue = report.initialStatus.orEmpty().ifBlank { report.findingsJson.orEmpty().ifBlank { "Primary issue identified during initial inspection." } }
+        val issueStr = rawIssue.replace("||", "\n").replace("• ", "").replace("•", "")
         y = drawWrappedText(canvas, issueStr, 36f, y, 540f, bodyPaint, lineSpacing = 4f)
         y += 12f
 
         // SERVICE SECTION (Work Done & Costs)
         canvas.drawText("SERVICE:", 36f, y, sectionTitlePaint)
         y += 16f
-        val workDoneStr = report.resolutionStepsJson?.replace("||", "\n• ").orEmpty().ifBlank { report.workCompletedJson?.replace("||", "\n• ").orEmpty().ifBlank { report.typedNotes.orEmpty().ifBlank { report.rawTranscript.orEmpty().ifBlank { "Executed primary repair and testing procedures." } } } }
+        val rawWorkDone = report.resolutionStepsJson.orEmpty().ifBlank { report.workCompletedJson.orEmpty().ifBlank { report.typedNotes.orEmpty().ifBlank { report.rawTranscript.orEmpty().ifBlank { "Executed primary repair and testing procedures." } } } }
+        val workDoneStr = rawWorkDone.replace("||", "\n").replace("• ", "").replace("•", "")
         y = drawWrappedText(canvas, workDoneStr, 36f, y, 540f, bodyPaint, lineSpacing = 4f)
         y += 12f
 
