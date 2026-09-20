@@ -83,14 +83,8 @@ object PdfReportGenerator {
 
         y = 95f
 
-        // Technician & Customer Header
-        val techName = report.technicianName.orEmpty().ifBlank { "Lead Service Technician" }
-        canvas.drawText("Technician: $techName", 36f, y, subtitlePaint)
-        y += 16f
+        // Customer & Job Header
         canvas.drawText("${report.customerName} • ${report.jobTitle}", 36f, y, titlePaint)
-        y += 16f
-        val fullDateStr = SimpleDateFormat("MMM dd, yyyy • h:mm a", Locale.US).format(Date(report.createdAt))
-        canvas.drawText("Date: $fullDateStr", 36f, y, subtitlePaint)
         y += 20f
 
         // Divider
