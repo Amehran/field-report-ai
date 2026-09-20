@@ -85,8 +85,9 @@ object PdfReportGenerator {
         y = 95f
 
         // Customer & Job Header
-        canvas.drawText("${report.customerName}: ${report.jobTitle}", 36f, y, titlePaint)
-        y += 20f
+        val customerJobTitle = "${report.customerName}: ${report.jobTitle}"
+        y = drawWrappedText(canvas, customerJobTitle, 36f, y, 540f, titlePaint, lineSpacing = 4f)
+        y += 8f
 
         // Divider
         val dividerPaint = Paint().apply {
@@ -100,15 +101,15 @@ object PdfReportGenerator {
         canvas.drawText("ISSUE:", 36f, y, sectionTitlePaint)
         y += 16f
         val issueStr = report.initialStatus.orEmpty().ifBlank { report.findingsJson?.replace("||", "\n• ").orEmpty().ifBlank { "Primary issue identified during initial inspection." } }
-        canvas.drawText(issueStr, 36f, y, bodyPaint)
-        y += 24f
+        y = drawWrappedText(canvas, issueStr, 36f, y, 540f, bodyPaint, lineSpacing = 4f)
+        y += 12f
 
         // SERVICE SECTION (Work Done & Costs)
         canvas.drawText("SERVICE:", 36f, y, sectionTitlePaint)
         y += 16f
         val workDoneStr = report.resolutionStepsJson?.replace("||", "\n• ").orEmpty().ifBlank { report.workCompletedJson?.replace("||", "\n• ").orEmpty().ifBlank { report.typedNotes.orEmpty().ifBlank { report.rawTranscript.orEmpty().ifBlank { "Executed primary repair and testing procedures." } } } }
-        canvas.drawText(workDoneStr, 36f, y, bodyPaint)
-        y += 24f
+        y = drawWrappedText(canvas, workDoneStr, 36f, y, 540f, bodyPaint, lineSpacing = 4f)
+        y += 12f
 
         // Pricing Block
         val hasPricing = report.laborCost != null || report.partsCost != null || report.totalCost != null
@@ -146,14 +147,22 @@ object PdfReportGenerator {
         if (!comments.isNullOrBlank()) {
             canvas.drawText("COMMENTS:", 36f, y, sectionTitlePaint)
             y += 16f
-            canvas.drawText(comments, 36f, y, bodyPaint)
-            y += 24f
+            y = drawWrappedText(canvas, comments, 36f, y, 540f, bodyPaint, lineSpacing = 4f)
+            y += 12f
         }
 
         // Footer Disclaimer
         val footerY = 760f
         canvas.drawLine(36f, footerY - 12f, 576f, footerY - 12f, dividerPaint)
-        canvas.drawText("This report is a summary prepared by the service professional and should be reviewed for accuracy before relying on it.", 36f, footerY, disclaimerPaint)
+        drawWrappedText(
+            canvas = canvas,
+            text = "This report is a summary prepared by the service professional and should be reviewed for accuracy before relying on it.",
+            x = 36f,
+            startY = footerY,
+            maxWidth = 540f,
+            paint = disclaimerPaint,
+            lineSpacing = 3f
+        )
 
         pdfDocument.finishPage(page)
 
@@ -168,5 +177,46 @@ object PdfReportGenerator {
         pdfDocument.close()
 
         return pdfFile
+    }
+
+    private fun drawWrappedText(
+        canvas: Canvas,
+        text: String,
+        x: Float,
+        startY: Float,
+        maxWidth: Float,
+        paint: Paint,
+        lineSpacing: Float = 4f
+    ): Float {
+        var y = startY
+        val lineHeight = paint.textSize + lineSpacing
+        val paragraphs = text.split("\n")
+
+        for (paragraph in paragraphs) {
+            if (paragraph.isEmpty()) {
+                y += lineHeight
+                continue
+            }
+            val words = paragraph.split(" ")
+            var currentLine = ""
+
+            for (word in words) {
+                val testLine = if (currentLine.isEmpty()) word else "$currentLine $word"
+                if (paint.measureText(testLine) <= maxWidth) {
+                    currentLine = testLine
+                } else {
+                    if (currentLine.isNotEmpty()) {
+                        canvas.drawText(currentLine, x, y, paint)
+                        y += lineHeight
+                    }
+                    currentLine = word
+                }
+            }
+            if (currentLine.isNotEmpty()) {
+                canvas.drawText(currentLine, x, y, paint)
+                y += lineHeight
+            }
+        }
+        return y
     }
 }
