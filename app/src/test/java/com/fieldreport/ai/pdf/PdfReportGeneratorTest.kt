@@ -59,9 +59,9 @@ class PdfReportGeneratorTest {
         val file = PdfReportGenerator.generatePdf(mockContext, report, emptyList())
 
         assertNotNull(file)
-        assertEquals("Report_rep-999.pdf", file.name)
-        verify { mockCanvas.drawText("Jane Smith", 36f, any(), any()) }
-        verify { mockCanvas.drawText("Replaced air filter and checked pressure.", 36f, any(), any()) }
+        verify { mockCanvas.drawText("Jane Smith: HVAC Maintenance", 36f, any(), any()) }
+        verify { mockCanvas.drawText("Low pressure detected", 36f, any(), any()) }
+        verify { mockCanvas.drawText("Filter replacement", 36f, any(), any()) }
     }
 
     @Test
@@ -83,5 +83,31 @@ class PdfReportGeneratorTest {
         assertNotNull(file)
         assertEquals("Report_rep-000.pdf", file.name)
         verify { mockCanvas.drawText("CUSTOM BRAND", 36f, 40f, any()) }
+    }
+
+    @Test
+    fun `generatePdf renders cost breakdown and comments when provided`() {
+        val report = ReportEntity(
+            id = "rep-cost",
+            userId = "user-1",
+            status = ReportStatus.APPROVED,
+            customerName = "Cost Customer",
+            jobTitle = "Cost Service",
+            laborCost = 100.0,
+            partsCost = 50.0,
+            totalCost = 150.0,
+            technicianComments = "All tasks completed according to specifications."
+        )
+
+        val file = PdfReportGenerator.generatePdf(mockContext, report, emptyList())
+
+        assertNotNull(file)
+        assertEquals("Report_rep-cost.pdf", file.name)
+        verify { mockCanvas.drawText("Cost Breakdown:", 36f, any(), any()) }
+        verify { mockCanvas.drawText("Labor:", 44f, any(), any()) }
+        verify { mockCanvas.drawText("Parts:", 44f, any(), any()) }
+        verify { mockCanvas.drawText("Total:", 44f, any(), any()) }
+        verify { mockCanvas.drawText("COMMENTS:", 36f, any(), any()) }
+        verify { mockCanvas.drawText("All tasks completed according to specifications.", 36f, any(), any()) }
     }
 }

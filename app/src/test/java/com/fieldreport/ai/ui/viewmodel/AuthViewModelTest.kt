@@ -66,4 +66,17 @@ class AuthViewModelTest {
         verify { mockAuth.signOut() }
         assertEquals(AuthState.Idle, viewModel.authState.value)
     }
+
+    @Test
+    fun `authState data classes and object representations`() {
+        val idle = AuthState.Idle
+        val loading = AuthState.Loading
+        val error = AuthState.Error("Test error")
+        val auth = AuthState.Authenticated(mockUser)
+
+        assertEquals("Test error", error.message)
+        assertEquals(mockUser, auth.user)
+        assertNotNull(idle)
+        assertNotNull(loading)
+    }
 }

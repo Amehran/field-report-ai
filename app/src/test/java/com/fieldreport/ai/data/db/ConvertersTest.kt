@@ -45,4 +45,14 @@ class ConvertersTest {
             assertEquals(type, convertedBack)
         }
     }
+
+    @Test
+    fun aiAgentMode_conversion_isAccurate() {
+        com.fieldreport.ai.data.model.AiAgentMode.values().forEach { mode ->
+            val stringVal = converters.fromAiAgentMode(mode)
+            assertEquals(mode.name, stringVal)
+            val convertedBack = converters.toAiAgentMode(stringVal)
+            assertEquals(mode, convertedBack)
+        }
+    }
 }

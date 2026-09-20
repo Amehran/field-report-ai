@@ -6,11 +6,7 @@ import com.fieldreport.ai.data.db.ReportEntity
 import com.fieldreport.ai.data.model.MediaType
 import com.fieldreport.ai.data.model.PhotoLabel
 import com.fieldreport.ai.data.model.ReportStatus
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.just
-import io.mockk.Runs
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -140,6 +136,115 @@ class ReportRepositoryTest {
         repository.generateLocalMockDraft("missing", null)
 
         coVerify(exactly = 0) { mockDao.updateReport(any()) }
+    }
+
+    @Test
+    fun `generateLocalMockDraft handles HVAC job title`() = runTest {
+        val reportId = "test-hvac"
+        val existingReport = ReportEntity(id = reportId, userId = "user", status = ReportStatus.DRAFT, customerName = "John", jobTitle = "HVAC Thermostat")
+        coEvery { mockDao.getReportById(reportId) } returns existingReport
+
+        repository.generateLocalMockDraft(reportId, "Calibrated sensors")
+
+        coVerify(exactly = 1) {
+            mockDao.updateReport(match {
+                it.id == reportId && it.workCompletedJson?.contains("thermostat") == true
+            })
+        }
+    }
+
+    @Test
+    fun `generateLocalMockDraft handles Plumbing job title`() = runTest {
+        val reportId = "test-plumbing"
+        val existingReport = ReportEntity(id = reportId, userId = "user", status = ReportStatus.DRAFT, customerName = "Mary", jobTitle = "Pipe Leak Repair")
+        coEvery { mockDao.getReportById(reportId) } returns existingReport
+
+        repository.generateLocalMockDraft(reportId, "Tightened valve")
+
+        coVerify(exactly = 1) {
+            mockDao.updateReport(match {
+                it.id == reportId && it.workCompletedJson?.contains("supply lines") == true
+            })
+        }
+    }
+
+    @Test
+    fun `generateLocalMockDraft handles Electrical job title`() = runTest {
+        val reportId = "test-electrical"
+        val existingReport = ReportEntity(id = reportId, userId = "user", status = ReportStatus.DRAFT, customerName = "Bob", jobTitle = "Panel Outlet Repair")
+        coEvery { mockDao.getReportById(reportId) } returns existingReport
+
+        repository.generateLocalMockDraft(reportId, "Replaced breaker")
+
+        coVerify(exactly = 1) {
+            mockDao.updateReport(match {
+                it.id == reportId && it.workCompletedJson?.contains("continuity") == true
+            })
+        }
+    }
+
+    @Test
+    fun `setAudioRecording calls dao updateAudioLocalUri`() = runTest {
+        repository.setAudioRecording("rep-1", "file:///audio.m4a")
+
+        coVerify(exactly = 1) { mockDao.updateAudioLocalUri("rep-1", "file:///audio.m4a") }
+    }
+
+    @Test
+    fun `deleteReport calls dao deleteReport`() = runTest {
+        repository.deleteReport("rep-1")
+
+        coVerify(exactly = 1) { mockDao.deleteReport("rep-1") }
+    }
+
+    @Test
+    fun `deleteAllReports calls dao deleteAllReports`() = runTest {
+        repository.deleteAllReports()
+
+        coVerify(exactly = 1) { mockDao.deleteAllReports() }
+    }
+
+    @Test
+    fun `deleteReportWithFiles deletes report and files`() = runTest {
+        mockkStatic(android.net.Uri::class)
+        val mockUri = mockk<android.net.Uri>(relaxed = true)
+        every { mockUri.scheme } returns "file"
+        every { mockUri.path } returns "/data/audio.m4a"
+        every { android.net.Uri.parse(any()) } returns mockUri
+
+        val mockContext = mockk<android.content.Context>(relaxed = true)
+        every { mockContext.cacheDir } returns java.io.File(System.getProperty("java.io.tmpdir"))
+
+        val report = ReportEntity(id = "rep-files", userId = "user", status = ReportStatus.APPROVED, customerName = "A", jobTitle = "B", audioLocalUri = "file:///data/audio.m4a")
+        val media = listOf(MediaItemEntity(id = "m1", reportId = "rep-files", type = MediaType.PHOTO, label = PhotoLabel.BEFORE, localUri = "file:///data/img.jpg"))
+
+        coEvery { mockDao.getReportById("rep-files") } returns report
+        coEvery { mockDao.getMediaItemsForReport("rep-files") } returns media
+
+        repository.deleteReportWithFiles(mockContext, "rep-files")
+
+        coVerify { mockDao.deleteReport("rep-files") }
+    }
+
+    @Test
+    fun `deleteAllReportsWithFiles iterates and deletes all reports`() = runTest {
+        mockkStatic(android.net.Uri::class)
+        val mockUri = mockk<android.net.Uri>(relaxed = true)
+        every { mockUri.scheme } returns "file"
+        every { mockUri.path } returns "/data/audio.m4a"
+        every { android.net.Uri.parse(any()) } returns mockUri
+
+        val mockContext = mockk<android.content.Context>(relaxed = true)
+        every { mockContext.cacheDir } returns java.io.File(System.getProperty("java.io.tmpdir"))
+
+        val reports = listOf(ReportEntity(id = "rep-1", userId = "user", status = ReportStatus.APPROVED, customerName = "A", jobTitle = "B"))
+        coEvery { mockDao.getAllReportsList() } returns reports
+        coEvery { mockDao.getReportById("rep-1") } returns reports[0]
+        coEvery { mockDao.getMediaItemsForReport("rep-1") } returns emptyList()
+
+        repository.deleteAllReportsWithFiles(mockContext)
+
+        coVerify { mockDao.deleteAllReports() }
     }
 
     @Test

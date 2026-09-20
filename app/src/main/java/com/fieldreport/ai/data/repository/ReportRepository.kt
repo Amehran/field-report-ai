@@ -154,7 +154,7 @@ class ReportRepository(private val reportDao: ReportDao) {
 
     private fun deleteFileFromUri(context: android.content.Context, uriStr: String) {
         try {
-            val uri = android.net.Uri.parse(uriStr)
+            val uri = android.net.Uri.parse(uriStr) ?: return
             if (uri.scheme == "content") {
                 try {
                     context.contentResolver.delete(uri, null, null)

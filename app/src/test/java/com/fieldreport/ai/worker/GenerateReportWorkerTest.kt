@@ -57,4 +57,31 @@ class GenerateReportWorkerTest {
 
         assertEquals(Result.failure(), result)
     }
+
+    @Test
+    fun `doWork returns failure when user is not authenticated`() = runTest {
+        val report = com.fieldreport.ai.data.db.ReportEntity(
+            id = "rep-unauth",
+            userId = "user",
+            status = com.fieldreport.ai.data.model.ReportStatus.DRAFT,
+            customerName = "Cust",
+            jobTitle = "Job"
+        )
+        coEvery { mockDao.getReportById("rep-unauth") } returns report
+        coEvery { mockDao.getMediaItemsForReport("rep-unauth") } returns emptyList()
+
+        val mockAuth = mockk<com.google.firebase.auth.FirebaseAuth>(relaxed = true)
+        every { mockAuth.currentUser } returns null
+        mockkStatic(com.google.firebase.auth.FirebaseAuth::class)
+        every { com.google.firebase.auth.FirebaseAuth.getInstance() } returns mockAuth
+
+        val inputData = Data.Builder().putString("reportId", "rep-unauth").build()
+        val worker = TestListenableWorkerBuilder<GenerateReportWorker>(mockContext)
+            .setInputData(inputData)
+            .build()
+
+        val result = worker.doWork()
+
+        assertEquals(Result.failure(), result)
+    }
 }
