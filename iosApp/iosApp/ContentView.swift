@@ -1,9 +1,9 @@
 import SwiftUI
 import UIKit
+import shared
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        // MainViewController is exported from Kotlin iosMain
         return MainViewControllerKt.MainViewController()
     }
 
