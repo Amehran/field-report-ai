@@ -15,12 +15,15 @@ import com.fieldreport.ai.ui.screens.*
 import com.fieldreport.ai.ui.theme.FieldReportAITheme
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 
+import android.content.pm.ActivityInfo
+
 class MainActivity : ComponentActivity() {
 
     private val reportViewModel: ReportViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContent {
             FieldReportAITheme {
                 Surface(
@@ -31,12 +34,34 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = "login"
+                        startDestination = "report_list"
                     ) {
+                        composable("report_list") {
+                            ReportListScreen(
+                                viewModel = reportViewModel,
+                                onNavigateToCapture = {
+                                    navController.navigate("capture")
+                                },
+                                onNavigateToSettings = {
+                                    navController.navigate("settings")
+                                },
+                                onNavigateToReview = { reportId ->
+                                    navController.navigate("review")
+                                }
+                            )
+                        }
+
+                        composable("settings") {
+                            SettingsScreen(
+                                viewModel = reportViewModel,
+                                onBack = { navController.popBackStack() }
+                            )
+                        }
+
                         composable("login") {
                             LoginScreen(
                                 onLoginSuccess = {
-                                    navController.navigate("capture") {
+                                    navController.navigate("report_list") {
                                         popUpTo("login") { inclusive = true }
                                     }
                                 }
@@ -60,6 +85,7 @@ class MainActivity : ComponentActivity() {
 
                         composable("voice_capture") {
                             VoiceCaptureScreen(
+                                viewModel = reportViewModel,
                                 onStopRecording = {
                                     navController.popBackStack()
                                 },
@@ -85,8 +111,8 @@ class MainActivity : ComponentActivity() {
                             ReportReadyScreen(
                                 viewModel = reportViewModel,
                                 onDone = {
-                                    navController.navigate("capture") {
-                                        popUpTo("capture") { inclusive = true }
+                                    navController.navigate("report_list") {
+                                        popUpTo("report_list") { inclusive = true }
                                     }
                                 }
                             )

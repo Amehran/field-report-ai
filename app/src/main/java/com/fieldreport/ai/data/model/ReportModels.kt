@@ -9,6 +9,11 @@ enum class ReportStatus {
     COMPLETED
 }
 
+enum class AiAgentMode {
+    CLOUD,
+    ON_DEVICE
+}
+
 enum class PhotoLabel {
     BEFORE,
     AFTER,

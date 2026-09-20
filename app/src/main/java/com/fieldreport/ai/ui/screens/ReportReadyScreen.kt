@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -31,11 +32,53 @@ fun ReportReadyScreen(
     val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
     val report by viewModel.currentReport.collectAsState()
+    var showDeletePrompt by remember { mutableStateOf(false) }
+
+    val handleShare = {
+        viewModel.shareReportPdf(context)
+        showDeletePrompt = true
+    }
+
+    if (showDeletePrompt) {
+        AlertDialog(
+            onDismissRequest = { showDeletePrompt = false },
+            title = { Text("Delete Report Data?") },
+            text = {
+                Text("You have shared this report. Would you like to delete the report record and all associated media (photos, audio) from your device?")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeletePrompt = false
+                        report?.id?.let { viewModel.deleteReport(it) }
+                        onDone()
+                    }
+                ) {
+                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDeletePrompt = false
+                        onDone()
+                    }
+                ) {
+                    Text("Keep")
+                }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Report ready", style = MaterialTheme.typography.headlineMedium) },
+                title = { Text("Report ready", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+                navigationIcon = {
+                    IconButton(onClick = onDone) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                    }
+                },
                 actions = {
                     Surface(
                         color = Emerald100,
@@ -63,50 +106,60 @@ fun ReportReadyScreen(
                 color = Color.White,
                 shadowElevation = 8.dp
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Button(
-                        onClick = {
-                            viewModel.shareReportPdf(context)
-                        },
+                    Column(
                         modifier = Modifier
+                            .widthIn(max = 700.dp)
                             .fillMaxWidth()
-                            .height(56.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Charcoal900)
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "Share PDF",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = Color.White
-                        )
-                    }
+                        Button(
+                            onClick = { handleShare() },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Charcoal900)
+                        ) {
+                            Text(
+                                text = "Share PDF",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = Color.White
+                            )
+                        }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                    TextButton(onClick = {
-                        val summaryText = report?.customerSummary ?: "Job completed at ${report?.customerName}."
-                        clipboardManager.setText(AnnotatedString(summaryText))
-                        Toast.makeText(context, "Summary copied to clipboard!", Toast.LENGTH_SHORT).show()
-                    }) {
-                        Text("Copy customer summary", color = Teal600, style = MaterialTheme.typography.labelLarge)
+                        TextButton(onClick = {
+                            val summaryText = report?.customerSummary ?: "Job completed at ${report?.customerName}."
+                            clipboardManager.setText(AnnotatedString(summaryText))
+                            Toast.makeText(context, "Summary copied to clipboard!", Toast.LENGTH_SHORT).show()
+                        }) {
+                            Text("Copy customer summary", color = Teal600, style = MaterialTheme.typography.labelLarge)
+                        }
                     }
                 }
             }
         },
         containerColor = Slate50
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.TopCenter
         ) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 700.dp)
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
             // PDF Preview Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -166,7 +219,7 @@ fun ReportReadyScreen(
                         Spacer(modifier = Modifier.height(20.dp))
 
                         TextButton(
-                            onClick = { viewModel.shareReportPdf(context) },
+                            onClick = { handleShare() },
                             modifier = Modifier.align(Alignment.Start)
                         ) {
                             Text("VIEW FULL REPORT →", color = Teal600, style = MaterialTheme.typography.labelLarge)
@@ -176,4 +229,5 @@ fun ReportReadyScreen(
             }
         }
     }
+}
 }

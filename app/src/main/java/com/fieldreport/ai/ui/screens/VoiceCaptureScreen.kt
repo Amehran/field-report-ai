@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.*
@@ -22,18 +22,116 @@ import androidx.compose.ui.unit.sp
 import com.fieldreport.ai.ui.theme.*
 import kotlinx.coroutines.delay
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.media.MediaRecorder
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import com.fieldreport.ai.ui.viewmodel.ReportViewModel
+import java.io.File
+import java.io.FileOutputStream
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VoiceCaptureScreen(
+    viewModel: ReportViewModel,
     onStopRecording: () -> Unit,
     onBack: () -> Unit
 ) {
+    val context = LocalContext.current
     var secondsElapsed by remember { mutableStateOf(0) }
+    var isRecording by remember { mutableStateOf(false) }
+    var recorder by remember { mutableStateOf<MediaRecorder?>(null) }
+    var audioFile by remember { mutableStateOf<File?>(null) }
+
+    fun stopAndSaveRecording() {
+        try {
+            recorder?.stop()
+            recorder?.release()
+            recorder = null
+            audioFile?.let { file ->
+                if (file.exists() && file.length() > 0) {
+                    viewModel.setAudioRecording(file.toURI().toString())
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        onStopRecording()
+    }
+
+    fun startNativeRecording() {
+        try {
+            val recordDir = File(context.cacheDir, "recordings").apply { if (!exists()) mkdirs() }
+            val file = File(recordDir, "voice_${System.currentTimeMillis()}.m4a")
+            audioFile = file
+
+            val newRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                MediaRecorder(context)
+            } else {
+                @Suppress("DEPRECATION")
+                MediaRecorder()
+            }
+
+            newRecorder.apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                setOutputFile(FileOutputStream(file).fd)
+                prepare()
+                start()
+            }
+            recorder = newRecorder
+            isRecording = true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "Could not start audio recorder.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            startNativeRecording()
+        } else {
+            Toast.makeText(context, "Microphone permission required for voice notes.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     LaunchedEffect(Unit) {
-        while (true) {
-            delay(1000L)
-            secondsElapsed++
+        val permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            startNativeRecording()
+        } else {
+            permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            try {
+                recorder?.stop()
+                recorder?.release()
+            } catch (e: Exception) {
+                // Ignore if already released
+            }
+        }
+    }
+
+    LaunchedEffect(isRecording) {
+        if (isRecording) {
+            while (true) {
+                delay(1000L)
+                secondsElapsed++
+            }
         }
     }
 
@@ -44,10 +142,10 @@ fun VoiceCaptureScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Describe the work", style = MaterialTheme.typography.headlineMedium) },
+                title = { Text("Describe the work", style = MaterialTheme.typography.titleLarge, color = Slate900) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
@@ -55,14 +153,21 @@ fun VoiceCaptureScreen(
         },
         containerColor = Slate50
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.Center
         ) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 640.dp)
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
             Spacer(modifier = Modifier.height(20.dp))
 
             // Central Mic Ring & Waveform Visualizer
@@ -142,12 +247,17 @@ fun VoiceCaptureScreen(
 
                 Spacer(modifier = Modifier.height(36.dp))
 
+                val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+
                 // Large Red Stop Button
                 Box(
                     modifier = Modifier
                         .size(64.dp)
                         .background(Rose600, RoundedCornerShape(16.dp))
-                        .clickable { onStopRecording() },
+                        .clickable {
+                            haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                            stopAndSaveRecording()
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -162,4 +272,5 @@ fun VoiceCaptureScreen(
             }
         }
     }
+}
 }

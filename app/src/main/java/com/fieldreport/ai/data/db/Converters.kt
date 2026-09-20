@@ -24,4 +24,10 @@ class Converters {
 
     @TypeConverter
     fun toMediaType(value: String): MediaType = enumValueOf(value)
+
+    @TypeConverter
+    fun fromAiAgentMode(value: com.fieldreport.ai.data.model.AiAgentMode): String = value.name
+
+    @TypeConverter
+    fun toAiAgentMode(value: String): com.fieldreport.ai.data.model.AiAgentMode = enumValueOf(value)
 }

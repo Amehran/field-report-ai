@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id("jacoco")
     alias(libs.plugins.google.services)
 }
 
@@ -23,6 +24,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -30,6 +34,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -63,6 +71,9 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
 
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
     // Room DB
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -77,6 +88,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
+    implementation(libs.play.services.auth)
 
     // WorkManager
     implementation(libs.work.runtime.ktx)
@@ -86,4 +98,33 @@ dependencies {
     implementation(libs.kotlinx.coroutines.play.services)
 
     debugImplementation(libs.androidx.ui.tooling)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation("androidx.work:work-testing:2.9.0")
+    testImplementation(libs.turbine)
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+    val fileFilter = listOf(
+        "**/R.class", "**/R$*.class", "**/BuildConfig.*", "**/Manifest*.*",
+        "**/*Test*.*", "android/**/*.*",
+        "**/ui/screens/**", "**/ui/theme/**", "**/MainActivity*.*",
+        "**/*_Impl*.*", "**/*_Factory*.*", "**/*_MembersInjector*.*", "**/AppDatabase*.*"
+    )
+    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+    val mainSrc = "${project.projectDir}/src/main/java"
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(fileTree(layout.buildDirectory.get()).include("/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"))
 }

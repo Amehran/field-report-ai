@@ -24,11 +24,20 @@ interface ReportDao {
     @Query("DELETE FROM reports WHERE id = :reportId")
     suspend fun deleteReport(reportId: String)
     
+    @Query("DELETE FROM reports")
+    suspend fun deleteAllReports()
+
+    @Query("SELECT * FROM reports")
+    suspend fun getAllReportsList(): List<ReportEntity>
+    
     @Query("UPDATE reports SET status = :status WHERE id = :reportId")
     suspend fun updateStatus(reportId: String, status: com.fieldreport.ai.data.model.ReportStatus)
 
     @Query("UPDATE reports SET audioStoragePath = :path WHERE id = :reportId")
     suspend fun updateReportAudioStoragePath(reportId: String, path: String)
+
+    @Query("UPDATE reports SET audioLocalUri = :uri WHERE id = :reportId")
+    suspend fun updateAudioLocalUri(reportId: String, uri: String)
 
     @Query("SELECT * FROM media_items WHERE reportId = :reportId ORDER BY sortOrder ASC")
     fun getMediaForReport(reportId: String): Flow<List<MediaItemEntity>>

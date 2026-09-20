@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.GoogleAuthProvider
+
 sealed class AuthState {
     object Idle : AuthState()
     object Loading : AuthState()
@@ -29,6 +32,49 @@ class AuthViewModel : ViewModel() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             _authState.value = AuthState.Authenticated(currentUser)
+        }
+    }
+
+    fun signInWithCredential(credential: AuthCredential) {
+        _authState.value = AuthState.Loading
+        viewModelScope.launch {
+            auth.signInWithCredential(credential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = auth.currentUser
+                        if (user != null) {
+                            _authState.value = AuthState.Authenticated(user)
+                        } else {
+                            _authState.value = AuthState.Error("Sign in succeeded but user is null")
+                        }
+                    } else {
+                        _authState.value = AuthState.Error(task.exception?.message ?: "Google Sign-In failed")
+                    }
+                }
+        }
+    }
+
+    fun signInWithGoogleIdToken(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        signInWithCredential(credential)
+    }
+
+    fun signInWithEmail(email: String, password: String) {
+        _authState.value = AuthState.Loading
+        viewModelScope.launch {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = auth.currentUser
+                        if (user != null) {
+                            _authState.value = AuthState.Authenticated(user)
+                        } else {
+                            _authState.value = AuthState.Error("Sign in succeeded but user is null")
+                        }
+                    } else {
+                        _authState.value = AuthState.Error(task.exception?.message ?: "Email authentication failed")
+                    }
+                }
         }
     }
 
