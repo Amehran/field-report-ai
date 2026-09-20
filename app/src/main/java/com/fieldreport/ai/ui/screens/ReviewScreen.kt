@@ -49,11 +49,11 @@ fun ReviewScreen(
     val currencySymbol by viewModel.currency.collectAsState(initial = "$ USD")
     val settingsTechName by viewModel.technicianName.collectAsState(initial = "")
 
-    val initialTechName = remember(report, settingsTechName) {
+    val initialTechName = remember(report?.id, settingsTechName) {
         report?.technicianName?.takeIf { it.isNotBlank() } ?: settingsTechName
     }
 
-    var technicianName by remember(report, initialTechName) {
+    var technicianName by remember(report?.id, initialTechName) {
         mutableStateOf(initialTechName)
     }
 
@@ -63,7 +63,7 @@ fun ReviewScreen(
         }
     }
 
-    var issueDescription by remember(report) {
+    var issueDescription by remember(report?.id) {
         mutableStateOf(
             report?.initialStatus?.takeIf { it.isNotBlank() }
                 ?: report?.findingsJson?.replace("||", "\n• ")?.takeIf { it.isNotBlank() }
@@ -71,7 +71,7 @@ fun ReviewScreen(
         )
     }
 
-    var workDoneText by remember(report) {
+    var workDoneText by remember(report?.id) {
         mutableStateOf(
             report?.resolutionStepsJson?.replace("||", "\n• ")?.takeIf { it.isNotBlank() }
                 ?: report?.workCompletedJson?.replace("||", "\n• ")?.takeIf { it.isNotBlank() }
@@ -81,7 +81,7 @@ fun ReviewScreen(
         )
     }
 
-    var technicianComments by remember(report) {
+    var technicianComments by remember(report?.id) {
         mutableStateOf(report?.technicianComments ?: "")
     }
 

@@ -24,6 +24,23 @@ fun SettingsScreen(
     val settingsTechnicianName by viewModel.technicianName.collectAsState(initial = "")
     val currency by viewModel.currency.collectAsState(initial = "$")
 
+    var localTechnicianName by remember(settingsTechnicianName) { mutableStateOf(settingsTechnicianName) }
+    var localBusinessName by remember(businessName) { mutableStateOf(businessName) }
+
+    LaunchedEffect(localTechnicianName) {
+        kotlinx.coroutines.delay(500)
+        if (localTechnicianName != settingsTechnicianName) {
+            viewModel.setTechnicianName(localTechnicianName)
+        }
+    }
+
+    LaunchedEffect(localBusinessName) {
+        kotlinx.coroutines.delay(500)
+        if (localBusinessName != businessName) {
+            viewModel.setBusinessName(localBusinessName)
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -67,15 +84,15 @@ fun SettingsScreen(
             Text("Business Information", style = MaterialTheme.typography.titleMedium)
 
             OutlinedTextField(
-                value = settingsTechnicianName,
-                onValueChange = { viewModel.setTechnicianName(it) },
+                value = localTechnicianName,
+                onValueChange = { localTechnicianName = it },
                 label = { Text("Technician Name") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
-                value = businessName,
-                onValueChange = { viewModel.setBusinessName(it) },
+                value = localBusinessName,
+                onValueChange = { localBusinessName = it },
                 label = { Text("Business Name") },
                 modifier = Modifier.fillMaxWidth()
             )

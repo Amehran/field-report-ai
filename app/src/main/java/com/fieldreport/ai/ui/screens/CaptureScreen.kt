@@ -121,6 +121,25 @@ fun CaptureScreen(
         }
     }
 
+    LaunchedEffect(customerName, jobTitle) {
+        kotlinx.coroutines.delay(500)
+        val report = currentReport
+        if (report != null && (customerName != report.customerName || jobTitle != report.jobTitle)) {
+            viewModel.updateReportHeader(customerName, jobTitle)
+        }
+    }
+
+    LaunchedEffect(laborCostStr, partsCostStr, totalCostStr) {
+        kotlinx.coroutines.delay(500)
+        val report = currentReport
+        val l = laborCostStr.toDoubleOrNull()
+        val p = partsCostStr.toDoubleOrNull()
+        val t = totalCostStr.toDoubleOrNull()
+        if (report != null && (l != report.laborCost || p != report.partsCost || t != report.totalCost)) {
+            viewModel.updateCosts(l, p, t)
+        }
+    }
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
@@ -284,18 +303,12 @@ fun CaptureScreen(
                     }
                     OutlinedTextField(
                         value = customerName,
-                        onValueChange = { 
-                            customerName = it 
-                            viewModel.updateReportHeader(it, jobTitle)
-                        },
+                        onValueChange = { customerName = it },
                         label = { Text("Customer Name") },
                         placeholder = { Text("e.g. Miller Residence or John Smith") },
                         trailingIcon = {
                             if (customerName.isNotEmpty()) {
-                                IconButton(onClick = { 
-                                    customerName = ""
-                                    viewModel.updateReportHeader("", jobTitle) 
-                                }) {
+                                IconButton(onClick = { customerName = "" }) {
                                     Icon(androidx.compose.material.icons.Icons.Default.Clear, contentDescription = "Clear")
                                 }
                             }
@@ -306,18 +319,12 @@ fun CaptureScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         value = jobTitle,
-                        onValueChange = { 
-                            jobTitle = it
-                            viewModel.updateReportHeader(customerName, it)
-                        },
+                        onValueChange = { jobTitle = it },
                         label = { Text("Job Name / Trade") },
                         placeholder = { Text("e.g. Kitchen Repair or HVAC Service") },
                         trailingIcon = {
                             if (jobTitle.isNotEmpty()) {
-                                IconButton(onClick = { 
-                                    jobTitle = ""
-                                    viewModel.updateReportHeader(customerName, "") 
-                                }) {
+                                IconButton(onClick = { jobTitle = "" }) {
                                     Icon(androidx.compose.material.icons.Icons.Default.Clear, contentDescription = "Clear")
                                 }
                             }
@@ -492,10 +499,7 @@ fun CaptureScreen(
                     ) {
                         OutlinedTextField(
                             value = laborCostStr,
-                            onValueChange = { 
-                                laborCostStr = it 
-                                viewModel.updateCosts(laborCostStr.toDoubleOrNull(), partsCostStr.toDoubleOrNull(), totalCostStr.toDoubleOrNull())
-                            },
+                            onValueChange = { laborCostStr = it },
                             label = { Text("Labor Cost") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
@@ -503,10 +507,7 @@ fun CaptureScreen(
                         )
                         OutlinedTextField(
                             value = partsCostStr,
-                            onValueChange = { 
-                                partsCostStr = it 
-                                viewModel.updateCosts(laborCostStr.toDoubleOrNull(), partsCostStr.toDoubleOrNull(), totalCostStr.toDoubleOrNull())
-                            },
+                            onValueChange = { partsCostStr = it },
                             label = { Text("Parts Cost") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
@@ -516,10 +517,7 @@ fun CaptureScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         value = totalCostStr,
-                        onValueChange = { 
-                            totalCostStr = it 
-                            viewModel.updateCosts(laborCostStr.toDoubleOrNull(), partsCostStr.toDoubleOrNull(), totalCostStr.toDoubleOrNull())
-                        },
+                        onValueChange = { totalCostStr = it },
                         label = { Text("Total Cost") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),

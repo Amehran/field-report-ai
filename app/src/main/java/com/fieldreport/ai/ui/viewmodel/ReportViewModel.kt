@@ -30,9 +30,11 @@ import com.fieldreport.ai.data.model.PhotoLabel
 import com.fieldreport.ai.data.model.ReportStatus
 import com.fieldreport.ai.data.repository.ReportRepository
 import com.fieldreport.ai.pdf.PdfReportGenerator
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 import com.fieldreport.ai.data.repository.SettingsRepository
@@ -402,32 +404,38 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     fun shareReportPdf(context: Context) {
         val report = currentReport.value ?: return
         val media = currentMedia.value
-        try {
-            val pdfFile = PdfReportGenerator.generatePdf(context, report, media)
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val pdfFile = PdfReportGenerator.generatePdf(context, report, media)
 
-            val uri = FileProvider.getUriForFile(
-                context,
-                "${context.packageName}.fileprovider",
-                pdfFile
-            )
-
-            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                type = "application/pdf"
-                putExtra(Intent.EXTRA_STREAM, uri)
-                putExtra(Intent.EXTRA_SUBJECT, "Job Completion Report — ${report.customerName}")
-                putExtra(
-                    Intent.EXTRA_TEXT,
-                    "Hi ${report.customerName}, here is your job report for ${report.jobTitle}."
+                val uri = FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.fileprovider",
+                    pdfFile
                 )
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
 
-            val chooser = Intent.createChooser(shareIntent, "Share Job Report PDF")
-            chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(chooser)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            android.widget.Toast.makeText(context, "Could not open PDF share sheet: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "application/pdf"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(Intent.EXTRA_SUBJECT, "Job Completion Report — ${report.customerName}")
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Hi ${report.customerName}, here is your job report for ${report.jobTitle}."
+                    )
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+
+                val chooser = Intent.createChooser(shareIntent, "Share Job Report PDF")
+                chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                withContext(Dispatchers.Main) {
+                    context.startActivity(chooser)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    android.widget.Toast.makeText(context, "Could not open PDF share sheet: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
