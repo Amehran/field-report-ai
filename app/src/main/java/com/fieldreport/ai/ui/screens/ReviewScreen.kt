@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -200,34 +201,59 @@ fun ReviewScreen(
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(modifier = Modifier.padding(18.dp)) {
-                        OutlinedTextField(
-                            value = technicianName,
-                            onValueChange = { technicianName = it },
-                            label = { Text("Technician") },
-                            placeholder = { Text("Enter technician name") },
-                            leadingIcon = {
-                                Icon(Icons.Default.Person, contentDescription = "Technician", tint = Teal600)
-                            },
+                        // Technician Inline Field
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(10.dp),
-                            singleLine = true,
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedBorderColor = Slate200,
-                                focusedBorderColor = Teal600,
-                                focusedLabelColor = Teal600,
-                                unfocusedContainerColor = Slate50,
-                                focusedContainerColor = Slate50
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.Person,
+                                contentDescription = "Technician",
+                                tint = Teal600,
+                                modifier = Modifier.size(20.dp)
                             )
-                        )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "TECHNICIAN",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = Slate500,
+                                    letterSpacing = 0.5.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                BasicTextField(
+                                    value = technicianName,
+                                    onValueChange = { technicianName = it },
+                                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                                        color = Slate900,
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    singleLine = true,
+                                    decorationBox = { innerTextField ->
+                                        if (technicianName.isBlank()) {
+                                            Text(
+                                                text = "Add Technician Name...",
+                                                style = MaterialTheme.typography.titleMedium,
+                                                color = Slate500.copy(alpha = 0.5f),
+                                                fontWeight = FontWeight.Normal
+                                            )
+                                        }
+                                        innerTextField()
+                                    }
+                                )
+                            }
+                        }
 
                         Spacer(modifier = Modifier.height(14.dp))
                         HorizontalDivider(color = Slate100)
                         Spacer(modifier = Modifier.height(14.dp))
 
+                        // Customer & Job and Date Details
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.Top
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
@@ -237,7 +263,7 @@ fun ReviewScreen(
                                     letterSpacing = 0.5.sp,
                                     fontWeight = FontWeight.SemiBold
                                 )
-                                Spacer(modifier = Modifier.height(3.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = "${report?.customerName.orEmpty().ifBlank { "Customer" }} • ${report?.jobTitle.orEmpty().ifBlank { "General Job" }}",
                                     style = MaterialTheme.typography.titleMedium,
@@ -260,7 +286,7 @@ fun ReviewScreen(
                                     letterSpacing = 0.5.sp,
                                     fontWeight = FontWeight.SemiBold
                                 )
-                                Spacer(modifier = Modifier.height(3.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = dateStr,
                                     style = MaterialTheme.typography.bodyMedium,
