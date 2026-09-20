@@ -193,7 +193,7 @@ fun ReviewScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // SECTION 1: HEADER INFO CARD (Technician, Customer/Job, Date)
+                // SECTION 1: HEADER INFO CARD (Customer/Job, Date, Technician)
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -201,55 +201,7 @@ fun ReviewScreen(
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(modifier = Modifier.padding(18.dp)) {
-                        // Technician Inline Field
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                Icons.Default.Person,
-                                contentDescription = "Technician",
-                                tint = Teal600,
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "TECHNICIAN",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = Slate500,
-                                    letterSpacing = 0.5.sp,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                                Spacer(modifier = Modifier.height(2.dp))
-                                BasicTextField(
-                                    value = technicianName,
-                                    onValueChange = { technicianName = it },
-                                    textStyle = MaterialTheme.typography.titleMedium.copy(
-                                        color = Slate900,
-                                        fontWeight = FontWeight.Bold
-                                    ),
-                                    singleLine = true,
-                                    decorationBox = { innerTextField ->
-                                        if (technicianName.isBlank()) {
-                                            Text(
-                                                text = "Add Technician Name...",
-                                                style = MaterialTheme.typography.titleMedium,
-                                                color = Slate500.copy(alpha = 0.5f),
-                                                fontWeight = FontWeight.Normal
-                                            )
-                                        }
-                                        innerTextField()
-                                    }
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(14.dp))
-                        HorizontalDivider(color = Slate100)
-                        Spacer(modifier = Modifier.height(14.dp))
-
-                        // Customer & Job and Date Details
+                        // Customer & Job and Date Row
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -294,6 +246,42 @@ fun ReviewScreen(
                                     fontWeight = FontWeight.Medium
                                 )
                             }
+                        }
+
+                        Spacer(modifier = Modifier.height(14.dp))
+                        HorizontalDivider(color = Slate100)
+                        Spacer(modifier = Modifier.height(14.dp))
+
+                        // Technician Field (Formatted same as Customer & Job)
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "TECHNICIAN",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Slate500,
+                                letterSpacing = 0.5.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            BasicTextField(
+                                value = technicianName,
+                                onValueChange = { technicianName = it },
+                                textStyle = MaterialTheme.typography.titleMedium.copy(
+                                    color = Slate900,
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                singleLine = true,
+                                decorationBox = { innerTextField ->
+                                    if (technicianName.isBlank()) {
+                                        Text(
+                                            text = "Add Technician Name...",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            color = Slate500.copy(alpha = 0.5f),
+                                            fontWeight = FontWeight.Normal
+                                        )
+                                    }
+                                    innerTextField()
+                                }
+                            )
                         }
                     }
                 }
