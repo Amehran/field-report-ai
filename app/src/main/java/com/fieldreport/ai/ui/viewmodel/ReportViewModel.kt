@@ -406,7 +406,13 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         val media = currentMedia.value
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val pdfFile = PdfReportGenerator.generatePdf(context, report, media)
+                val currentBizName = businessName.first()
+                val pdfFile = PdfReportGenerator.generatePdf(
+                    context = context,
+                    report = report,
+                    mediaItems = media,
+                    businessName = currentBizName
+                )
 
                 val uri = FileProvider.getUriForFile(
                     context,
