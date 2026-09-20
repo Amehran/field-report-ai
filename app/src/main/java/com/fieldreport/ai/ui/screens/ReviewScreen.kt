@@ -217,7 +217,7 @@ fun ReviewScreen(
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    text = "${report?.customerName.orEmpty().ifBlank { "Customer" }} • ${report?.jobTitle.orEmpty().ifBlank { "General Job" }}",
+                                    text = "${report?.customerName.orEmpty().ifBlank { "Customer" }}: ${report?.jobTitle.orEmpty().ifBlank { "General Job" }}",
                                     style = MaterialTheme.typography.titleMedium,
                                     color = Slate900,
                                     fontWeight = FontWeight.Bold

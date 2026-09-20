@@ -85,7 +85,7 @@ object PdfReportGenerator {
         y = 95f
 
         // Customer & Job Header
-        canvas.drawText("${report.customerName} • ${report.jobTitle}", 36f, y, titlePaint)
+        canvas.drawText("${report.customerName}: ${report.jobTitle}", 36f, y, titlePaint)
         y += 20f
 
         // Divider
@@ -97,14 +97,14 @@ object PdfReportGenerator {
         y += 20f
 
         // ISSUE SECTION
-        canvas.drawText("ISSUE", 36f, y, sectionTitlePaint)
+        canvas.drawText("ISSUE:", 36f, y, sectionTitlePaint)
         y += 16f
         val issueStr = report.initialStatus.orEmpty().ifBlank { report.findingsJson?.replace("||", "\n• ").orEmpty().ifBlank { "Primary issue identified during initial inspection." } }
         canvas.drawText(issueStr, 36f, y, bodyPaint)
         y += 24f
 
         // SERVICE SECTION (Work Done & Costs)
-        canvas.drawText("SERVICE", 36f, y, sectionTitlePaint)
+        canvas.drawText("SERVICE:", 36f, y, sectionTitlePaint)
         y += 16f
         val workDoneStr = report.resolutionStepsJson?.replace("||", "\n• ").orEmpty().ifBlank { report.workCompletedJson?.replace("||", "\n• ").orEmpty().ifBlank { report.typedNotes.orEmpty().ifBlank { report.rawTranscript.orEmpty().ifBlank { "Executed primary repair and testing procedures." } } } }
         canvas.drawText(workDoneStr, 36f, y, bodyPaint)
@@ -144,7 +144,7 @@ object PdfReportGenerator {
         // COMMENTS SECTION
         val comments = report.technicianComments
         if (!comments.isNullOrBlank()) {
-            canvas.drawText("COMMENTS", 36f, y, sectionTitlePaint)
+            canvas.drawText("COMMENTS:", 36f, y, sectionTitlePaint)
             y += 16f
             canvas.drawText(comments, 36f, y, bodyPaint)
             y += 24f
