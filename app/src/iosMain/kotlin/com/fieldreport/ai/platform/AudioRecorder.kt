@@ -1,16 +1,17 @@
 package com.fieldreport.ai.platform
 
-import platform.AVFoundation.*
+import kotlinx.cinterop.ExperimentalForeignApi
+import platform.AVFAudio.AVAudioRecorder
 import platform.Foundation.NSURL
 
 actual class AudioRecorder {
     private var recorder: AVAudioRecorder? = null
     private var isRecordingState = false
 
+    @OptIn(ExperimentalForeignApi::class)
     actual fun startRecording(outputPath: String) {
         val url = NSURL.fileURLWithPath(outputPath)
-        val settings = mapOf<Any?, Any>()
-        recorder = AVAudioRecorder(url, settings, null)
+        recorder = AVAudioRecorder(url, emptyMap<Any?, Any>(), null)
         recorder?.prepareToRecord()
         recorder?.record()
         isRecordingState = true

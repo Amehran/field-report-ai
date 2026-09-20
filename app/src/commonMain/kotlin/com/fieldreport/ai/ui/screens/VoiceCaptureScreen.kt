@@ -51,7 +51,7 @@ fun VoiceCaptureScreen(
 
     LaunchedEffect(Unit) {
         try {
-            audioRecorder.startRecording("voice_${System.currentTimeMillis()}.m4a")
+            audioRecorder.startRecording("voice_${kotlin.random.Random.nextInt(1000, 999999)}.m4a")
             isRecording = true
         } catch (e: Exception) {
             e.printStackTrace()

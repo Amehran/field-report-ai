@@ -4,7 +4,7 @@ import android.content.Context
 import android.media.MediaRecorder
 import java.io.File
 
-actual class AudioRecorder(private val context: Context) {
+actual class AudioRecorder() {
     private var recorder: MediaRecorder? = null
     private var currentFilePath: String? = null
     private var recordingState = false

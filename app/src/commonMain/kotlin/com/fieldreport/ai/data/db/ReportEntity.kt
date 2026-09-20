@@ -1,13 +1,10 @@
 package com.fieldreport.ai.data.db
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.fieldreport.ai.data.model.AiAgentMode
 import com.fieldreport.ai.data.model.ReportStatus
 
-@Entity(tableName = "reports")
 data class ReportEntity(
-    @PrimaryKey val id: String,
+    val id: String,
     val userId: String,
     val status: ReportStatus,
     val customerName: String,
@@ -32,7 +29,7 @@ data class ReportEntity(
     val technicianName: String? = null,
     val technicianComments: String? = null,
     val aiAgentMode: AiAgentMode = AiAgentMode.CLOUD,
-    val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis(),
+    val createdAt: Long = 0L,
+    val updatedAt: Long = 0L,
     val approvedAt: Long? = null
 )
