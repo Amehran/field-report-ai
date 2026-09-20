@@ -71,7 +71,8 @@ object PdfReportGenerator {
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             isAntiAlias = true
         }
-        canvas.drawText(businessName.uppercase(), 36f, 40f, headerTextPaint)
+        val headerTitle = report.technicianName.orEmpty().ifBlank { businessName }.uppercase()
+        canvas.drawText(headerTitle, 36f, 40f, headerTextPaint)
         
         val dateStr = SimpleDateFormat("MMM dd, yyyy", Locale.US).format(Date(report.createdAt))
         val headerSubPaint = Paint().apply {
