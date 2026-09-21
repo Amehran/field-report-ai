@@ -120,7 +120,44 @@ fun LoginScreen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(36.dp))
+            Text(
+                text = "Quick Test Accounts",
+                style = MaterialTheme.typography.labelMedium,
+                color = Slate600
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedButton(
+                    onClick = {
+                        email = "user@fieldreport.ai"
+                        password = "user123"
+                        authViewModel.signInWithEmail("user@fieldreport.ai", "user123")
+                    },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text("Normal Account", fontSize = 12.sp)
+                }
+
+                Button(
+                    onClick = {
+                        email = "pro@fieldreport.ai"
+                        password = "pro123"
+                        authViewModel.signInWithEmail("pro@fieldreport.ai", "pro123")
+                    },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Teal600)
+                ) {
+                    Text("Pro Account", fontSize = 12.sp, color = Color.White)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             OutlinedTextField(
                 value = email,

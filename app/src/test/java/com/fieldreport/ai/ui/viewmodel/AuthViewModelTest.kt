@@ -23,6 +23,8 @@ class AuthViewModelTest {
     private val mockAuth = mockk<FirebaseAuth>(relaxed = true)
     private val mockUser = mockk<FirebaseUser>(relaxed = true)
 
+    private val mockApp = mockk<android.app.Application>(relaxed = true)
+
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
@@ -40,7 +42,7 @@ class AuthViewModelTest {
     fun `init checks current user and sets Authenticated if logged in`() {
         every { mockAuth.currentUser } returns mockUser
 
-        val viewModel = AuthViewModel()
+        val viewModel = AuthViewModel(mockApp)
 
         assertTrue(viewModel.authState.value is AuthState.Authenticated)
         assertEquals(mockUser, (viewModel.authState.value as AuthState.Authenticated).user)
@@ -50,7 +52,7 @@ class AuthViewModelTest {
     fun `init sets Idle if no user logged in`() {
         every { mockAuth.currentUser } returns null
 
-        val viewModel = AuthViewModel()
+        val viewModel = AuthViewModel(mockApp)
 
         assertEquals(AuthState.Idle, viewModel.authState.value)
     }
@@ -58,7 +60,7 @@ class AuthViewModelTest {
     @Test
     fun `signOut resets authState to Idle`() {
         every { mockAuth.currentUser } returns mockUser
-        val viewModel = AuthViewModel()
+        val viewModel = AuthViewModel(mockApp)
         assertTrue(viewModel.authState.value is AuthState.Authenticated)
 
         viewModel.signOut()
