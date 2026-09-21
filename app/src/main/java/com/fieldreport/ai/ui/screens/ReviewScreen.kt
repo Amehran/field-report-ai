@@ -33,6 +33,7 @@ import com.fieldreport.ai.data.db.MediaItemEntity
 import com.fieldreport.ai.data.model.ReportStatus
 import com.fieldreport.ai.ui.theme.*
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
+import com.fieldreport.ai.ui.components.FieldReportTopBar
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -86,17 +87,16 @@ fun ReviewScreen(
     if (report?.status == ReportStatus.GENERATING) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text("Drafting report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+                FieldReportTopBar(
+                    title = "Drafting Report",
                     navigationIcon = {
                         IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                    }
                 )
             },
-            containerColor = Slate50
+            containerColor = MaterialTheme.colorScheme.background
         ) { innerPadding ->
             Column(
                 modifier = Modifier
@@ -105,18 +105,18 @@ fun ReviewScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CircularProgressIndicator(color = Teal600)
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     text = "AI is drafting your report...",
                     style = MaterialTheme.typography.titleMedium,
-                    color = Slate900
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "Analyzing your voice notes and photos.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Slate500
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -125,19 +125,18 @@ fun ReviewScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Review report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "Review Report",
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         bottomBar = {
             Surface(
-                color = Color.White,
+                color = MaterialTheme.colorScheme.surface,
                 shadowElevation = 8.dp
             ) {
                 val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
@@ -165,18 +164,20 @@ fun ReviewScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Charcoal900)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
                     ) {
                         Text(
                             text = "Approve report",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = Color.White
+                            style = MaterialTheme.typography.labelLarge
                         )
                     }
                 }
             }
         },
-        containerColor = Slate50
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -195,7 +196,7 @@ fun ReviewScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(modifier = Modifier.padding(18.dp)) {
@@ -209,7 +210,7 @@ fun ReviewScreen(
                                 Text(
                                     text = "CUSTOMER & JOB",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = Slate500,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     letterSpacing = 0.5.sp,
                                     fontWeight = FontWeight.SemiBold
                                 )
@@ -217,7 +218,7 @@ fun ReviewScreen(
                                 Text(
                                     text = "${report?.customerName.orEmpty().ifBlank { "Customer" }}: ${report?.jobTitle.orEmpty().ifBlank { "General Job" }}",
                                     style = MaterialTheme.typography.titleMedium,
-                                    color = Slate900,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -232,7 +233,7 @@ fun ReviewScreen(
                                 Text(
                                     text = "DATE",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = Slate500,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     letterSpacing = 0.5.sp,
                                     fontWeight = FontWeight.SemiBold
                                 )
@@ -240,22 +241,22 @@ fun ReviewScreen(
                                 Text(
                                     text = dateStr,
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Slate600,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Medium
                                 )
                             }
                         }
 
                         Spacer(modifier = Modifier.height(14.dp))
-                        HorizontalDivider(color = Slate100)
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                         Spacer(modifier = Modifier.height(14.dp))
 
-                        // Technician Field (Formatted same as Customer & Job)
+                        // Technician Field
                         Column(modifier = Modifier.fillMaxWidth()) {
                             Text(
                                 text = "TECHNICIAN",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = Slate500,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 letterSpacing = 0.5.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -264,7 +265,7 @@ fun ReviewScreen(
                                 value = technicianName,
                                 onValueChange = { technicianName = it },
                                 textStyle = MaterialTheme.typography.titleMedium.copy(
-                                    color = Slate900,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 ),
                                 singleLine = true,
@@ -273,7 +274,7 @@ fun ReviewScreen(
                                         Text(
                                             text = "Add Technician Name...",
                                             style = MaterialTheme.typography.titleMedium,
-                                            color = Slate500.copy(alpha = 0.5f),
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                             fontWeight = FontWeight.Normal
                                         )
                                     }
@@ -290,14 +291,14 @@ fun ReviewScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(modifier = Modifier.padding(18.dp)) {
                         Text(
                             text = "Issue",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Slate900,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
 
@@ -308,14 +309,7 @@ fun ReviewScreen(
                             onValueChange = { issueDescription = it },
                             label = { Text("Issue Description") },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(10.dp),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedBorderColor = Slate200,
-                                focusedBorderColor = Teal600,
-                                focusedLabelColor = Teal600,
-                                unfocusedContainerColor = Slate50,
-                                focusedContainerColor = Slate50
-                            )
+                            shape = RoundedCornerShape(10.dp)
                         )
 
                         if (mediaItems.isNotEmpty()) {
@@ -324,7 +318,7 @@ fun ReviewScreen(
                             Text(
                                 text = "ATTACHED PHOTOS",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = Slate500,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 letterSpacing = 0.5.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -336,8 +330,8 @@ fun ReviewScreen(
                                     Box(
                                         modifier = Modifier
                                             .size(90.dp)
-                                            .background(Slate100, RoundedCornerShape(10.dp))
-                                            .border(1.dp, Slate200, RoundedCornerShape(10.dp))
+                                            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(10.dp))
+                                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(10.dp))
                                     ) {
                                         AsyncImage(
                                             model = media.localUri,
@@ -346,13 +340,13 @@ fun ReviewScreen(
                                             contentScale = ContentScale.Crop
                                         )
                                         Surface(
-                                            color = Teal600,
+                                            color = MaterialTheme.colorScheme.primary,
                                             shape = RoundedCornerShape(bottomEnd = 6.dp, topStart = 10.dp),
                                             modifier = Modifier.align(Alignment.TopStart)
                                         ) {
                                             Text(
                                                 text = media.label.name,
-                                                color = Color.White,
+                                                color = MaterialTheme.colorScheme.onPrimary,
                                                 fontSize = 9.sp,
                                                 fontWeight = FontWeight.Bold,
                                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
@@ -371,14 +365,14 @@ fun ReviewScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(modifier = Modifier.padding(18.dp)) {
                         Text(
                             text = "Service",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Slate900,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
 
@@ -391,14 +385,7 @@ fun ReviewScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(120.dp),
-                            shape = RoundedCornerShape(10.dp),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedBorderColor = Slate200,
-                                focusedBorderColor = Teal600,
-                                focusedLabelColor = Teal600,
-                                unfocusedContainerColor = Slate50,
-                                focusedContainerColor = Slate50
-                            )
+                            shape = RoundedCornerShape(10.dp)
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -406,7 +393,7 @@ fun ReviewScreen(
                         Text(
                             text = "COST SUMMARY",
                             style = MaterialTheme.typography.labelSmall,
-                            color = Slate500,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             letterSpacing = 0.5.sp,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -418,9 +405,9 @@ fun ReviewScreen(
                         val total = report?.totalCost ?: ((labor ?: 0.0) + (parts ?: 0.0))
 
                         Surface(
-                            color = Slate50,
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
                             shape = RoundedCornerShape(10.dp),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, Slate200),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Column(modifier = Modifier.padding(14.dp)) {
@@ -429,8 +416,8 @@ fun ReviewScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text("Labor:", style = MaterialTheme.typography.bodyMedium, color = Slate600)
-                                        Text(String.format("%s %.2f", currencySymbol, labor), style = MaterialTheme.typography.bodyMedium, color = Slate900, fontWeight = FontWeight.Medium)
+                                        Text("Labor:", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(String.format("%s %.2f", currencySymbol, labor), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Medium)
                                     }
                                 }
                                 if (parts != null && parts > 0) {
@@ -439,21 +426,21 @@ fun ReviewScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text("Parts:", style = MaterialTheme.typography.bodyMedium, color = Slate600)
-                                        Text(String.format("%s %.2f", currencySymbol, parts), style = MaterialTheme.typography.bodyMedium, color = Slate900, fontWeight = FontWeight.Medium)
+                                        Text("Parts:", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(String.format("%s %.2f", currencySymbol, parts), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Medium)
                                     }
                                 }
-                                HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp), color = Slate200)
+                                HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp), color = MaterialTheme.colorScheme.outlineVariant)
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("Total Amount:", style = MaterialTheme.typography.titleMedium, color = Slate900, fontWeight = FontWeight.Bold)
+                                    Text("Total Amount:", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
                                     Text(
                                         String.format("%s %.2f", currencySymbol, total),
                                         style = MaterialTheme.typography.titleMedium,
-                                        color = Teal600,
+                                        color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
@@ -468,21 +455,21 @@ fun ReviewScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(modifier = Modifier.padding(18.dp)) {
                         Text(
                             text = "Comments",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Slate900,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = "Additional technician notes or observations for the customer.",
                             style = MaterialTheme.typography.bodySmall,
-                            color = Slate500
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -494,14 +481,7 @@ fun ReviewScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(100.dp),
-                            shape = RoundedCornerShape(10.dp),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedBorderColor = Slate200,
-                                focusedBorderColor = Teal600,
-                                focusedLabelColor = Teal600,
-                                unfocusedContainerColor = Slate50,
-                                focusedContainerColor = Slate50
-                            )
+                            shape = RoundedCornerShape(10.dp)
                         )
                     }
                 }

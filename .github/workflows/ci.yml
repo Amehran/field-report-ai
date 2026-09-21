@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 1
       
       - name: set up JDK 17
         uses: actions/setup-java@v4
@@ -24,8 +24,6 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-        with:
-          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/dev' }}
           
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > local.properties
@@ -58,11 +56,10 @@ jobs:
           }
           EOF
 
-      - name: Build and Lint Android
-        run: ./gradlew lintDebug assembleDebug --parallel --build-cache
-        
-      - name: Run Android Unit Tests & Coverage
-        run: ./gradlew testDebugUnitTest createDebugUnitTestCoverageReport --parallel --build-cache
+      - name: Test, Lint & Build Android
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs='-Xmx4096m -XX:+UseG1GC' -Dorg.gradle.parallel=true -Dorg.gradle.caching=true"
+        run: ./gradlew testDebugUnitTest lintDebug assembleDebug --parallel --build-cache
 
   build-backend:
     name: Build & Lint Backend

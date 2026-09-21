@@ -57,6 +57,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    lint {
+        abortOnError = true
+        checkReleaseBuilds = false
+        ignoreTestSources = true
+        checkDependencies = false
+    }
 }
 
 dependencies {
@@ -89,6 +96,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation(libs.play.services.auth)
+    implementation(libs.play.billing)
 
     // WorkManager
     implementation(libs.work.runtime.ktx)

@@ -6,12 +6,20 @@ enum class ReportStatus {
     GENERATING,
     NEEDS_REVIEW,
     APPROVED,
+    GENERATED,
+    SHARED,
     COMPLETED
 }
 
 enum class AiAgentMode {
     CLOUD,
     ON_DEVICE
+}
+
+enum class ThemeMode {
+    SYSTEM,
+    LIGHT,
+    DARK
 }
 
 enum class PhotoLabel {

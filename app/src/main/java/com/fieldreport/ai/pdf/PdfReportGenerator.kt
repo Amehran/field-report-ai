@@ -12,11 +12,14 @@ import java.util.*
 
 object PdfReportGenerator {
 
+    @Suppress("UNUSED_PARAMETER")
     fun generatePdf(
         context: Context,
         report: ReportEntity,
-        mediaItems: List<MediaItemEntity>,
-        businessName: String = "NORTHLINE HOME SERVICES"
+        mediaItems: List<MediaItemEntity> = emptyList(),
+        businessName: String = "NORTHLINE HOME SERVICES",
+        logoUri: String? = null,
+        signatureUri: String? = null
     ): File {
         val pdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(612, 792, 1).create() // Letter size
@@ -32,12 +35,6 @@ object PdfReportGenerator {
             color = Color.parseColor("#111827")
             textSize = 18f
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-            isAntiAlias = true
-        }
-
-        val subtitlePaint = Paint().apply {
-            color = Color.parseColor("#64748B")
-            textSize = 11f
             isAntiAlias = true
         }
 
@@ -65,6 +62,18 @@ object PdfReportGenerator {
         // Top Header Banner
         canvas.drawRect(0f, 0f, 612f, 70f, primaryPaint)
 
+        // Draw Company Logo if provided
+        val logoBitmap = loadBitmap(context, logoUri)
+        val textStartX = if (logoBitmap != null) {
+            val logoWidth = 48f
+            val logoHeight = 48f
+            val logoRect = RectF(36f, 11f, 36f + logoWidth, 11f + logoHeight)
+            canvas.drawBitmap(logoBitmap, null, logoRect, null)
+            96f
+        } else {
+            36f
+        }
+
         val headerTextPaint = Paint().apply {
             color = Color.WHITE
             textSize = 16f
@@ -72,7 +81,7 @@ object PdfReportGenerator {
             isAntiAlias = true
         }
         val headerTitle = businessName.ifBlank { "NORTHLINE HOME SERVICES" }.uppercase()
-        canvas.drawText(headerTitle, 36f, 40f, headerTextPaint)
+        canvas.drawText(headerTitle, textStartX, 40f, headerTextPaint)
         
         val dateStr = SimpleDateFormat("MMM dd, yyyy", Locale.US).format(Date(report.createdAt))
         val headerSubPaint = Paint().apply {
@@ -80,12 +89,12 @@ object PdfReportGenerator {
             textSize = 10f
             isAntiAlias = true
         }
-        canvas.drawText("Job Completion Report • $dateStr", 36f, 56f, headerSubPaint)
+        canvas.drawText("Job Completion Report • $dateStr", textStartX, 56f, headerSubPaint)
 
         y = 95f
 
         // Customer & Job Header
-        val customerJobTitle = "${report.customerName}: ${report.jobTitle}"
+        val customerJobTitle = "Customer: ${report.customerName}\nJob title: ${report.jobTitle}"
         y = drawWrappedText(canvas, customerJobTitle, 36f, y, 540f, titlePaint, lineSpacing = 4f)
         y += 8f
 
@@ -152,6 +161,43 @@ object PdfReportGenerator {
             y = drawWrappedText(canvas, comments, 36f, y, 540f, bodyPaint, lineSpacing = 4f)
             y += 12f
         }
+
+        // Technician Signature Section
+        val techName = report.technicianName?.takeIf { it.isNotBlank() }
+        val sigStartY = maxOf(y + 20f, 670f)
+
+        val sigLabelPaint = Paint().apply {
+            color = Color.parseColor("#64748B")
+            textSize = 9f
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            isAntiAlias = true
+        }
+
+        val sigScriptPaint = Paint().apply {
+            color = Color.parseColor("#0F766E")
+            textSize = 15f
+            typeface = Typeface.create(Typeface.SERIF, Typeface.ITALIC)
+            isAntiAlias = true
+        }
+
+        val sigLinePaint = Paint().apply {
+            color = Color.parseColor("#94A3B8")
+            strokeWidth = 1f
+            isAntiAlias = true
+        }
+
+        canvas.drawText("TECHNICIAN SIGNATURE", 36f, sigStartY, sigLabelPaint)
+
+        val sigBitmap = loadBitmap(context, signatureUri)
+        if (sigBitmap != null) {
+            val sigRect = RectF(36f, sigStartY + 4f, 200f, sigStartY + 44f)
+            canvas.drawBitmap(sigBitmap, null, sigRect, null)
+        } else if (techName != null) {
+            canvas.drawText(techName, 36f, sigStartY + 20f, sigScriptPaint)
+        }
+
+        val lineY = sigStartY + 46f
+        canvas.drawLine(36f, lineY, 240f, lineY, sigLinePaint)
 
         // Footer Disclaimer
         val footerY = 760f
@@ -220,5 +266,22 @@ object PdfReportGenerator {
             }
         }
         return y
+    }
+
+    private fun loadBitmap(context: Context, uriStr: String?): Bitmap? {
+        if (uriStr.isNullOrBlank()) return null
+        return try {
+            val uri = android.net.Uri.parse(uriStr)
+            if (uri.scheme == "content" || uri.scheme == "file") {
+                context.contentResolver.openInputStream(uri)?.use { stream ->
+                    BitmapFactory.decodeStream(stream)
+                }
+            } else {
+                BitmapFactory.decodeFile(uriStr)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }

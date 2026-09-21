@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fieldreport.ai.ui.theme.*
+import com.fieldreport.ai.ui.components.FieldReportTopBar
 import kotlinx.coroutines.delay
 
 import androidx.compose.foundation.rememberScrollState
@@ -141,14 +142,13 @@ fun VoiceCaptureScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Describe the work", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "Voice Note Capture",
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         containerColor = Slate50

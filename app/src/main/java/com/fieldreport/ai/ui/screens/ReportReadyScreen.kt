@@ -2,6 +2,7 @@ package com.fieldreport.ai.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -18,10 +19,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fieldreport.ai.ui.theme.*
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
+
+import android.app.Activity
+import com.fieldreport.ai.ui.components.PaywallSheet
+import com.fieldreport.ai.ui.components.FieldReportTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,13 +36,50 @@ fun ReportReadyScreen(
     onDone: () -> Unit
 ) {
     val context = LocalContext.current
+    val activity = context as? Activity
     val clipboardManager = LocalClipboardManager.current
     val report by viewModel.currentReport.collectAsState()
+    val billingProducts by viewModel.billingProducts.collectAsState()
+    val freePdfsRemaining by viewModel.freePdfsRemaining.collectAsState()
+    val isSubscribed by viewModel.isSubscribed.collectAsState()
+    val isLifetime by viewModel.isLifetime.collectAsState()
+
     var showDeletePrompt by remember { mutableStateOf(false) }
+    var showPaywallSheet by remember { mutableStateOf(false) }
 
     val handleShare = {
-        viewModel.shareReportPdf(context)
-        showDeletePrompt = true
+        viewModel.checkPdfExportEligibility { canExport, requiresPaywall ->
+            if (canExport) {
+                viewModel.shareReportPdf(context)
+                showDeletePrompt = true
+            } else if (requiresPaywall) {
+                showPaywallSheet = true
+            }
+        }
+    }
+
+    if (showPaywallSheet) {
+        PaywallSheet(
+            products = billingProducts,
+            onDismiss = { showPaywallSheet = false },
+            onPurchaseTier = { _, productDetails ->
+                if (activity != null && productDetails != null) {
+                    viewModel.launchBillingFlow(activity, productDetails)
+                } else {
+                    Toast.makeText(context, "Google Play Store unavailable in emulator mode.", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onRestorePurchases = {
+                viewModel.restorePurchases { success ->
+                    if (success) {
+                        Toast.makeText(context, "Purchases restored!", Toast.LENGTH_SHORT).show()
+                        showPaywallSheet = false
+                    } else {
+                        Toast.makeText(context, "No active subscriptions found.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        )
     }
 
     if (showDeletePrompt) {
@@ -72,38 +115,43 @@ fun ReportReadyScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Report ready", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "Report Ready",
                 navigationIcon = {
                     IconButton(onClick = onDone) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
+                    val statusText = if (isSubscribed || isLifetime) "Pro Active" else "$freePdfsRemaining free exports"
+                    val statusColor = if (isSubscribed || isLifetime) Emerald700 else Color.White
+                    val statusBg = if (isSubscribed || isLifetime) Emerald100 else Color.White.copy(alpha = 0.2f)
+
                     Surface(
-                        color = Emerald100,
+                        color = statusBg,
                         shape = CircleShape,
-                        modifier = Modifier.padding(end = 16.dp)
+                        modifier = Modifier
+                            .padding(end = 16.dp)
+                            .clickable { if (!isSubscribed && !isLifetime) showPaywallSheet = true }
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(
-                                Icons.Default.Check,
-                                contentDescription = "Approved",
-                                tint = Emerald700,
-                                modifier = Modifier.size(16.dp)
+                            Text(
+                                text = statusText,
+                                color = statusColor,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold
                             )
                         }
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         bottomBar = {
             Surface(
-                color = Color.White,
+                color = MaterialTheme.colorScheme.surface,
                 shadowElevation = 8.dp
             ) {
                 Box(
@@ -123,12 +171,14 @@ fun ReportReadyScreen(
                                 .fillMaxWidth()
                                 .height(56.dp),
                             shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Charcoal900)
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            )
                         ) {
                             Text(
                                 text = "Share PDF",
-                                style = MaterialTheme.typography.labelLarge,
-                                color = Color.White
+                                style = MaterialTheme.typography.labelLarge
                             )
                         }
 
@@ -139,13 +189,13 @@ fun ReportReadyScreen(
                             clipboardManager.setText(AnnotatedString(summaryText))
                             Toast.makeText(context, "Summary copied to clipboard!", Toast.LENGTH_SHORT).show()
                         }) {
-                            Text("Copy customer summary", color = Teal600, style = MaterialTheme.typography.labelLarge)
+                            Text("Copy customer summary", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge)
                         }
                     }
                 }
             }
         },
-        containerColor = Slate50
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -164,7 +214,7 @@ fun ReportReadyScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column {

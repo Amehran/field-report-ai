@@ -45,11 +45,28 @@ class ReportViewModelTest {
         // Mock the repository constructors so the ViewModel gets mocks
         mockkConstructor(ReportRepository::class)
         mockkConstructor(SettingsRepository::class)
+        mockkConstructor(com.fieldreport.ai.data.repository.BillingRepository::class)
+
+        every { anyConstructed<com.fieldreport.ai.data.repository.BillingRepository>().products } returns MutableStateFlow(emptyList())
+        every { anyConstructed<com.fieldreport.ai.data.repository.BillingRepository>().billingConnected } returns MutableStateFlow(false)
 
         coJustRun { anyConstructed<SettingsRepository>().setAiAgentMode(any()) }
+        coJustRun { anyConstructed<SettingsRepository>().setThemeMode(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setBusinessName(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setCurrency(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setTechnicianName(any()) }
+
+        val freePdfsFlow = MutableStateFlow(3)
+        val isSubscribedFlow = MutableStateFlow(false)
+        val isLifetimeFlow = MutableStateFlow(false)
+        val subTierFlow = MutableStateFlow("FREE_TRIAL")
+        val themeModeFlow = MutableStateFlow(com.fieldreport.ai.data.model.ThemeMode.SYSTEM)
+
+        every { anyConstructed<SettingsRepository>().freePdfsRemainingFlow } returns freePdfsFlow
+        every { anyConstructed<SettingsRepository>().isSubscribedFlow } returns isSubscribedFlow
+        every { anyConstructed<SettingsRepository>().isLifetimeFlow } returns isLifetimeFlow
+        every { anyConstructed<SettingsRepository>().subscriptionTierFlow } returns subTierFlow
+        every { anyConstructed<SettingsRepository>().themeModeFlow } returns themeModeFlow
 
         coJustRun { anyConstructed<ReportRepository>().generateLocalMockDraft(any(), any()) }
 
@@ -491,5 +508,25 @@ class ReportViewModelTest {
         advanceUntilIdle()
 
         coVerify { anyConstructed<ReportRepository>().generateLocalMockDraft("rep-auth-1", "Some notes") }
+    }
+
+    @Test
+    fun `setCompanyLogoUri updates logo URI in settings repository`() = runTest {
+        coEvery { anyConstructed<SettingsRepository>().setCompanyLogoUri("content://logo.jpg") } just Runs
+
+        viewModel.setCompanyLogoUri("content://logo.jpg")
+        advanceUntilIdle()
+
+        coVerify { anyConstructed<SettingsRepository>().setCompanyLogoUri("content://logo.jpg") }
+    }
+
+    @Test
+    fun `setSignatureUri updates signature URI in settings repository`() = runTest {
+        coEvery { anyConstructed<SettingsRepository>().setSignatureUri("content://sig.jpg") } just Runs
+
+        viewModel.setSignatureUri("content://sig.jpg")
+        advanceUntilIdle()
+
+        coVerify { anyConstructed<SettingsRepository>().setSignatureUri("content://sig.jpg") }
     }
 }

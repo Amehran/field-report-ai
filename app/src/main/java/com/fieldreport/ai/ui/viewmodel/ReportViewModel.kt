@@ -37,7 +37,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
+import com.fieldreport.ai.data.repository.BillingRepository
 import com.fieldreport.ai.data.repository.SettingsRepository
+import com.android.billingclient.api.ProductDetails
+import android.app.Activity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ReportViewModel(application: Application) : AndroidViewModel(application) {
@@ -48,14 +51,201 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
 
     private val settingsRepository: SettingsRepository = SettingsRepository(application)
 
+    val billingRepository: BillingRepository = BillingRepository(
+        context = application,
+        onPurchaseVerified = { purchaseToken, productId, isLifetime ->
+            verifyPurchaseTokenOnBackend(purchaseToken, productId, isLifetime)
+        }
+    )
+
+    val billingProducts: StateFlow<List<ProductDetails>> = billingRepository.products
+    val billingConnected: StateFlow<Boolean> = billingRepository.billingConnected
+
     val aiAgentMode = settingsRepository.aiAgentModeFlow
+    val themeMode = settingsRepository.themeModeFlow
     val businessName = settingsRepository.businessNameFlow
     val currency = settingsRepository.currencyFlow
     val technicianName = settingsRepository.technicianNameFlow
+    val companyLogoUri = settingsRepository.companyLogoUriFlow
+    val signatureUri = settingsRepository.signatureUriFlow
+
+    fun setCompanyLogoUri(uri: String?) {
+        viewModelScope.launch {
+            settingsRepository.setCompanyLogoUri(uri)
+        }
+    }
+
+    fun setSignatureUri(uri: String?) {
+        viewModelScope.launch {
+            settingsRepository.setSignatureUri(uri)
+        }
+    }
+
+    val freePdfsRemaining = settingsRepository.freePdfsRemainingFlow.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), 3
+    )
+    val isSubscribed = settingsRepository.isSubscribedFlow.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), false
+    )
+    val isLifetime = settingsRepository.isLifetimeFlow.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), false
+    )
+    val subscriptionTier = settingsRepository.subscriptionTierFlow.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), "FREE_TRIAL"
+    )
+
+    fun checkPdfExportEligibility(onResult: (canExport: Boolean, requiresPaywall: Boolean) -> Unit) {
+        viewModelScope.launch {
+            val reportId = currentReportId.value ?: "rep_export_check"
+            val currentSub = isSubscribed.value
+            val currentLife = isLifetime.value
+            val currentRemaining = freePdfsRemaining.value
+
+            if (currentSub || currentLife) {
+                onResult(true, false)
+                return@launch
+            }
+
+            if (currentRemaining <= 0) {
+                onResult(false, true)
+                return@launch
+            }
+
+            // Verify with backend anti-tampering endpoint
+            try {
+                val auth = FirebaseAuth.getInstance()
+                var user = auth.currentUser
+                if (user == null) {
+                    try {
+                        val authResult = auth.signInAnonymously().await()
+                        user = authResult.user
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
+                if (user != null) {
+                    val tokenResult = user.getIdToken(true).await()
+                    val idToken = tokenResult.token
+                    if (idToken != null) {
+                        val client = OkHttpClient.Builder()
+                            .connectTimeout(4, TimeUnit.SECONDS)
+                            .readTimeout(4, TimeUnit.SECONDS)
+                            .build()
+
+                        val jsonBody = JSONObject().apply {
+                            put("reportId", reportId)
+                            put("deviceIdHash", android.provider.Settings.Secure.getString(
+                                getApplication<Application>().contentResolver,
+                                android.provider.Settings.Secure.ANDROID_ID
+                            ) ?: "default_device")
+                        }
+
+                        val request = Request.Builder()
+                            .url("http://10.0.2.2:8080/v1/reports/verify-export")
+                            .addHeader("Authorization", "Bearer $idToken")
+                            .post(jsonBody.toString().toRequestBody("application/json".toMediaType()))
+                            .build()
+
+                        val response = withContext(Dispatchers.IO) { client.newCall(request).execute() }
+                        if (response.isSuccessful) {
+                            val responseBody = response.body?.string()
+                            if (!responseBody.isNullOrBlank()) {
+                                val json = JSONObject(responseBody)
+                                val status = json.optString("status")
+                                val newRemaining = json.optInt("freePdfsRemaining", currentRemaining - 1)
+                                val serverSubscribed = json.optBoolean("isSubscribed", false)
+                                val serverLifetime = json.optBoolean("isLifetime", false)
+
+                                settingsRepository.updateEntitlement(
+                                    remainingPdfs = newRemaining,
+                                    isSubscribed = serverSubscribed,
+                                    isLifetime = serverLifetime,
+                                    tier = if (serverLifetime) "PRO_LIFETIME" else if (serverSubscribed) "PRO_SUBSCRIBED" else "FREE_TRIAL"
+                                )
+
+                                if (status == "APPROVED") {
+                                    onResult(true, false)
+                                    return@launch
+                                } else {
+                                    onResult(false, true)
+                                    return@launch
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            // Fallback local decrement if offline
+            val nextRemaining = (currentRemaining - 1).coerceAtLeast(0)
+            settingsRepository.setFreePdfsRemaining(nextRemaining)
+            if (currentRemaining > 0) {
+                onResult(true, false)
+            } else {
+                onResult(false, true)
+            }
+        }
+    }
+
+    private fun verifyPurchaseTokenOnBackend(purchaseToken: String, productId: String, isLifetime: Boolean) {
+        viewModelScope.launch {
+            try {
+                val auth = FirebaseAuth.getInstance()
+                val user = auth.currentUser
+                if (user != null) {
+                    val tokenResult = user.getIdToken(true).await()
+                    val idToken = tokenResult.token
+                    if (idToken != null) {
+                        val client = OkHttpClient.Builder().build()
+                        val jsonBody = JSONObject().apply {
+                            put("subscriptionOrProductId", productId)
+                            put("purchaseToken", purchaseToken)
+                            put("isLifetime", isLifetime)
+                        }
+                        val request = Request.Builder()
+                            .url("http://10.0.2.2:8080/v1/subscriptions/verify")
+                            .addHeader("Authorization", "Bearer $idToken")
+                            .post(jsonBody.toString().toRequestBody("application/json".toMediaType()))
+                            .build()
+
+                        val response = withContext(Dispatchers.IO) { client.newCall(request).execute() }
+                        if (response.isSuccessful) {
+                            val tierStr = if (isLifetime) "PRO_LIFETIME" else if (productId.contains("annual")) "PRO_ANNUAL" else "PRO_MONTHLY"
+                            settingsRepository.updateEntitlement(
+                                remainingPdfs = 999,
+                                isSubscribed = !isLifetime,
+                                isLifetime = isLifetime,
+                                tier = tierStr
+                            )
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun launchBillingFlow(activity: Activity, productDetails: ProductDetails) {
+        billingRepository.launchBillingFlow(activity, productDetails)
+    }
+
+    fun restorePurchases(onComplete: (Boolean) -> Unit) {
+        billingRepository.restorePurchases(onComplete)
+    }
 
     fun setAiAgentMode(mode: com.fieldreport.ai.data.model.AiAgentMode) {
         viewModelScope.launch {
             settingsRepository.setAiAgentMode(mode)
+        }
+    }
+
+    fun setThemeMode(mode: com.fieldreport.ai.data.model.ThemeMode) {
+        viewModelScope.launch {
+            settingsRepository.setThemeMode(mode)
         }
     }
 
@@ -289,21 +479,27 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                             val draftJson = JSONObject(responseBody)
                             val latestReport = currentReport.value ?: report
                             if (latestReport != null) {
-                                val newReport = latestReport.copy(
-                                    customerName = finalCustomerName,
-                                    jobTitle = finalJobTitle,
-                                    typedNotes = typedNotes ?: latestReport.typedNotes,
-                                    initialStatus = draftJson.optString("initialStatus", ""),
-                                    resolutionStepsJson = draftJson.optString("resolutionStepsJson", ""),
-                                    currentOperationalState = draftJson.optString("currentOperationalState", ""),
-                                    laborCost = if (draftJson.has("estimatedLaborCost")) draftJson.optDouble("estimatedLaborCost") else latestReport.laborCost,
-                                    partsCost = if (draftJson.has("estimatedPartsCost")) draftJson.optDouble("estimatedPartsCost") else latestReport.partsCost,
-                                    workCompletedJson = draftJson.optString("workCompletedJson", ""),
-                                    findingsJson = draftJson.optString("findingsJson", ""),
-                                    recommendationsJson = draftJson.optString("recommendationsJson", ""),
-                                    status = ReportStatus.NEEDS_REVIEW,
-                                    updatedAt = System.currentTimeMillis()
-                                )
+                                    val lCost = if (draftJson.has("estimatedLaborCost")) draftJson.optDouble("estimatedLaborCost") else latestReport.laborCost
+                                    val pCost = if (draftJson.has("estimatedPartsCost")) draftJson.optDouble("estimatedPartsCost") else latestReport.partsCost
+                                    val lVal = lCost ?: 0.0
+                                    val pVal = pCost ?: 0.0
+                                    val tVal = lVal + pVal
+                                    val newReport = latestReport.copy(
+                                        customerName = finalCustomerName,
+                                        jobTitle = finalJobTitle,
+                                        typedNotes = typedNotes ?: latestReport.typedNotes,
+                                        initialStatus = draftJson.optString("initialStatus", ""),
+                                        resolutionStepsJson = draftJson.optString("resolutionStepsJson", ""),
+                                        currentOperationalState = draftJson.optString("currentOperationalState", ""),
+                                        laborCost = lVal,
+                                        partsCost = pVal,
+                                        totalCost = tVal,
+                                        workCompletedJson = draftJson.optString("workCompletedJson", ""),
+                                        findingsJson = draftJson.optString("findingsJson", ""),
+                                        recommendationsJson = draftJson.optString("recommendationsJson", ""),
+                                        status = ReportStatus.NEEDS_REVIEW,
+                                        updatedAt = System.currentTimeMillis()
+                                    )
                                 repository.updateReport(newReport)
                                 return@launch
                             }
@@ -406,12 +602,17 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         val media = currentMedia.value
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                repository.markReportShared(report.id)
                 val currentBizName = businessName.first()
+                val logoUri = companyLogoUri.firstOrNull()
+                val sigUri = signatureUri.firstOrNull()
                 val pdfFile = PdfReportGenerator.generatePdf(
                     context = context,
                     report = report,
                     mediaItems = media,
-                    businessName = currentBizName
+                    businessName = currentBizName,
+                    logoUri = logoUri,
+                    signatureUri = sigUri
                 )
 
                 val uri = FileProvider.getUriForFile(

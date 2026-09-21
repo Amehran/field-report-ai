@@ -24,6 +24,7 @@ import com.fieldreport.ai.data.db.MediaItemEntity
 import com.fieldreport.ai.data.model.PhotoLabel
 import com.fieldreport.ai.ui.theme.*
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
+import com.fieldreport.ai.ui.components.FieldReportTopBar
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -106,7 +107,7 @@ fun CaptureScreen(
     val currentReport by viewModel.currentReport.collectAsState()
     val mediaItems by viewModel.currentMedia.collectAsState()
 
-    LaunchedEffect(currentReport?.id) {
+    LaunchedEffect(currentReport?.id, currentReport?.laborCost, currentReport?.partsCost, currentReport?.totalCost) {
         currentReport?.let { report ->
             customerName = report.customerName
             jobTitle = report.jobTitle
@@ -115,9 +116,13 @@ fun CaptureScreen(
             if (notes.isNotBlank()) {
                 isTypingNotes = true
             }
-            laborCostStr = report.laborCost?.toString() ?: ""
-            partsCostStr = report.partsCost?.toString() ?: ""
-            totalCostStr = report.totalCost?.toString() ?: ""
+            val l = report.laborCost ?: 0.0
+            val p = report.partsCost ?: 0.0
+            val t = report.totalCost ?: (l + p)
+
+            laborCostStr = if (report.laborCost != null && report.laborCost != 0.0) formatCostValue(l) else (if (report.laborCost == 0.0) "0" else "")
+            partsCostStr = if (report.partsCost != null && report.partsCost != 0.0) formatCostValue(p) else (if (report.partsCost == 0.0) "0" else "")
+            totalCostStr = formatCostValue(t)
         }
     }
 
@@ -132,10 +137,10 @@ fun CaptureScreen(
     LaunchedEffect(laborCostStr, partsCostStr, totalCostStr) {
         kotlinx.coroutines.delay(500)
         val report = currentReport
-        val l = laborCostStr.toDoubleOrNull()
-        val p = partsCostStr.toDoubleOrNull()
-        val t = totalCostStr.toDoubleOrNull()
-        if (report != null && (l != report.laborCost || p != report.partsCost || t != report.totalCost)) {
+        val l = laborCostStr.toDoubleOrNull() ?: 0.0
+        val p = partsCostStr.toDoubleOrNull() ?: 0.0
+        val t = totalCostStr.toDoubleOrNull() ?: (l + p)
+        if (report != null && (l != (report.laborCost ?: 0.0) || p != (report.partsCost ?: 0.0) || t != (report.totalCost ?: 0.0))) {
             viewModel.updateCosts(l, p, t)
         }
     }
@@ -227,19 +232,18 @@ fun CaptureScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("New report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "New Field Report",
                 navigationIcon = {
                     IconButton(onClick = onClose) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         bottomBar = {
             Surface(
-                color = Color.White,
+                color = MaterialTheme.colorScheme.surface,
                 shadowElevation = 8.dp
             ) {
                 Box(
@@ -258,18 +262,20 @@ fun CaptureScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Charcoal900)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
                     ) {
                         Text(
                             text = "Generate report",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = Color.White
+                            style = MaterialTheme.typography.labelLarge
                         )
                     }
                 }
             }
         },
-        containerColor = Slate50
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -288,7 +294,7 @@ fun CaptureScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -297,7 +303,7 @@ fun CaptureScreen(
                         Text(
                             text = "Report Date: $dateStr",
                             style = MaterialTheme.typography.labelMedium,
-                            color = Slate500,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
@@ -320,7 +326,7 @@ fun CaptureScreen(
                     OutlinedTextField(
                         value = jobTitle,
                         onValueChange = { jobTitle = it },
-                        label = { Text("Job Name / Trade") },
+                        label = { Text("Job Name") },
                         placeholder = { Text("e.g. Kitchen Repair or HVAC Service") },
                         trailingIcon = {
                             if (jobTitle.isNotEmpty()) {
@@ -346,13 +352,13 @@ fun CaptureScreen(
                 Text(
                     text = "Photos",
                     style = MaterialTheme.typography.titleLarge,
-                    color = Slate900
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 TextButton(onClick = {
                     selectedLabel = PhotoLabel.BEFORE
                     showPhotoDialog = true
                 }) {
-                    Text("+ Add photo", color = Teal600, style = MaterialTheme.typography.labelLarge)
+                    Text("+ Add photo", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge)
                 }
             }
 
@@ -361,12 +367,12 @@ fun CaptureScreen(
             // Photo List Carousel
             if (mediaItems.isEmpty()) {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    DummyPhotoCard("BEFORE", Slate100, Slate600) {
+                    DummyPhotoCard("BEFORE", MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.onSurfaceVariant) {
                         selectedLabel = PhotoLabel.BEFORE
                         showPhotoDialog = true
                     }
                     Spacer(modifier = Modifier.width(12.dp))
-                    DummyPhotoCard("AFTER", Sky100, Sky700) {
+                    DummyPhotoCard("AFTER", MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.onPrimaryContainer) {
                         selectedLabel = PhotoLabel.AFTER
                         showPhotoDialog = true
                     }
@@ -387,7 +393,7 @@ fun CaptureScreen(
             Text(
                 text = "Describe the work",
                 style = MaterialTheme.typography.titleLarge,
-                color = Slate900
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -439,8 +445,14 @@ fun CaptureScreen(
                         .fillMaxWidth()
                         .clickable { onNavigateToRecord() },
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = if (hasAudio) Emerald100.copy(alpha = 0.4f) else Color.White),
-                    border = CardDefaults.outlinedCardBorder().copy(brush = androidx.compose.ui.graphics.SolidColor(if (hasAudio) Emerald700 else Slate200))
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (hasAudio) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f) else MaterialTheme.colorScheme.surface
+                    ),
+                    border = CardDefaults.outlinedCardBorder().copy(
+                        brush = androidx.compose.ui.graphics.SolidColor(
+                            if (hasAudio) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                        )
+                    )
                 ) {
                     Row(
                         modifier = Modifier.padding(20.dp),
@@ -449,13 +461,16 @@ fun CaptureScreen(
                         Box(
                             modifier = Modifier
                                 .size(48.dp)
-                                .background(if (hasAudio) Emerald100 else Teal100, CircleShape),
+                                .background(
+                                    if (hasAudio) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+                                    CircleShape
+                                ),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.Mic,
                                 contentDescription = if (hasAudio) "Voice Note Recorded" else "Record",
-                                tint = if (hasAudio) Emerald700 else Teal600
+                                tint = if (hasAudio) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.primary
                             )
                         }
                         Spacer(modifier = Modifier.width(16.dp))
@@ -463,12 +478,12 @@ fun CaptureScreen(
                             Text(
                                 text = if (hasAudio) "Voice note recorded ✓" else "Record a voice note",
                                 style = MaterialTheme.typography.titleLarge,
-                                color = Slate900
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = if (hasAudio) "Tap to re-record or update voice recording" else "Tap to open voice recorder",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = if (hasAudio) Slate600 else Slate500
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -481,7 +496,7 @@ fun CaptureScreen(
             Text(
                 text = "Pricing (Optional)",
                 style = MaterialTheme.typography.titleLarge,
-                color = Slate900
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -489,7 +504,7 @@ fun CaptureScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -499,7 +514,10 @@ fun CaptureScreen(
                     ) {
                         OutlinedTextField(
                             value = laborCostStr,
-                            onValueChange = { laborCostStr = it },
+                            onValueChange = { newValue ->
+                                laborCostStr = newValue
+                                totalCostStr = calculateTotalCostString(newValue, partsCostStr)
+                            },
                             label = { Text("Labor Cost") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
@@ -507,7 +525,10 @@ fun CaptureScreen(
                         )
                         OutlinedTextField(
                             value = partsCostStr,
-                            onValueChange = { partsCostStr = it },
+                            onValueChange = { newValue ->
+                                partsCostStr = newValue
+                                totalCostStr = calculateTotalCostString(laborCostStr, newValue)
+                            },
                             label = { Text("Parts Cost") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
@@ -537,7 +558,7 @@ fun PhotoBadgeCard(item: MediaItemEntity, onToggleLabel: () -> Unit) {
     Box(
         modifier = Modifier
             .size(110.dp)
-            .background(Slate200, RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
             .clickable { onToggleLabel() }
     ) {
         if (!item.localUri.startsWith("dummy_")) {
@@ -547,14 +568,14 @@ fun PhotoBadgeCard(item: MediaItemEntity, onToggleLabel: () -> Unit) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Slate200, RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
             )
         }
 
         val (bgColor, textColor) = when (item.label) {
-            PhotoLabel.BEFORE -> Slate100 to Slate600
-            PhotoLabel.AFTER -> Sky100 to Sky700
-            PhotoLabel.GENERAL -> Slate100 to Slate900
+            PhotoLabel.BEFORE -> MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
+            PhotoLabel.AFTER -> MaterialTheme.colorScheme.primaryContainer to MaterialTheme.colorScheme.onPrimaryContainer
+            PhotoLabel.GENERAL -> MaterialTheme.colorScheme.secondaryContainer to MaterialTheme.colorScheme.onSecondaryContainer
         }
 
         Surface(
@@ -580,7 +601,7 @@ fun DummyPhotoCard(label: String, bgColor: Color, textColor: Color, onClick: () 
     Box(
         modifier = Modifier
             .size(110.dp)
-            .background(Slate200, RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
             .clickable { onClick() }
             .padding(8.dp)
     ) {
@@ -598,4 +619,18 @@ fun DummyPhotoCard(label: String, bgColor: Color, textColor: Color, onClick: () 
             )
         }
     }
+}
+
+private fun formatCostValue(value: Double): String {
+    return if (value % 1.0 == 0.0) {
+        value.toLong().toString()
+    } else {
+        String.format(java.util.Locale.US, "%.2f", value).trimEnd('0').trimEnd('.')
+    }
+}
+
+private fun calculateTotalCostString(laborStr: String, partsStr: String): String {
+    val l = laborStr.toDoubleOrNull() ?: 0.0
+    val p = partsStr.toDoubleOrNull() ?: 0.0
+    return formatCostValue(l + p)
 }
