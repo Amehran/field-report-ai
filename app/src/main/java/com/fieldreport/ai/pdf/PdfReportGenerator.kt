@@ -12,10 +12,11 @@ import java.util.*
 
 object PdfReportGenerator {
 
+    @Suppress("UNUSED_PARAMETER")
     fun generatePdf(
         context: Context,
         report: ReportEntity,
-        mediaItems: List<MediaItemEntity>,
+        mediaItems: List<MediaItemEntity> = emptyList(),
         businessName: String = "NORTHLINE HOME SERVICES"
     ): File {
         val pdfDocument = PdfDocument()
@@ -32,12 +33,6 @@ object PdfReportGenerator {
             color = Color.parseColor("#111827")
             textSize = 18f
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-            isAntiAlias = true
-        }
-
-        val subtitlePaint = Paint().apply {
-            color = Color.parseColor("#64748B")
-            textSize = 11f
             isAntiAlias = true
         }
 

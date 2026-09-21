@@ -25,6 +25,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
+@Suppress("UNUSED_PARAMETER")
 fun FieldReportAITheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit

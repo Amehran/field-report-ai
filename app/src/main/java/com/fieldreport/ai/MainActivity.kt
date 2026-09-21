@@ -2,6 +2,7 @@ package com.fieldreport.ai
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
     private val reportViewModel: ReportViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContent {
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
                                 onNavigateToSettings = {
                                     navController.navigate("settings")
                                 },
-                                onNavigateToReview = { reportId ->
+                                onNavigateToReview = { _ ->
                                     navController.navigate("review")
                                 }
                             )
