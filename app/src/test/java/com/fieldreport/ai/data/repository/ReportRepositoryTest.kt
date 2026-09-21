@@ -217,6 +217,7 @@ class ReportRepositoryTest {
         val tmpDir = java.io.File(System.getProperty("java.io.tmpdir") ?: "/tmp")
         every { mockContext.cacheDir } returns tmpDir
         every { mockContext.filesDir } returns tmpDir
+        every { mockContext.externalCacheDir } returns tmpDir
 
         val report = ReportEntity(id = "rep-files", userId = "user", status = ReportStatus.APPROVED, customerName = "A", jobTitle = "B", audioLocalUri = "file:///data/audio.m4a")
         val media = listOf(MediaItemEntity(id = "m1", reportId = "rep-files", type = MediaType.PHOTO, label = PhotoLabel.BEFORE, localUri = "file:///data/img.jpg"))
@@ -241,6 +242,7 @@ class ReportRepositoryTest {
         val tmpDir = java.io.File(System.getProperty("java.io.tmpdir") ?: "/tmp")
         every { mockContext.cacheDir } returns tmpDir
         every { mockContext.filesDir } returns tmpDir
+        every { mockContext.externalCacheDir } returns tmpDir
 
         val reports = listOf(ReportEntity(id = "rep-1", userId = "user", status = ReportStatus.APPROVED, customerName = "A", jobTitle = "B"))
         coEvery { mockDao.getAllReportsList() } returns reports
