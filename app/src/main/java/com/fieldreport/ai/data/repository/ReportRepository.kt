@@ -114,7 +114,7 @@ class ReportRepository(private val reportDao: ReportDao) {
     suspend fun approveReport(reportId: String) {
         val existing = reportDao.getReportById(reportId) ?: return
         val updated = existing.copy(
-            status = ReportStatus.GENERATED,
+            status = ReportStatus.APPROVED,
             approvedAt = System.currentTimeMillis(),
             updatedAt = System.currentTimeMillis()
         )

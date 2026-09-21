@@ -255,7 +255,7 @@ class ReportRepositoryTest {
     }
 
     @Test
-    fun `approveReport updates report status to GENERATED`() = runTest {
+    fun `approveReport updates report status to APPROVED`() = runTest {
         val reportId = "test-123"
         val existingReport = ReportEntity(
             id = reportId,
@@ -270,7 +270,7 @@ class ReportRepositoryTest {
         repository.approveReport(reportId)
 
         coVerify(exactly = 1) { 
-            mockDao.updateReport(match { it.id == reportId && it.status == ReportStatus.GENERATED }) 
+            mockDao.updateReport(match { it.id == reportId && it.status == ReportStatus.APPROVED }) 
         }
     }
 
