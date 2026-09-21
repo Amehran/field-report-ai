@@ -50,11 +50,11 @@ fun ReportListScreen(
                 title = "Field Reports",
                 actions = {
                     IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.White)
+                        Icon(Icons.Default.Settings, contentDescription = "Settings")
                     }
                     Box {
                         IconButton(onClick = { showMenu = !showMenu }) {
-                            Icon(androidx.compose.material.icons.Icons.Default.MoreVert, contentDescription = "More options", tint = Color.White)
+                            Icon(androidx.compose.material.icons.Icons.Default.MoreVert, contentDescription = "More options")
                         }
                         DropdownMenu(
                             expanded = showMenu,
