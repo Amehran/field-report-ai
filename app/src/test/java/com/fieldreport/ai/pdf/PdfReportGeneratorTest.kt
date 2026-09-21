@@ -59,7 +59,8 @@ class PdfReportGeneratorTest {
         val file = PdfReportGenerator.generatePdf(mockContext, report, emptyList())
 
         assertNotNull(file)
-        verify { mockCanvas.drawText("Jane Smith: HVAC Maintenance", 36f, any(), any()) }
+        verify { mockCanvas.drawText("Customer: Jane Smith", 36f, any(), any()) }
+        verify { mockCanvas.drawText("Job title: HVAC Maintenance", 36f, any(), any()) }
         verify { mockCanvas.drawText("Low pressure detected", 36f, any(), any()) }
         verify { mockCanvas.drawText("Filter replacement", 36f, any(), any()) }
     }
@@ -109,5 +110,23 @@ class PdfReportGeneratorTest {
         verify { mockCanvas.drawText("Total:", 44f, any(), any()) }
         verify { mockCanvas.drawText("COMMENTS:", 36f, any(), any()) }
         verify { mockCanvas.drawText("All tasks completed according to specifications.", 36f, any(), any()) }
+    }
+
+    @Test
+    fun `generatePdf renders technician signature when technicianName is provided`() {
+        val report = ReportEntity(
+            id = "rep-sig",
+            userId = "user-1",
+            status = ReportStatus.APPROVED,
+            customerName = "Signed Customer",
+            jobTitle = "Service",
+            technicianName = "Alex Smith"
+        )
+
+        val file = PdfReportGenerator.generatePdf(mockContext, report, emptyList())
+
+        assertNotNull(file)
+        verify { mockCanvas.drawText("TECHNICIAN SIGNATURE", 36f, any(), any()) }
+        verify { mockCanvas.drawText("Alex Smith", 36f, any(), any()) }
     }
 }

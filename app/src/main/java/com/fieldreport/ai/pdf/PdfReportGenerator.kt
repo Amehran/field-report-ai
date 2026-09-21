@@ -85,7 +85,7 @@ object PdfReportGenerator {
         y = 95f
 
         // Customer & Job Header
-        val customerJobTitle = "${report.customerName}: ${report.jobTitle}"
+        val customerJobTitle = "Customer: ${report.customerName}\nJob title: ${report.jobTitle}"
         y = drawWrappedText(canvas, customerJobTitle, 36f, y, 540f, titlePaint, lineSpacing = 4f)
         y += 8f
 
@@ -152,6 +152,39 @@ object PdfReportGenerator {
             y = drawWrappedText(canvas, comments, 36f, y, 540f, bodyPaint, lineSpacing = 4f)
             y += 12f
         }
+
+        // Technician Signature Section
+        val techName = report.technicianName?.takeIf { it.isNotBlank() }
+        val sigStartY = maxOf(y + 20f, 670f)
+
+        val sigLabelPaint = Paint().apply {
+            color = Color.parseColor("#64748B")
+            textSize = 9f
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            isAntiAlias = true
+        }
+
+        val sigScriptPaint = Paint().apply {
+            color = Color.parseColor("#0F766E")
+            textSize = 15f
+            typeface = Typeface.create(Typeface.SERIF, Typeface.ITALIC)
+            isAntiAlias = true
+        }
+
+        val sigLinePaint = Paint().apply {
+            color = Color.parseColor("#94A3B8")
+            strokeWidth = 1f
+            isAntiAlias = true
+        }
+
+        canvas.drawText("TECHNICIAN SIGNATURE", 36f, sigStartY, sigLabelPaint)
+
+        if (techName != null) {
+            canvas.drawText(techName, 36f, sigStartY + 20f, sigScriptPaint)
+        }
+
+        val lineY = sigStartY + 26f
+        canvas.drawLine(36f, lineY, 240f, lineY, sigLinePaint)
 
         // Footer Disclaimer
         val footerY = 760f
