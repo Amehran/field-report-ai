@@ -39,7 +39,8 @@ fun ReportListScreen(
     viewModel: ReportViewModel,
     onNavigateToCapture: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    onNavigateToReview: (String) -> Unit
+    onNavigateToReview: (String) -> Unit,
+    onNavigateToReportReady: (String) -> Unit = {}
 ) {
     val reports by viewModel.allReports.collectAsState(initial = emptyList())
     var showMenu by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
@@ -50,11 +51,11 @@ fun ReportListScreen(
                 title = "Field Reports",
                 actions = {
                     IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
+                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = MaterialTheme.colorScheme.onSurface)
                     }
                     Box {
                         IconButton(onClick = { showMenu = !showMenu }) {
-                            Icon(androidx.compose.material.icons.Icons.Default.MoreVert, contentDescription = "More options")
+                            Icon(androidx.compose.material.icons.Icons.Default.MoreVert, contentDescription = "More options", tint = MaterialTheme.colorScheme.onSurface)
                         }
                         DropdownMenu(
                             expanded = showMenu,
@@ -78,8 +79,8 @@ fun ReportListScreen(
                     viewModel.startNewReport("", "")
                     onNavigateToCapture()
                 },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                containerColor = Teal600,
+                contentColor = Color.White
             ) {
                 Icon(Icons.Default.Add, contentDescription = "New Report")
             }
@@ -113,10 +114,10 @@ fun ReportListScreen(
                         report = report,
                         onClick = {
                             viewModel.setCurrentReportId(report.id)
-                            if (report.status == ReportStatus.DRAFT || report.status == ReportStatus.NEEDS_REVIEW) {
-                                onNavigateToCapture()
-                            } else {
-                                onNavigateToReview(report.id)
+                            when (report.status) {
+                                ReportStatus.DRAFT, ReportStatus.WAITING_ONLINE, ReportStatus.GENERATING -> onNavigateToCapture()
+                                ReportStatus.NEEDS_REVIEW -> onNavigateToReview(report.id)
+                                ReportStatus.APPROVED, ReportStatus.GENERATED, ReportStatus.SHARED, ReportStatus.COMPLETED -> onNavigateToReportReady(report.id)
                             }
                         },
                         onDelete = {
@@ -194,7 +195,8 @@ fun StatusChip(status: ReportStatus) {
         ReportStatus.WAITING_ONLINE -> if (isDark) Triple(Color(0xFF713F12), Color(0xFFFEF08A), "Waiting Online") else Triple(Color(0xFFFEF08A), Color(0xFF854D0E), "Waiting Online")
         ReportStatus.GENERATING -> if (isDark) Triple(Color(0xFF1E3A8A), Color(0xFFBFDBFE), "Generating") else Triple(Color(0xFFDBEAFE), Color(0xFF1E40AF), "Generating")
         ReportStatus.NEEDS_REVIEW -> if (isDark) Triple(Color(0xFF78350F), Color(0xFFFDE68A), "Needs Review") else Triple(Color(0xFFFEF3C7), Color(0xFFD97706), "Needs Review")
-        ReportStatus.APPROVED, ReportStatus.GENERATED -> if (isDark) Triple(Color(0xFF14532D), Color(0xFFBBF7D0), "Generated") else Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Generated")
+        ReportStatus.APPROVED -> if (isDark) Triple(Color(0xFF14532D), Color(0xFFBBF7D0), "Approved") else Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Approved")
+        ReportStatus.GENERATED -> if (isDark) Triple(Color(0xFF14532D), Color(0xFFBBF7D0), "Generated") else Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Generated")
         ReportStatus.SHARED -> if (isDark) Triple(Color(0xFF0369A1), Color(0xFFE0F2FE), "Shared") else Triple(Color(0xFFE0F2FE), Color(0xFF0369A1), "Shared")
         ReportStatus.COMPLETED -> if (isDark) Triple(Color(0xFF14532D), Color(0xFFBBF7D0), "Completed") else Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Completed")
     }

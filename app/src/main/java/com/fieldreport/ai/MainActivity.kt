@@ -61,6 +61,9 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onNavigateToReview = { _ ->
                                     navController.navigate("review")
+                                },
+                                onNavigateToReportReady = { _ ->
+                                    navController.navigate("report_ready")
                                 }
                             )
                         }
