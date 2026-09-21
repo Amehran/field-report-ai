@@ -303,7 +303,7 @@ fun CaptureScreen(
                         Text(
                             text = "Report Date: $dateStr",
                             style = MaterialTheme.typography.labelMedium,
-                            color = Slate500,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
@@ -352,13 +352,13 @@ fun CaptureScreen(
                 Text(
                     text = "Photos",
                     style = MaterialTheme.typography.titleLarge,
-                    color = Slate900
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 TextButton(onClick = {
                     selectedLabel = PhotoLabel.BEFORE
                     showPhotoDialog = true
                 }) {
-                    Text("+ Add photo", color = Teal600, style = MaterialTheme.typography.labelLarge)
+                    Text("+ Add photo", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge)
                 }
             }
 
@@ -367,12 +367,12 @@ fun CaptureScreen(
             // Photo List Carousel
             if (mediaItems.isEmpty()) {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    DummyPhotoCard("BEFORE", Slate100, Slate600) {
+                    DummyPhotoCard("BEFORE", MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.onSurfaceVariant) {
                         selectedLabel = PhotoLabel.BEFORE
                         showPhotoDialog = true
                     }
                     Spacer(modifier = Modifier.width(12.dp))
-                    DummyPhotoCard("AFTER", Sky100, Sky700) {
+                    DummyPhotoCard("AFTER", MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.onPrimaryContainer) {
                         selectedLabel = PhotoLabel.AFTER
                         showPhotoDialog = true
                     }
@@ -393,7 +393,7 @@ fun CaptureScreen(
             Text(
                 text = "Describe the work",
                 style = MaterialTheme.typography.titleLarge,
-                color = Slate900
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -445,8 +445,14 @@ fun CaptureScreen(
                         .fillMaxWidth()
                         .clickable { onNavigateToRecord() },
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = if (hasAudio) Emerald100.copy(alpha = 0.4f) else Color.White),
-                    border = CardDefaults.outlinedCardBorder().copy(brush = androidx.compose.ui.graphics.SolidColor(if (hasAudio) Emerald700 else Slate200))
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (hasAudio) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f) else MaterialTheme.colorScheme.surface
+                    ),
+                    border = CardDefaults.outlinedCardBorder().copy(
+                        brush = androidx.compose.ui.graphics.SolidColor(
+                            if (hasAudio) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                        )
+                    )
                 ) {
                     Row(
                         modifier = Modifier.padding(20.dp),
@@ -455,13 +461,16 @@ fun CaptureScreen(
                         Box(
                             modifier = Modifier
                                 .size(48.dp)
-                                .background(if (hasAudio) Emerald100 else Teal100, CircleShape),
+                                .background(
+                                    if (hasAudio) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+                                    CircleShape
+                                ),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.Mic,
                                 contentDescription = if (hasAudio) "Voice Note Recorded" else "Record",
-                                tint = if (hasAudio) Emerald700 else Teal600
+                                tint = if (hasAudio) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.primary
                             )
                         }
                         Spacer(modifier = Modifier.width(16.dp))
@@ -469,12 +478,12 @@ fun CaptureScreen(
                             Text(
                                 text = if (hasAudio) "Voice note recorded ✓" else "Record a voice note",
                                 style = MaterialTheme.typography.titleLarge,
-                                color = Slate900
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = if (hasAudio) "Tap to re-record or update voice recording" else "Tap to open voice recorder",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = if (hasAudio) Slate600 else Slate500
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -487,7 +496,7 @@ fun CaptureScreen(
             Text(
                 text = "Pricing (Optional)",
                 style = MaterialTheme.typography.titleLarge,
-                color = Slate900
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -549,7 +558,7 @@ fun PhotoBadgeCard(item: MediaItemEntity, onToggleLabel: () -> Unit) {
     Box(
         modifier = Modifier
             .size(110.dp)
-            .background(Slate200, RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
             .clickable { onToggleLabel() }
     ) {
         if (!item.localUri.startsWith("dummy_")) {
@@ -559,14 +568,14 @@ fun PhotoBadgeCard(item: MediaItemEntity, onToggleLabel: () -> Unit) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Slate200, RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
             )
         }
 
         val (bgColor, textColor) = when (item.label) {
-            PhotoLabel.BEFORE -> Slate100 to Slate600
-            PhotoLabel.AFTER -> Sky100 to Sky700
-            PhotoLabel.GENERAL -> Slate100 to Slate900
+            PhotoLabel.BEFORE -> MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
+            PhotoLabel.AFTER -> MaterialTheme.colorScheme.primaryContainer to MaterialTheme.colorScheme.onPrimaryContainer
+            PhotoLabel.GENERAL -> MaterialTheme.colorScheme.secondaryContainer to MaterialTheme.colorScheme.onSecondaryContainer
         }
 
         Surface(
@@ -592,7 +601,7 @@ fun DummyPhotoCard(label: String, bgColor: Color, textColor: Color, onClick: () 
     Box(
         modifier = Modifier
             .size(110.dp)
-            .background(Slate200, RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
             .clickable { onClick() }
             .padding(8.dp)
     ) {
