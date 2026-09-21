@@ -2,13 +2,10 @@ package com.fieldreport.ai.data.model
 
 enum class ReportStatus {
     DRAFT,
-    WAITING_ONLINE,
-    GENERATING,
-    NEEDS_REVIEW,
+    REPORT_CREATED,
     APPROVED,
-    GENERATED,
     SHARED,
-    COMPLETED
+    FINAL_REPORT
 }
 
 enum class AiAgentMode {

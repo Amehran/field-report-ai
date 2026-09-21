@@ -100,7 +100,7 @@ class ReportRepository(private val reportDao: ReportDao) {
         val summary = "Completed $job for ${existing.customerName}."
 
         val updated = existing.copy(
-            status = ReportStatus.NEEDS_REVIEW,
+            status = ReportStatus.REPORT_CREATED,
             customerSummary = summary,
             workCompletedJson = workCompleted.joinToString("||"),
             findingsJson = findings.joinToString("||"),

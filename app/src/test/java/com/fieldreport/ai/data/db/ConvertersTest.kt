@@ -27,6 +27,16 @@ class ConvertersTest {
     }
 
     @Test
+    fun reportStatus_legacyConversion_mapsSafely() {
+        assertEquals(ReportStatus.REPORT_CREATED, converters.toReportStatus("NEEDS_REVIEW"))
+        assertEquals(ReportStatus.DRAFT, converters.toReportStatus("WAITING_ONLINE"))
+        assertEquals(ReportStatus.DRAFT, converters.toReportStatus("GENERATING"))
+        assertEquals(ReportStatus.APPROVED, converters.toReportStatus("GENERATED"))
+        assertEquals(ReportStatus.FINAL_REPORT, converters.toReportStatus("COMPLETED"))
+        assertEquals(ReportStatus.DRAFT, converters.toReportStatus("UNKNOWN_INVALID"))
+    }
+
+    @Test
     fun photoLabel_conversion_isAccurate() {
         PhotoLabel.values().forEach { label ->
             val stringVal = converters.fromPhotoLabel(label)

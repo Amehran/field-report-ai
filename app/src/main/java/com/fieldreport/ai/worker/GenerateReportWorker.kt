@@ -33,11 +33,6 @@ class GenerateReportWorker(
         val firestore = FirebaseFirestore.getInstance()
         
         try {
-            // Update status to uploading/waiting online if not already approved or higher
-            if (report.status != ReportStatus.APPROVED && report.status != ReportStatus.GENERATED && report.status != ReportStatus.SHARED && report.status != ReportStatus.COMPLETED) {
-                reportDao.updateStatus(reportId, ReportStatus.WAITING_ONLINE)
-            }
-            
             // Upload Media Items
             for (media in mediaItems) {
                 if (media.isUploaded) continue

@@ -12,7 +12,13 @@ class Converters {
 
     @TypeConverter
     fun toReportStatus(value: String): ReportStatus = try {
-        enumValueOf(value)
+        when (value) {
+            "NEEDS_REVIEW" -> ReportStatus.REPORT_CREATED
+            "WAITING_ONLINE", "GENERATING" -> ReportStatus.DRAFT
+            "GENERATED" -> ReportStatus.APPROVED
+            "COMPLETED" -> ReportStatus.FINAL_REPORT
+            else -> enumValueOf(value)
+        }
     } catch (e: Exception) {
         ReportStatus.DRAFT
     }

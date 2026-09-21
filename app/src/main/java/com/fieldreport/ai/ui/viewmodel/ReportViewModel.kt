@@ -380,7 +380,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                     report.copy(
                         customerName = finalCustomerName,
                         jobTitle = finalJobTitle,
-                        status = ReportStatus.GENERATING,
+                        status = ReportStatus.DRAFT,
                         updatedAt = System.currentTimeMillis()
                     )
                 )
@@ -497,7 +497,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                                         workCompletedJson = draftJson.optString("workCompletedJson", ""),
                                         findingsJson = draftJson.optString("findingsJson", ""),
                                         recommendationsJson = draftJson.optString("recommendationsJson", ""),
-                                        status = ReportStatus.NEEDS_REVIEW,
+                                        status = ReportStatus.REPORT_CREATED,
                                         updatedAt = System.currentTimeMillis()
                                     )
                                 repository.updateReport(newReport)

@@ -47,7 +47,7 @@ class ReportRepositoryTest {
         val report = ReportEntity(
             id = "test-123",
             userId = "user",
-            status = ReportStatus.GENERATING,
+            status = ReportStatus.DRAFT,
             customerName = "Jane Doe",
             jobTitle = "Plumbing"
         )
@@ -103,7 +103,7 @@ class ReportRepositoryTest {
     }
 
     @Test
-    fun `generateLocalMockDraft updates report with draft sections and status NEEDS_REVIEW`() = runTest {
+    fun `generateLocalMockDraft updates report with draft sections and status REPORT_CREATED`() = runTest {
         val reportId = "test-123"
         val existingReport = ReportEntity(
             id = reportId,
@@ -120,7 +120,7 @@ class ReportRepositoryTest {
         coVerify(exactly = 1) {
             mockDao.updateReport(match {
                 it.id == reportId &&
-                it.status == ReportStatus.NEEDS_REVIEW &&
+                it.status == ReportStatus.REPORT_CREATED &&
                 it.customerSummary != null &&
                 it.workCompletedJson != null &&
                 it.findingsJson != null &&
@@ -260,7 +260,7 @@ class ReportRepositoryTest {
         val existingReport = ReportEntity(
             id = reportId,
             userId = "user",
-            status = ReportStatus.NEEDS_REVIEW,
+            status = ReportStatus.REPORT_CREATED,
             customerName = "Jane Doe",
             jobTitle = "Plumbing"
         )
@@ -280,7 +280,7 @@ class ReportRepositoryTest {
         val existingReport = ReportEntity(
             id = reportId,
             userId = "user",
-            status = ReportStatus.GENERATED,
+            status = ReportStatus.APPROVED,
             customerName = "Jane Doe",
             jobTitle = "Plumbing"
         )

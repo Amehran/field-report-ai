@@ -172,7 +172,7 @@ class ReportViewModelTest {
         val report = ReportEntity(
             id = "rep-1",
             userId = "user",
-            status = ReportStatus.NEEDS_REVIEW,
+            status = ReportStatus.REPORT_CREATED,
             customerName = "Acme",
             jobTitle = "HVAC"
         )
@@ -202,7 +202,7 @@ class ReportViewModelTest {
         val report = ReportEntity(
             id = "rep-1",
             userId = "user",
-            status = ReportStatus.NEEDS_REVIEW,
+            status = ReportStatus.REPORT_CREATED,
             customerName = "Acme",
             jobTitle = "HVAC"
         )
@@ -232,7 +232,7 @@ class ReportViewModelTest {
         val report = ReportEntity(
             id = "rep-1",
             userId = "user",
-            status = ReportStatus.NEEDS_REVIEW,
+            status = ReportStatus.REPORT_CREATED,
             customerName = "Acme",
             jobTitle = "HVAC"
         )
@@ -322,7 +322,7 @@ class ReportViewModelTest {
         val report = ReportEntity(
             id = "rep-1",
             userId = "user",
-            status = ReportStatus.NEEDS_REVIEW,
+            status = ReportStatus.REPORT_CREATED,
             customerName = "Customer",
             jobTitle = "Job"
         )

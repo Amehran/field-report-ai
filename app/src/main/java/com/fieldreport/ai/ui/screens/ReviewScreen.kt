@@ -84,7 +84,7 @@ fun ReviewScreen(
         mutableStateOf(report?.technicianComments ?: "")
     }
 
-    if (report?.status == ReportStatus.GENERATING) {
+    if (report?.status == ReportStatus.DRAFT) {
         Scaffold(
             topBar = {
                 FieldReportTopBar(

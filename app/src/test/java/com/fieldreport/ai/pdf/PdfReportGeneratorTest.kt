@@ -70,7 +70,7 @@ class PdfReportGeneratorTest {
         val report = ReportEntity(
             id = "rep-000",
             userId = "user-1",
-            status = ReportStatus.NEEDS_REVIEW,
+            status = ReportStatus.APPROVED,
             customerName = "John Doe",
             jobTitle = "General Repair",
             customerSummary = null,
