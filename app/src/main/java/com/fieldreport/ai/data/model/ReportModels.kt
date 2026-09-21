@@ -6,6 +6,8 @@ enum class ReportStatus {
     GENERATING,
     NEEDS_REVIEW,
     APPROVED,
+    GENERATED,
+    SHARED,
     COMPLETED
 }
 

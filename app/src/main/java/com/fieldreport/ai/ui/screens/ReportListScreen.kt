@@ -194,7 +194,9 @@ fun StatusChip(status: ReportStatus) {
         ReportStatus.WAITING_ONLINE -> if (isDark) Triple(Color(0xFF713F12), Color(0xFFFEF08A), "Waiting Online") else Triple(Color(0xFFFEF08A), Color(0xFF854D0E), "Waiting Online")
         ReportStatus.GENERATING -> if (isDark) Triple(Color(0xFF1E3A8A), Color(0xFFBFDBFE), "Generating") else Triple(Color(0xFFDBEAFE), Color(0xFF1E40AF), "Generating")
         ReportStatus.NEEDS_REVIEW -> if (isDark) Triple(Color(0xFF78350F), Color(0xFFFDE68A), "Needs Review") else Triple(Color(0xFFFEF3C7), Color(0xFFD97706), "Needs Review")
-        ReportStatus.APPROVED, ReportStatus.COMPLETED -> if (isDark) Triple(Color(0xFF14532D), Color(0xFFBBF7D0), "Approved") else Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Approved")
+        ReportStatus.APPROVED, ReportStatus.GENERATED -> if (isDark) Triple(Color(0xFF14532D), Color(0xFFBBF7D0), "Generated") else Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Generated")
+        ReportStatus.SHARED -> if (isDark) Triple(Color(0xFF0369A1), Color(0xFFE0F2FE), "Shared") else Triple(Color(0xFFE0F2FE), Color(0xFF0369A1), "Shared")
+        ReportStatus.COMPLETED -> if (isDark) Triple(Color(0xFF14532D), Color(0xFFBBF7D0), "Completed") else Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Completed")
     }
 
     Surface(

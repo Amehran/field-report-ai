@@ -248,7 +248,7 @@ class ReportRepositoryTest {
     }
 
     @Test
-    fun `approveReport updates report status to APPROVED`() = runTest {
+    fun `approveReport updates report status to GENERATED`() = runTest {
         val reportId = "test-123"
         val existingReport = ReportEntity(
             id = reportId,
@@ -263,7 +263,27 @@ class ReportRepositoryTest {
         repository.approveReport(reportId)
 
         coVerify(exactly = 1) { 
-            mockDao.updateReport(match { it.id == reportId && it.status == ReportStatus.APPROVED }) 
+            mockDao.updateReport(match { it.id == reportId && it.status == ReportStatus.GENERATED }) 
+        }
+    }
+
+    @Test
+    fun `markReportShared updates report status to SHARED`() = runTest {
+        val reportId = "test-456"
+        val existingReport = ReportEntity(
+            id = reportId,
+            userId = "user",
+            status = ReportStatus.GENERATED,
+            customerName = "Jane Doe",
+            jobTitle = "Plumbing"
+        )
+
+        coEvery { mockDao.getReportById(reportId) } returns existingReport
+
+        repository.markReportShared(reportId)
+
+        coVerify(exactly = 1) {
+            mockDao.updateReport(match { it.id == reportId && it.status == ReportStatus.SHARED })
         }
     }
 

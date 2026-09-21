@@ -11,7 +11,11 @@ class Converters {
     fun fromReportStatus(value: ReportStatus): String = value.name
 
     @TypeConverter
-    fun toReportStatus(value: String): ReportStatus = enumValueOf(value)
+    fun toReportStatus(value: String): ReportStatus = try {
+        enumValueOf(value)
+    } catch (e: Exception) {
+        ReportStatus.DRAFT
+    }
 
     @TypeConverter
     fun fromPhotoLabel(value: PhotoLabel): String = value.name

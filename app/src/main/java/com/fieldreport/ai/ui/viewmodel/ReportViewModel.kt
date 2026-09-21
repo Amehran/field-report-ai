@@ -602,6 +602,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         val media = currentMedia.value
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                repository.markReportShared(report.id)
                 val currentBizName = businessName.first()
                 val logoUri = companyLogoUri.firstOrNull()
                 val sigUri = signatureUri.firstOrNull()
