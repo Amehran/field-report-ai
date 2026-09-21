@@ -101,4 +101,12 @@ class AuthViewModel : ViewModel() {
         auth.signOut()
         _authState.value = AuthState.Idle
     }
+
+    fun resetState() {
+        if (auth.currentUser == null) {
+            _authState.value = AuthState.Idle
+        } else {
+            _authState.value = AuthState.Authenticated(auth.currentUser!!)
+        }
+    }
 }

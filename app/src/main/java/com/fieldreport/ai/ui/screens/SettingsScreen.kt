@@ -37,10 +37,12 @@ import java.io.File
 @Composable
 fun SettingsScreen(
     viewModel: ReportViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onNavigateToLogin: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val activity = context as? Activity
+    val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
     val aiAgentMode by viewModel.aiAgentMode.collectAsState(initial = AiAgentMode.CLOUD)
     val businessName by viewModel.businessName.collectAsState(initial = "")
     val settingsTechnicianName by viewModel.technicianName.collectAsState(initial = "")
@@ -158,6 +160,37 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Text("Account & Authentication", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = if (currentUser?.email != null) currentUser.email!! else if (currentUser != null) "Signed in as ${if (currentUser.isAnonymous) "Guest (${currentUser.uid.take(8)})" else currentUser.uid.take(8)}" else "Not Signed In",
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = if (currentUser != null) "Your report data and account settings are active." else "Sign in to synchronize reports across devices.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OutlinedButton(
+                        onClick = {
+                            com.google.firebase.auth.FirebaseAuth.getInstance().signOut()
+                            onNavigateToLogin()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(if (currentUser != null) "Sign Out / Switch Account" else "Log In")
+                    }
+                }
+            }
             Text("Subscription & Plan", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
 
             Card(

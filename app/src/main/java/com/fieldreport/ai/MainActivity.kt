@@ -46,9 +46,12 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
+                    val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+                    val startDestination = if (currentUser == null) "login" else "report_list"
+
                     NavHost(
                         navController = navController,
-                        startDestination = "report_list"
+                        startDestination = startDestination
                     ) {
                         composable("report_list") {
                             ReportListScreen(
@@ -71,7 +74,12 @@ class MainActivity : ComponentActivity() {
                         composable("settings") {
                             SettingsScreen(
                                 viewModel = reportViewModel,
-                                onBack = { navController.popBackStack() }
+                                onBack = { navController.popBackStack() },
+                                onNavigateToLogin = {
+                                    navController.navigate("login") {
+                                        popUpTo(0) { inclusive = true }
+                                    }
+                                }
                             )
                         }
 
