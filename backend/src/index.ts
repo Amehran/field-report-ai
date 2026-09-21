@@ -1,11 +1,13 @@
 import Fastify from 'fastify';
-import { reportRoutes } from './routes/reports';
+import { reportRoutes } from './routes/reports.js';
+import { subscriptionRoutes } from './routes/subscriptions.js';
 
 const fastify = Fastify({
   logger: true
 });
 
-fastify.register(reportRoutes, { prefix: '/v1/reports' });
+fastify.register(reportRoutes);
+fastify.register(subscriptionRoutes);
 
 // Health check endpoint
 fastify.get('/health', async () => {

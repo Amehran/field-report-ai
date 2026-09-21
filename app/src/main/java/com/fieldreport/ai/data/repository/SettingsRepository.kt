@@ -3,7 +3,9 @@ package com.fieldreport.ai.data.repository
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.fieldreport.ai.data.model.AiAgentMode
@@ -18,6 +20,10 @@ class SettingsRepository(private val context: Context) {
     private val PREF_BUSINESS_NAME = stringPreferencesKey("business_name")
     private val PREF_CURRENCY = stringPreferencesKey("currency")
     private val PREF_TECHNICIAN_NAME = stringPreferencesKey("technician_name")
+    private val PREF_FREE_PDFS_REMAINING = intPreferencesKey("free_pdfs_remaining")
+    private val PREF_IS_SUBSCRIBED = booleanPreferencesKey("is_subscribed")
+    private val PREF_IS_LIFETIME = booleanPreferencesKey("is_lifetime")
+    private val PREF_SUBSCRIPTION_TIER = stringPreferencesKey("subscription_tier")
 
     val aiAgentModeFlow: Flow<AiAgentMode> = context.dataStore.data.map { preferences ->
         val modeStr = preferences[PREF_AI_AGENT_MODE] ?: AiAgentMode.CLOUD.name
@@ -38,6 +44,22 @@ class SettingsRepository(private val context: Context) {
 
     val technicianNameFlow: Flow<String> = context.dataStore.data.map { preferences ->
         preferences[PREF_TECHNICIAN_NAME] ?: ""
+    }
+
+    val freePdfsRemainingFlow: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[PREF_FREE_PDFS_REMAINING] ?: 3
+    }
+
+    val isSubscribedFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[PREF_IS_SUBSCRIBED] ?: false
+    }
+
+    val isLifetimeFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[PREF_IS_LIFETIME] ?: false
+    }
+
+    val subscriptionTierFlow: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[PREF_SUBSCRIPTION_TIER] ?: "FREE_TRIAL"
     }
 
     suspend fun setAiAgentMode(mode: AiAgentMode) {
@@ -61,6 +83,39 @@ class SettingsRepository(private val context: Context) {
     suspend fun setTechnicianName(name: String) {
         context.dataStore.edit { preferences ->
             preferences[PREF_TECHNICIAN_NAME] = name
+        }
+    }
+
+    suspend fun setFreePdfsRemaining(count: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[PREF_FREE_PDFS_REMAINING] = count
+        }
+    }
+
+    suspend fun setSubscribed(subscribed: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PREF_IS_SUBSCRIBED] = subscribed
+        }
+    }
+
+    suspend fun setLifetime(lifetime: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PREF_IS_LIFETIME] = lifetime
+        }
+    }
+
+    suspend fun setSubscriptionTier(tier: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PREF_SUBSCRIPTION_TIER] = tier
+        }
+    }
+
+    suspend fun updateEntitlement(remainingPdfs: Int, isSubscribed: Boolean, isLifetime: Boolean, tier: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PREF_FREE_PDFS_REMAINING] = remainingPdfs
+            preferences[PREF_IS_SUBSCRIBED] = isSubscribed
+            preferences[PREF_IS_LIFETIME] = isLifetime
+            preferences[PREF_SUBSCRIPTION_TIER] = tier
         }
     }
 }

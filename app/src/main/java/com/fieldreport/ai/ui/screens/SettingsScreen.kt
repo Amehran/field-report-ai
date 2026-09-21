@@ -15,17 +15,30 @@ import com.fieldreport.ai.ui.theme.Slate50
 import com.fieldreport.ai.ui.theme.Slate900
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 
+import android.app.Activity
+import android.widget.Toast
+import com.fieldreport.ai.ui.components.PaywallSheet
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     viewModel: ReportViewModel,
     onBack: () -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val activity = context as? Activity
     val aiAgentMode by viewModel.aiAgentMode.collectAsState(initial = AiAgentMode.CLOUD)
     val businessName by viewModel.businessName.collectAsState(initial = "")
     val settingsTechnicianName by viewModel.technicianName.collectAsState(initial = "")
     val currency by viewModel.currency.collectAsState(initial = "$")
 
+    val billingProducts by viewModel.billingProducts.collectAsState()
+    val freePdfsRemaining by viewModel.freePdfsRemaining.collectAsState()
+    val isSubscribed by viewModel.isSubscribed.collectAsState()
+    val isLifetime by viewModel.isLifetime.collectAsState()
+    val subscriptionTier by viewModel.subscriptionTier.collectAsState()
+
+    var showPaywallSheet by remember { mutableStateOf(false) }
     var localTechnicianName by remember(settingsTechnicianName) { mutableStateOf(settingsTechnicianName) }
     var localBusinessName by remember(businessName) { mutableStateOf(businessName) }
 
@@ -41,6 +54,30 @@ fun SettingsScreen(
         if (localBusinessName != businessName) {
             viewModel.setBusinessName(localBusinessName)
         }
+    }
+
+    if (showPaywallSheet) {
+        PaywallSheet(
+            products = billingProducts,
+            onDismiss = { showPaywallSheet = false },
+            onPurchaseTier = { _, productDetails ->
+                if (activity != null && productDetails != null) {
+                    viewModel.launchBillingFlow(activity, productDetails)
+                } else {
+                    Toast.makeText(context, "Google Play Store unavailable in emulator mode.", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onRestorePurchases = {
+                viewModel.restorePurchases { success ->
+                    if (success) {
+                        Toast.makeText(context, "Purchases restored!", Toast.LENGTH_SHORT).show()
+                        showPaywallSheet = false
+                    } else {
+                        Toast.makeText(context, "No active subscriptions found.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        )
     }
 
     Scaffold(
@@ -65,6 +102,34 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Text("Subscription & Plan", style = MaterialTheme.typography.titleMedium)
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = if (isLifetime) "Pro Lifetime Member" else if (isSubscribed) "Pro Subscription Active" else "Free Trial ($freePdfsRemaining PDF exports remaining)",
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = if (isSubscribed || isLifetime) "You have unlimited access to PDF exports & cloud AI features." else "Upgrade to Field Report Pro for unlimited exports and priority support.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    if (!isSubscribed && !isLifetime) {
+                        Button(
+                            onClick = { showPaywallSheet = true },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Upgrade to Pro")
+                        }
+                    }
+                }
+            }
             Text("AI Agent Selection", style = MaterialTheme.typography.titleMedium)
             
             SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {

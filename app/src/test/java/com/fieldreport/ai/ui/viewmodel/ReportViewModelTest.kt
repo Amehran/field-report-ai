@@ -45,11 +45,25 @@ class ReportViewModelTest {
         // Mock the repository constructors so the ViewModel gets mocks
         mockkConstructor(ReportRepository::class)
         mockkConstructor(SettingsRepository::class)
+        mockkConstructor(com.fieldreport.ai.data.repository.BillingRepository::class)
+
+        every { anyConstructed<com.fieldreport.ai.data.repository.BillingRepository>().products } returns MutableStateFlow(emptyList())
+        every { anyConstructed<com.fieldreport.ai.data.repository.BillingRepository>().billingConnected } returns MutableStateFlow(false)
 
         coJustRun { anyConstructed<SettingsRepository>().setAiAgentMode(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setBusinessName(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setCurrency(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setTechnicianName(any()) }
+
+        val freePdfsFlow = MutableStateFlow(3)
+        val isSubscribedFlow = MutableStateFlow(false)
+        val isLifetimeFlow = MutableStateFlow(false)
+        val subTierFlow = MutableStateFlow("FREE_TRIAL")
+
+        every { anyConstructed<SettingsRepository>().freePdfsRemainingFlow } returns freePdfsFlow
+        every { anyConstructed<SettingsRepository>().isSubscribedFlow } returns isSubscribedFlow
+        every { anyConstructed<SettingsRepository>().isLifetimeFlow } returns isLifetimeFlow
+        every { anyConstructed<SettingsRepository>().subscriptionTierFlow } returns subTierFlow
 
         coJustRun { anyConstructed<ReportRepository>().generateLocalMockDraft(any(), any()) }
 
