@@ -106,7 +106,7 @@ fun CaptureScreen(
     val currentReport by viewModel.currentReport.collectAsState()
     val mediaItems by viewModel.currentMedia.collectAsState()
 
-    LaunchedEffect(currentReport?.id) {
+    LaunchedEffect(currentReport?.id, currentReport?.laborCost, currentReport?.partsCost, currentReport?.totalCost) {
         currentReport?.let { report ->
             customerName = report.customerName
             jobTitle = report.jobTitle
@@ -115,9 +115,13 @@ fun CaptureScreen(
             if (notes.isNotBlank()) {
                 isTypingNotes = true
             }
-            laborCostStr = report.laborCost?.toString() ?: ""
-            partsCostStr = report.partsCost?.toString() ?: ""
-            totalCostStr = report.totalCost?.toString() ?: ""
+            val l = report.laborCost ?: 0.0
+            val p = report.partsCost ?: 0.0
+            val t = report.totalCost ?: (l + p)
+
+            laborCostStr = if (report.laborCost != null && report.laborCost != 0.0) formatCostValue(l) else (if (report.laborCost == 0.0) "0" else "")
+            partsCostStr = if (report.partsCost != null && report.partsCost != 0.0) formatCostValue(p) else (if (report.partsCost == 0.0) "0" else "")
+            totalCostStr = formatCostValue(t)
         }
     }
 
@@ -132,10 +136,10 @@ fun CaptureScreen(
     LaunchedEffect(laborCostStr, partsCostStr, totalCostStr) {
         kotlinx.coroutines.delay(500)
         val report = currentReport
-        val l = laborCostStr.toDoubleOrNull()
-        val p = partsCostStr.toDoubleOrNull()
-        val t = totalCostStr.toDoubleOrNull()
-        if (report != null && (l != report.laborCost || p != report.partsCost || t != report.totalCost)) {
+        val l = laborCostStr.toDoubleOrNull() ?: 0.0
+        val p = partsCostStr.toDoubleOrNull() ?: 0.0
+        val t = totalCostStr.toDoubleOrNull() ?: (l + p)
+        if (report != null && (l != (report.laborCost ?: 0.0) || p != (report.partsCost ?: 0.0) || t != (report.totalCost ?: 0.0))) {
             viewModel.updateCosts(l, p, t)
         }
     }
@@ -320,7 +324,7 @@ fun CaptureScreen(
                     OutlinedTextField(
                         value = jobTitle,
                         onValueChange = { jobTitle = it },
-                        label = { Text("Job Name / Trade") },
+                        label = { Text("Job Name") },
                         placeholder = { Text("e.g. Kitchen Repair or HVAC Service") },
                         trailingIcon = {
                             if (jobTitle.isNotEmpty()) {
@@ -499,7 +503,10 @@ fun CaptureScreen(
                     ) {
                         OutlinedTextField(
                             value = laborCostStr,
-                            onValueChange = { laborCostStr = it },
+                            onValueChange = { newValue ->
+                                laborCostStr = newValue
+                                totalCostStr = calculateTotalCostString(newValue, partsCostStr)
+                            },
                             label = { Text("Labor Cost") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
@@ -507,7 +514,10 @@ fun CaptureScreen(
                         )
                         OutlinedTextField(
                             value = partsCostStr,
-                            onValueChange = { partsCostStr = it },
+                            onValueChange = { newValue ->
+                                partsCostStr = newValue
+                                totalCostStr = calculateTotalCostString(laborCostStr, newValue)
+                            },
                             label = { Text("Parts Cost") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
@@ -598,4 +608,18 @@ fun DummyPhotoCard(label: String, bgColor: Color, textColor: Color, onClick: () 
             )
         }
     }
+}
+
+private fun formatCostValue(value: Double): String {
+    return if (value % 1.0 == 0.0) {
+        value.toLong().toString()
+    } else {
+        String.format(java.util.Locale.US, "%.2f", value).trimEnd('0').trimEnd('.')
+    }
+}
+
+private fun calculateTotalCostString(laborStr: String, partsStr: String): String {
+    val l = laborStr.toDoubleOrNull() ?: 0.0
+    val p = partsStr.toDoubleOrNull() ?: 0.0
+    return formatCostValue(l + p)
 }

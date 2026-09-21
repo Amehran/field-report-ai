@@ -289,21 +289,27 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                             val draftJson = JSONObject(responseBody)
                             val latestReport = currentReport.value ?: report
                             if (latestReport != null) {
-                                val newReport = latestReport.copy(
-                                    customerName = finalCustomerName,
-                                    jobTitle = finalJobTitle,
-                                    typedNotes = typedNotes ?: latestReport.typedNotes,
-                                    initialStatus = draftJson.optString("initialStatus", ""),
-                                    resolutionStepsJson = draftJson.optString("resolutionStepsJson", ""),
-                                    currentOperationalState = draftJson.optString("currentOperationalState", ""),
-                                    laborCost = if (draftJson.has("estimatedLaborCost")) draftJson.optDouble("estimatedLaborCost") else latestReport.laborCost,
-                                    partsCost = if (draftJson.has("estimatedPartsCost")) draftJson.optDouble("estimatedPartsCost") else latestReport.partsCost,
-                                    workCompletedJson = draftJson.optString("workCompletedJson", ""),
-                                    findingsJson = draftJson.optString("findingsJson", ""),
-                                    recommendationsJson = draftJson.optString("recommendationsJson", ""),
-                                    status = ReportStatus.NEEDS_REVIEW,
-                                    updatedAt = System.currentTimeMillis()
-                                )
+                                    val lCost = if (draftJson.has("estimatedLaborCost")) draftJson.optDouble("estimatedLaborCost") else latestReport.laborCost
+                                    val pCost = if (draftJson.has("estimatedPartsCost")) draftJson.optDouble("estimatedPartsCost") else latestReport.partsCost
+                                    val lVal = lCost ?: 0.0
+                                    val pVal = pCost ?: 0.0
+                                    val tVal = lVal + pVal
+                                    val newReport = latestReport.copy(
+                                        customerName = finalCustomerName,
+                                        jobTitle = finalJobTitle,
+                                        typedNotes = typedNotes ?: latestReport.typedNotes,
+                                        initialStatus = draftJson.optString("initialStatus", ""),
+                                        resolutionStepsJson = draftJson.optString("resolutionStepsJson", ""),
+                                        currentOperationalState = draftJson.optString("currentOperationalState", ""),
+                                        laborCost = lVal,
+                                        partsCost = pVal,
+                                        totalCost = tVal,
+                                        workCompletedJson = draftJson.optString("workCompletedJson", ""),
+                                        findingsJson = draftJson.optString("findingsJson", ""),
+                                        recommendationsJson = draftJson.optString("recommendationsJson", ""),
+                                        status = ReportStatus.NEEDS_REVIEW,
+                                        updatedAt = System.currentTimeMillis()
+                                    )
                                 repository.updateReport(newReport)
                                 return@launch
                             }
