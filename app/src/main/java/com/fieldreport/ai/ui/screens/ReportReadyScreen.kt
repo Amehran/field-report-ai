@@ -125,8 +125,8 @@ fun ReportReadyScreen(
                 },
                 actions = {
                     val statusText = if (isSubscribed || isLifetime) "Pro Active" else "$freePdfsRemaining free exports"
-                    val statusColor = if (isSubscribed || isLifetime) Emerald700 else Slate600
-                    val statusBg = if (isSubscribed || isLifetime) Emerald100 else Slate100
+                    val statusColor = if (isSubscribed || isLifetime) Emerald700 else Color.White
+                    val statusBg = if (isSubscribed || isLifetime) Emerald100 else Color.White.copy(alpha = 0.2f)
 
                     Surface(
                         color = statusBg,
