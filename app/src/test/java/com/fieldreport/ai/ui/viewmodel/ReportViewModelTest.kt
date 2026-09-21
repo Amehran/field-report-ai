@@ -51,6 +51,7 @@ class ReportViewModelTest {
         every { anyConstructed<com.fieldreport.ai.data.repository.BillingRepository>().billingConnected } returns MutableStateFlow(false)
 
         coJustRun { anyConstructed<SettingsRepository>().setAiAgentMode(any()) }
+        coJustRun { anyConstructed<SettingsRepository>().setThemeMode(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setBusinessName(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setCurrency(any()) }
         coJustRun { anyConstructed<SettingsRepository>().setTechnicianName(any()) }
@@ -59,11 +60,13 @@ class ReportViewModelTest {
         val isSubscribedFlow = MutableStateFlow(false)
         val isLifetimeFlow = MutableStateFlow(false)
         val subTierFlow = MutableStateFlow("FREE_TRIAL")
+        val themeModeFlow = MutableStateFlow(com.fieldreport.ai.data.model.ThemeMode.SYSTEM)
 
         every { anyConstructed<SettingsRepository>().freePdfsRemainingFlow } returns freePdfsFlow
         every { anyConstructed<SettingsRepository>().isSubscribedFlow } returns isSubscribedFlow
         every { anyConstructed<SettingsRepository>().isLifetimeFlow } returns isLifetimeFlow
         every { anyConstructed<SettingsRepository>().subscriptionTierFlow } returns subTierFlow
+        every { anyConstructed<SettingsRepository>().themeModeFlow } returns themeModeFlow
 
         coJustRun { anyConstructed<ReportRepository>().generateLocalMockDraft(any(), any()) }
 

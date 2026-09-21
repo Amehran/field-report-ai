@@ -38,7 +38,6 @@ fun SettingsScreen(
     val freePdfsRemaining by viewModel.freePdfsRemaining.collectAsState()
     val isSubscribed by viewModel.isSubscribed.collectAsState()
     val isLifetime by viewModel.isLifetime.collectAsState()
-    val subscriptionTier by viewModel.subscriptionTier.collectAsState()
 
     var showPaywallSheet by remember { mutableStateOf(false) }
     var localTechnicianName by remember(settingsTechnicianName) { mutableStateOf(settingsTechnicianName) }
@@ -131,6 +130,34 @@ fun SettingsScreen(
                     }
                 }
             }
+            Text("App Theme", style = MaterialTheme.typography.titleMedium)
+
+            val currentThemeMode by viewModel.themeMode.collectAsState(initial = com.fieldreport.ai.data.model.ThemeMode.SYSTEM)
+
+            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                SegmentedButton(
+                    selected = currentThemeMode == com.fieldreport.ai.data.model.ThemeMode.SYSTEM,
+                    onClick = { viewModel.setThemeMode(com.fieldreport.ai.data.model.ThemeMode.SYSTEM) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3)
+                ) {
+                    Text("System")
+                }
+                SegmentedButton(
+                    selected = currentThemeMode == com.fieldreport.ai.data.model.ThemeMode.LIGHT,
+                    onClick = { viewModel.setThemeMode(com.fieldreport.ai.data.model.ThemeMode.LIGHT) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3)
+                ) {
+                    Text("Light")
+                }
+                SegmentedButton(
+                    selected = currentThemeMode == com.fieldreport.ai.data.model.ThemeMode.DARK,
+                    onClick = { viewModel.setThemeMode(com.fieldreport.ai.data.model.ThemeMode.DARK) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3)
+                ) {
+                    Text("Dark")
+                }
+            }
+
             Text("AI Agent Selection", style = MaterialTheme.typography.titleMedium)
             
             SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {

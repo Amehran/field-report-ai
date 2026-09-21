@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.fieldreport.ai.data.model.AiAgentMode
+import com.fieldreport.ai.data.model.ThemeMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -17,6 +18,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 class SettingsRepository(private val context: Context) {
 
     private val PREF_AI_AGENT_MODE = stringPreferencesKey("ai_agent_mode")
+    private val PREF_THEME_MODE = stringPreferencesKey("theme_mode")
     private val PREF_BUSINESS_NAME = stringPreferencesKey("business_name")
     private val PREF_CURRENCY = stringPreferencesKey("currency")
     private val PREF_TECHNICIAN_NAME = stringPreferencesKey("technician_name")
@@ -31,6 +33,15 @@ class SettingsRepository(private val context: Context) {
             AiAgentMode.valueOf(modeStr)
         } catch (e: Exception) {
             AiAgentMode.CLOUD
+        }
+    }
+
+    val themeModeFlow: Flow<ThemeMode> = context.dataStore.data.map { preferences ->
+        val modeStr = preferences[PREF_THEME_MODE] ?: ThemeMode.SYSTEM.name
+        try {
+            ThemeMode.valueOf(modeStr)
+        } catch (e: Exception) {
+            ThemeMode.SYSTEM
         }
     }
 
@@ -65,6 +76,12 @@ class SettingsRepository(private val context: Context) {
     suspend fun setAiAgentMode(mode: AiAgentMode) {
         context.dataStore.edit { preferences ->
             preferences[PREF_AI_AGENT_MODE] = mode.name
+        }
+    }
+
+    suspend fun setThemeMode(mode: ThemeMode) {
+        context.dataStore.edit { preferences ->
+            preferences[PREF_THEME_MODE] = mode.name
         }
     }
 

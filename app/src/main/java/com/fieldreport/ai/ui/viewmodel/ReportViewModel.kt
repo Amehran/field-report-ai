@@ -62,6 +62,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     val billingConnected: StateFlow<Boolean> = billingRepository.billingConnected
 
     val aiAgentMode = settingsRepository.aiAgentModeFlow
+    val themeMode = settingsRepository.themeModeFlow
     val businessName = settingsRepository.businessNameFlow
     val currency = settingsRepository.currencyFlow
     val technicianName = settingsRepository.technicianNameFlow
@@ -225,6 +226,12 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     fun setAiAgentMode(mode: com.fieldreport.ai.data.model.AiAgentMode) {
         viewModelScope.launch {
             settingsRepository.setAiAgentMode(mode)
+        }
+    }
+
+    fun setThemeMode(mode: com.fieldreport.ai.data.model.ThemeMode) {
+        viewModelScope.launch {
+            settingsRepository.setThemeMode(mode)
         }
     }
 

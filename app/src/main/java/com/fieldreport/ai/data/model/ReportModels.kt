@@ -14,6 +14,12 @@ enum class AiAgentMode {
     ON_DEVICE
 }
 
+enum class ThemeMode {
+    SYSTEM,
+    LIGHT,
+    DARK
+}
+
 enum class PhotoLabel {
     BEFORE,
     AFTER,
