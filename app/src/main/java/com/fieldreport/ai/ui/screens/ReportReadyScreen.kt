@@ -117,7 +117,6 @@ fun ReportReadyScreen(
         topBar = {
             FieldReportTopBar(
                 title = "Report Ready",
-                subtitle = report?.customerName?.ifBlank { "Job Completion" },
                 navigationIcon = {
                     IconButton(onClick = onDone) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)

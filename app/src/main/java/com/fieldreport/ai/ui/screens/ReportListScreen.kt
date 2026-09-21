@@ -48,7 +48,6 @@ fun ReportListScreen(
         topBar = {
             FieldReportTopBar(
                 title = "Field Reports",
-                subtitle = "${reports.size} active report${if (reports.size == 1) "" else "s"}",
                 actions = {
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.White)

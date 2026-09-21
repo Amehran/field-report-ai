@@ -89,7 +89,6 @@ fun ReviewScreen(
             topBar = {
                 FieldReportTopBar(
                     title = "Drafting Report",
-                    subtitle = "AI processing in progress",
                     navigationIcon = {
                         IconButton(onClick = onBack) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
@@ -128,7 +127,6 @@ fun ReviewScreen(
         topBar = {
             FieldReportTopBar(
                 title = "Review Report",
-                subtitle = report?.customerName?.ifBlank { "Job Review" },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)

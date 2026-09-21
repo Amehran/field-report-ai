@@ -234,7 +234,6 @@ fun CaptureScreen(
         topBar = {
             FieldReportTopBar(
                 title = "New Field Report",
-                subtitle = "Capture details, photos & audio",
                 navigationIcon = {
                     IconButton(onClick = onClose) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)

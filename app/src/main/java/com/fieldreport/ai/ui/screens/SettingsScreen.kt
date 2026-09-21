@@ -86,7 +86,6 @@ fun SettingsScreen(
         topBar = {
             FieldReportTopBar(
                 title = "Settings",
-                subtitle = "App configuration & plan details",
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = androidx.compose.ui.graphics.Color.White)

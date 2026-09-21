@@ -40,7 +40,6 @@ enum class TopBarThemeStyle {
 @Composable
 fun FieldReportTopBar(
     title: String,
-    subtitle: String? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null,
     style: TopBarThemeStyle = TopBarThemeStyle.DARK,
@@ -89,25 +88,14 @@ fun FieldReportTopBar(
 
             TopAppBar(
                 title = {
-                    Column {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = contentColor,
-                                fontSize = 19.sp
-                            )
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = contentColor,
+                            fontSize = 19.sp
                         )
-                        if (!subtitle.isNullOrBlank()) {
-                            Text(
-                                text = subtitle,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    color = contentColor.copy(alpha = 0.75f),
-                                    fontSize = 12.sp
-                                )
-                            )
-                        }
-                    }
+                    )
                 },
                 navigationIcon = {
                     navigationIcon?.invoke()

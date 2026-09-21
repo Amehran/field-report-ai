@@ -144,7 +144,6 @@ fun VoiceCaptureScreen(
         topBar = {
             FieldReportTopBar(
                 title = "Voice Note Capture",
-                subtitle = "Dictate job details & observations",
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
