@@ -654,12 +654,26 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
 
     fun deleteReport(reportId: String) {
         viewModelScope.launch {
+            try {
+                WorkManager.getInstance(getApplication()).cancelAllWorkByTag("report_$reportId")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            if (_currentReportId.value == reportId) {
+                _currentReportId.value = null
+            }
             repository.deleteReportWithFiles(getApplication(), reportId)
         }
     }
 
     fun deleteAllReports() {
         viewModelScope.launch {
+            try {
+                WorkManager.getInstance(getApplication()).cancelAllWork()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            _currentReportId.value = null
             repository.deleteAllReportsWithFiles(getApplication())
         }
     }

@@ -154,12 +154,17 @@ class ReportRepository(private val reportDao: ReportDao) {
             item.storagePath?.let { deleteFileFromUri(context, it) }
         }
 
-        // 3. Delete Generated PDF Files
+        // 3. Delete Generated PDF Files across all storage locations
         val pdfInCache = java.io.File(context.cacheDir, "reports/Report_${reportId}.pdf")
         if (pdfInCache.exists()) pdfInCache.delete()
 
         val pdfInFiles = java.io.File(context.filesDir, "reports/Report_${reportId}.pdf")
         if (pdfInFiles.exists()) pdfInFiles.delete()
+
+        context.externalCacheDir?.let { extDir ->
+            val extPdf = java.io.File(extDir, "reports/Report_${reportId}.pdf")
+            if (extPdf.exists()) extPdf.delete()
+        }
 
         report?.pdfLocalPath?.let { path ->
             deleteFileFromUri(context, path)
@@ -179,7 +184,7 @@ class ReportRepository(private val reportDao: ReportDao) {
             deleteReportWithFiles(context, report.id)
         }
 
-        // Extra safety: clean up any remaining orphan files in app storage directories
+        // Extra safety: clean up remaining files in all app storage directories
         try {
             java.io.File(context.cacheDir, "reports").deleteRecursively()
             java.io.File(context.cacheDir, "images").deleteRecursively()
@@ -189,6 +194,8 @@ class ReportRepository(private val reportDao: ReportDao) {
             java.io.File(context.filesDir, "reports").deleteRecursively()
             java.io.File(context.filesDir, "images").deleteRecursively()
             java.io.File(context.filesDir, "recordings").deleteRecursively()
+
+            context.externalCacheDir?.deleteRecursively()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -205,9 +212,32 @@ class ReportRepository(private val reportDao: ReportDao) {
                     try {
                         context.contentResolver.delete(uri, null, null)
                     } catch (e: Exception) {
-                        // Ignore content resolver restriction
+                        // Ignore content resolver deletion error
+                    }
+
+                    val lastSegment = uri.lastPathSegment
+                    if (!lastSegment.isNullOrEmpty()) {
+                        val potentialDirs = listOf(
+                            java.io.File(context.cacheDir, "images"),
+                            java.io.File(context.cacheDir, "reports"),
+                            java.io.File(context.cacheDir, "recordings"),
+                            java.io.File(context.cacheDir, "compressed_media"),
+                            java.io.File(context.filesDir, "images"),
+                            java.io.File(context.filesDir, "reports"),
+                            java.io.File(context.filesDir, "recordings"),
+                            context.externalCacheDir
+                        )
+                        potentialDirs.forEach { dir ->
+                            if (dir != null && dir.exists()) {
+                                val targetFile = java.io.File(dir, lastSegment)
+                                if (targetFile.exists()) {
+                                    targetFile.delete()
+                                }
+                            }
+                        }
                     }
                 }
+
                 val path = uri.path
                 if (!path.isNullOrEmpty()) {
                     val file = java.io.File(path)
@@ -216,6 +246,7 @@ class ReportRepository(private val reportDao: ReportDao) {
                     }
                 }
             }
+
             val directFile = java.io.File(uriStr)
             if (directFile.exists()) {
                 directFile.delete()
