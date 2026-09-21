@@ -151,7 +151,7 @@ fun ReportReadyScreen(
         },
         bottomBar = {
             Surface(
-                color = Color.White,
+                color = MaterialTheme.colorScheme.surface,
                 shadowElevation = 8.dp
             ) {
                 Box(
@@ -171,12 +171,14 @@ fun ReportReadyScreen(
                                 .fillMaxWidth()
                                 .height(56.dp),
                             shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Charcoal900)
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            )
                         ) {
                             Text(
                                 text = "Share PDF",
-                                style = MaterialTheme.typography.labelLarge,
-                                color = Color.White
+                                style = MaterialTheme.typography.labelLarge
                             )
                         }
 
@@ -187,13 +189,13 @@ fun ReportReadyScreen(
                             clipboardManager.setText(AnnotatedString(summaryText))
                             Toast.makeText(context, "Summary copied to clipboard!", Toast.LENGTH_SHORT).show()
                         }) {
-                            Text("Copy customer summary", color = Teal600, style = MaterialTheme.typography.labelLarge)
+                            Text("Copy customer summary", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge)
                         }
                     }
                 }
             }
         },
-        containerColor = Slate50
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -212,7 +214,7 @@ fun ReportReadyScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column {

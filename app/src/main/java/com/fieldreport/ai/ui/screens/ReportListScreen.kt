@@ -78,13 +78,13 @@ fun ReportListScreen(
                     viewModel.startNewReport("", "")
                     onNavigateToCapture()
                 },
-                containerColor = Teal600,
-                contentColor = Color.White
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
                 Icon(Icons.Default.Add, contentDescription = "New Report")
             }
         },
-        containerColor = Slate50
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         if (reports.isEmpty()) {
             Box(
@@ -136,7 +136,7 @@ fun ReportListItem(report: ReportEntity, onClick: () -> Unit, onDelete: () -> Un
             .fillMaxWidth()
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -153,6 +153,7 @@ fun ReportListItem(report: ReportEntity, onClick: () -> Unit, onDelete: () -> Un
                     Text(
                         text = report.jobTitle.ifBlank { "Untitled Job" },
                         style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
@@ -175,7 +176,11 @@ fun ReportListItem(report: ReportEntity, onClick: () -> Unit, onDelete: () -> Un
                 )
             }
             IconButton(onClick = onDelete) {
-                Icon(androidx.compose.material.icons.Icons.Default.Delete, contentDescription = "Delete Report", tint = Color.Gray)
+                Icon(
+                    androidx.compose.material.icons.Icons.Default.Delete,
+                    contentDescription = "Delete Report",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
@@ -183,13 +188,13 @@ fun ReportListItem(report: ReportEntity, onClick: () -> Unit, onDelete: () -> Un
 
 @Composable
 fun StatusChip(status: ReportStatus) {
+    val isDark = MaterialTheme.colorScheme.surface.red < 0.5f
     val (bgColor, textColor, text) = when (status) {
-        ReportStatus.DRAFT -> Triple(Color(0xFFE2E8F0), Color(0xFF475569), "Draft")
-        ReportStatus.WAITING_ONLINE -> Triple(Color(0xFFFEF08A), Color(0xFF854D0E), "Waiting Online")
-        ReportStatus.GENERATING -> Triple(Color(0xFFDBEAFE), Color(0xFF1E40AF), "Generating")
-        ReportStatus.NEEDS_REVIEW -> Triple(Color(0xFFFEF3C7), Color(0xFFD97706), "Needs Review")
-        ReportStatus.APPROVED -> Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Approved")
-        ReportStatus.COMPLETED -> Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Completed")
+        ReportStatus.DRAFT -> if (isDark) Triple(Color(0xFF334155), Color(0xFFE2E8F0), "Draft") else Triple(Color(0xFFE2E8F0), Color(0xFF475569), "Draft")
+        ReportStatus.WAITING_ONLINE -> if (isDark) Triple(Color(0xFF713F12), Color(0xFFFEF08A), "Waiting Online") else Triple(Color(0xFFFEF08A), Color(0xFF854D0E), "Waiting Online")
+        ReportStatus.GENERATING -> if (isDark) Triple(Color(0xFF1E3A8A), Color(0xFFBFDBFE), "Generating") else Triple(Color(0xFFDBEAFE), Color(0xFF1E40AF), "Generating")
+        ReportStatus.NEEDS_REVIEW -> if (isDark) Triple(Color(0xFF78350F), Color(0xFFFDE68A), "Needs Review") else Triple(Color(0xFFFEF3C7), Color(0xFFD97706), "Needs Review")
+        ReportStatus.APPROVED, ReportStatus.COMPLETED -> if (isDark) Triple(Color(0xFF14532D), Color(0xFFBBF7D0), "Approved") else Triple(Color(0xFFDCFCE7), Color(0xFF166534), "Approved")
     }
 
     Surface(

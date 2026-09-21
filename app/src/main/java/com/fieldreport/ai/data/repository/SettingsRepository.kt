@@ -26,6 +26,8 @@ class SettingsRepository(private val context: Context) {
     private val PREF_IS_SUBSCRIBED = booleanPreferencesKey("is_subscribed")
     private val PREF_IS_LIFETIME = booleanPreferencesKey("is_lifetime")
     private val PREF_SUBSCRIPTION_TIER = stringPreferencesKey("subscription_tier")
+    private val PREF_COMPANY_LOGO_URI = stringPreferencesKey("company_logo_uri")
+    private val PREF_SIGNATURE_URI = stringPreferencesKey("signature_uri")
 
     val aiAgentModeFlow: Flow<AiAgentMode> = context.dataStore.data.map { preferences ->
         val modeStr = preferences[PREF_AI_AGENT_MODE] ?: AiAgentMode.CLOUD.name
@@ -73,6 +75,14 @@ class SettingsRepository(private val context: Context) {
         preferences[PREF_SUBSCRIPTION_TIER] ?: "FREE_TRIAL"
     }
 
+    val companyLogoUriFlow: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[PREF_COMPANY_LOGO_URI]
+    }
+
+    val signatureUriFlow: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[PREF_SIGNATURE_URI]
+    }
+
     suspend fun setAiAgentMode(mode: AiAgentMode) {
         context.dataStore.edit { preferences ->
             preferences[PREF_AI_AGENT_MODE] = mode.name
@@ -100,6 +110,26 @@ class SettingsRepository(private val context: Context) {
     suspend fun setTechnicianName(name: String) {
         context.dataStore.edit { preferences ->
             preferences[PREF_TECHNICIAN_NAME] = name
+        }
+    }
+
+    suspend fun setCompanyLogoUri(uri: String?) {
+        context.dataStore.edit { preferences ->
+            if (uri != null) {
+                preferences[PREF_COMPANY_LOGO_URI] = uri
+            } else {
+                preferences.remove(PREF_COMPANY_LOGO_URI)
+            }
+        }
+    }
+
+    suspend fun setSignatureUri(uri: String?) {
+        context.dataStore.edit { preferences ->
+            if (uri != null) {
+                preferences[PREF_SIGNATURE_URI] = uri
+            } else {
+                preferences.remove(PREF_SIGNATURE_URI)
+            }
         }
     }
 

@@ -31,20 +31,20 @@ private val LightColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Teal700,
-    onPrimary = Color.White,
+    primary = Teal400,
+    onPrimary = Slate900,
     primaryContainer = Teal900,
     onPrimaryContainer = Teal100,
-    secondary = Slate500,
-    onSecondary = Color.White,
-    background = Charcoal900,
+    secondary = Slate400,
+    onSecondary = Slate900,
+    background = Slate900,
     onBackground = Color.White,
-    surface = Slate900,
+    surface = Slate800,
     onSurface = Color.White,
-    surfaceVariant = Slate600,
-    onSurfaceVariant = Slate200,
-    outline = Slate500,
-    outlineVariant = Slate600,
+    surfaceVariant = Slate700,
+    onSurfaceVariant = Slate300,
+    outline = Slate600,
+    outlineVariant = Slate700,
     inverseSurface = Slate50,
     inverseOnSurface = Slate900
 )

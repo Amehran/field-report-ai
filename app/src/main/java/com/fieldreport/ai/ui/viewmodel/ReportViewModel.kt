@@ -66,6 +66,20 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     val businessName = settingsRepository.businessNameFlow
     val currency = settingsRepository.currencyFlow
     val technicianName = settingsRepository.technicianNameFlow
+    val companyLogoUri = settingsRepository.companyLogoUriFlow
+    val signatureUri = settingsRepository.signatureUriFlow
+
+    fun setCompanyLogoUri(uri: String?) {
+        viewModelScope.launch {
+            settingsRepository.setCompanyLogoUri(uri)
+        }
+    }
+
+    fun setSignatureUri(uri: String?) {
+        viewModelScope.launch {
+            settingsRepository.setSignatureUri(uri)
+        }
+    }
 
     val freePdfsRemaining = settingsRepository.freePdfsRemainingFlow.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), 3
@@ -589,11 +603,15 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val currentBizName = businessName.first()
+                val logoUri = companyLogoUri.firstOrNull()
+                val sigUri = signatureUri.firstOrNull()
                 val pdfFile = PdfReportGenerator.generatePdf(
                     context = context,
                     report = report,
                     mediaItems = media,
-                    businessName = currentBizName
+                    businessName = currentBizName,
+                    logoUri = logoUri,
+                    signatureUri = sigUri
                 )
 
                 val uri = FileProvider.getUriForFile(
