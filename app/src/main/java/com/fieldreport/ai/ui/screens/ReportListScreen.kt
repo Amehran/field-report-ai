@@ -31,6 +31,8 @@ import java.util.Locale
 
 import com.fieldreport.ai.ui.theme.Slate900
 
+import com.fieldreport.ai.ui.components.FieldReportTopBar
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReportListScreen(
@@ -44,15 +46,16 @@ fun ReportListScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Saved Reports", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "Field Reports",
+                subtitle = "${reports.size} active report${if (reports.size == 1) "" else "s"}",
                 actions = {
                     IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Slate900)
+                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.White)
                     }
                     Box {
                         IconButton(onClick = { showMenu = !showMenu }) {
-                            Icon(androidx.compose.material.icons.Icons.Default.MoreVert, contentDescription = "More options", tint = Slate900)
+                            Icon(androidx.compose.material.icons.Icons.Default.MoreVert, contentDescription = "More options", tint = Color.White)
                         }
                         DropdownMenu(
                             expanded = showMenu,
@@ -67,8 +70,7 @@ fun ReportListScreen(
                             )
                         }
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         floatingActionButton = {

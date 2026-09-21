@@ -24,6 +24,7 @@ import com.fieldreport.ai.data.db.MediaItemEntity
 import com.fieldreport.ai.data.model.PhotoLabel
 import com.fieldreport.ai.ui.theme.*
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
+import com.fieldreport.ai.ui.components.FieldReportTopBar
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -231,14 +232,14 @@ fun CaptureScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("New report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "New Field Report",
+                subtitle = "Capture details, photos & audio",
                 navigationIcon = {
                     IconButton(onClick = onClose) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         bottomBar = {

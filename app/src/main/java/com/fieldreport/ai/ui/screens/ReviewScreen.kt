@@ -33,6 +33,7 @@ import com.fieldreport.ai.data.db.MediaItemEntity
 import com.fieldreport.ai.data.model.ReportStatus
 import com.fieldreport.ai.ui.theme.*
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
+import com.fieldreport.ai.ui.components.FieldReportTopBar
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -86,14 +87,14 @@ fun ReviewScreen(
     if (report?.status == ReportStatus.GENERATING) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text("Drafting report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+                FieldReportTopBar(
+                    title = "Drafting Report",
+                    subtitle = "AI processing in progress",
                     navigationIcon = {
                         IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                         }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                    }
                 )
             },
             containerColor = Slate50
@@ -125,14 +126,14 @@ fun ReviewScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Review report", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "Review Report",
+                subtitle = report?.customerName?.ifBlank { "Job Review" },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         bottomBar = {

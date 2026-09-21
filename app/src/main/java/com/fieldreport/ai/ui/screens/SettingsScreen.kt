@@ -19,6 +19,8 @@ import android.app.Activity
 import android.widget.Toast
 import com.fieldreport.ai.ui.components.PaywallSheet
 
+import com.fieldreport.ai.ui.components.FieldReportTopBar
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
@@ -82,14 +84,14 @@ fun SettingsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Settings", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "Settings",
+                subtitle = "App configuration & plan details",
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = androidx.compose.ui.graphics.Color.White)
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         containerColor = Slate50

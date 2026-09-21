@@ -27,6 +27,7 @@ import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 
 import android.app.Activity
 import com.fieldreport.ai.ui.components.PaywallSheet
+import com.fieldreport.ai.ui.components.FieldReportTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,17 +115,18 @@ fun ReportReadyScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Report ready", style = MaterialTheme.typography.titleLarge, color = Slate900) },
+            FieldReportTopBar(
+                title = "Report Ready",
+                subtitle = report?.customerName?.ifBlank { "Job Completion" },
                 navigationIcon = {
                     IconButton(onClick = onDone) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Slate900)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
                 actions = {
                     val statusText = if (isSubscribed || isLifetime) "Pro Active" else "$freePdfsRemaining free exports"
                     val statusColor = if (isSubscribed || isLifetime) Emerald700 else Slate600
-                    val statusBg = if (isSubscribed || isLifetime) Emerald100 else Slate200
+                    val statusBg = if (isSubscribed || isLifetime) Emerald100 else Slate100
 
                     Surface(
                         color = statusBg,
@@ -145,8 +147,7 @@ fun ReportReadyScreen(
                             )
                         }
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Slate50)
+                }
             )
         },
         bottomBar = {
