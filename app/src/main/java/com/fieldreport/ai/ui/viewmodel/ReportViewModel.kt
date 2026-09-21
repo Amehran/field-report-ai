@@ -646,6 +646,12 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun deleteMediaItem(item: MediaItemEntity) {
+        viewModelScope.launch {
+            repository.deleteMediaItem(getApplication(), item)
+        }
+    }
+
     fun deleteReport(reportId: String) {
         viewModelScope.launch {
             repository.deleteReportWithFiles(getApplication(), reportId)
