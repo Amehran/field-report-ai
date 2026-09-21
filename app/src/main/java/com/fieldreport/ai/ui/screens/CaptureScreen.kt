@@ -200,8 +200,10 @@ fun CaptureScreen(
         galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
+    val currentReportId by viewModel.currentReportId.collectAsState()
+
     LaunchedEffect(Unit) {
-        if (currentReport == null) {
+        if (currentReportId == null) {
             viewModel.startNewReport(customerName, jobTitle)
         }
     }
