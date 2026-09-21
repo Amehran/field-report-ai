@@ -121,6 +121,12 @@ class ReportRepository(private val reportDao: ReportDao) {
         reportDao.updateReport(updated)
     }
 
+    suspend fun deleteMediaItem(context: android.content.Context, item: MediaItemEntity) {
+        deleteFileFromUri(context, item.localUri)
+        item.storagePath?.let { deleteFileFromUri(context, it) }
+        reportDao.deleteMediaItem(item)
+    }
+
     suspend fun deleteReport(reportId: String) {
         reportDao.deleteReport(reportId)
     }
@@ -129,14 +135,28 @@ class ReportRepository(private val reportDao: ReportDao) {
         val report = reportDao.getReportById(reportId)
         val mediaItems = reportDao.getMediaItemsForReport(reportId)
 
+        // 1. Delete Audio Files
         report?.audioLocalUri?.let { deleteFileFromUri(context, it) }
-        mediaItems.forEach { deleteFileFromUri(context, it.localUri) }
+        report?.audioStoragePath?.let { deleteFileFromUri(context, it) }
 
-        val pdfFile = java.io.File(context.cacheDir, "reports/Report_${reportId}.pdf")
-        if (pdfFile.exists()) {
-            pdfFile.delete()
+        // 2. Delete Media Items (Photos/Videos)
+        mediaItems.forEach { item ->
+            deleteFileFromUri(context, item.localUri)
+            item.storagePath?.let { deleteFileFromUri(context, it) }
         }
 
+        // 3. Delete Generated PDF Files
+        val pdfInCache = java.io.File(context.cacheDir, "reports/Report_${reportId}.pdf")
+        if (pdfInCache.exists()) pdfInCache.delete()
+
+        val pdfInFiles = java.io.File(context.filesDir, "reports/Report_${reportId}.pdf")
+        if (pdfInFiles.exists()) pdfInFiles.delete()
+
+        report?.pdfLocalPath?.let { path ->
+            deleteFileFromUri(context, path)
+        }
+
+        // 4. Delete Database Record
         reportDao.deleteReport(reportId)
     }
 
@@ -149,25 +169,47 @@ class ReportRepository(private val reportDao: ReportDao) {
         reports.forEach { report ->
             deleteReportWithFiles(context, report.id)
         }
+
+        // Extra safety: clean up any remaining orphan files in app storage directories
+        try {
+            java.io.File(context.cacheDir, "reports").deleteRecursively()
+            java.io.File(context.cacheDir, "images").deleteRecursively()
+            java.io.File(context.cacheDir, "recordings").deleteRecursively()
+            java.io.File(context.cacheDir, "compressed_media").deleteRecursively()
+
+            java.io.File(context.filesDir, "reports").deleteRecursively()
+            java.io.File(context.filesDir, "images").deleteRecursively()
+            java.io.File(context.filesDir, "recordings").deleteRecursively()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         reportDao.deleteAllReports()
     }
 
-    private fun deleteFileFromUri(context: android.content.Context, uriStr: String) {
+    fun deleteFileFromUri(context: android.content.Context, uriStr: String) {
+        if (uriStr.isBlank() || uriStr.startsWith("dummy_")) return
         try {
-            val uri = android.net.Uri.parse(uriStr) ?: return
-            if (uri.scheme == "content") {
-                try {
-                    context.contentResolver.delete(uri, null, null)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            val uri = android.net.Uri.parse(uriStr)
+            if (uri != null) {
+                if (uri.scheme == "content") {
+                    try {
+                        context.contentResolver.delete(uri, null, null)
+                    } catch (e: Exception) {
+                        // Ignore content resolver restriction
+                    }
+                }
+                val path = uri.path
+                if (!path.isNullOrEmpty()) {
+                    val file = java.io.File(path)
+                    if (file.exists()) {
+                        file.delete()
+                    }
                 }
             }
-            val path = uri.path
-            if (path != null) {
-                val file = java.io.File(path)
-                if (file.exists()) {
-                    file.delete()
-                }
+            val directFile = java.io.File(uriStr)
+            if (directFile.exists()) {
+                directFile.delete()
             }
         } catch (e: Exception) {
             e.printStackTrace()

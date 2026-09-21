@@ -74,6 +74,7 @@ class ReportRepositoryTest {
 
     @Test
     fun `deleteMediaItem calls dao deleteMediaItem`() = runTest {
+        val mockContext = mockk<android.content.Context>(relaxed = true)
         val item = MediaItemEntity(
             id = "media-1",
             reportId = "test-123",
@@ -82,7 +83,7 @@ class ReportRepositoryTest {
             localUri = "content://media/1"
         )
 
-        repository.deleteMediaItem(item)
+        repository.deleteMediaItem(mockContext, item)
 
         coVerify(exactly = 1) { mockDao.deleteMediaItem(item) }
     }
