@@ -509,4 +509,24 @@ class ReportViewModelTest {
 
         coVerify { anyConstructed<ReportRepository>().generateLocalMockDraft("rep-auth-1", "Some notes") }
     }
+
+    @Test
+    fun `setCompanyLogoUri updates logo URI in settings repository`() = runTest {
+        coEvery { anyConstructed<SettingsRepository>().setCompanyLogoUri("content://logo.jpg") } just Runs
+
+        viewModel.setCompanyLogoUri("content://logo.jpg")
+        advanceUntilIdle()
+
+        coVerify { anyConstructed<SettingsRepository>().setCompanyLogoUri("content://logo.jpg") }
+    }
+
+    @Test
+    fun `setSignatureUri updates signature URI in settings repository`() = runTest {
+        coEvery { anyConstructed<SettingsRepository>().setSignatureUri("content://sig.jpg") } just Runs
+
+        viewModel.setSignatureUri("content://sig.jpg")
+        advanceUntilIdle()
+
+        coVerify { anyConstructed<SettingsRepository>().setSignatureUri("content://sig.jpg") }
+    }
 }
