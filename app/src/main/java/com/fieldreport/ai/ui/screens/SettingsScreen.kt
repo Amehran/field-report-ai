@@ -115,15 +115,32 @@ fun SettingsScreen(
         }
     }
 
+    var showProSuccessDialog by remember { mutableStateOf(false) }
+
+    if (showProSuccessDialog) {
+        com.fieldreport.ai.ui.components.ProSuccessDialog(
+            onDismiss = { showProSuccessDialog = false }
+        )
+    }
+
     if (showPaywallSheet) {
         PaywallSheet(
             products = billingProducts,
             onDismiss = { showPaywallSheet = false },
-            onPurchaseTier = { _, productDetails ->
+            onPurchaseTier = { tier, productDetails ->
                 if (activity != null && productDetails != null) {
                     viewModel.launchBillingFlow(activity, productDetails)
                 } else {
-                    Toast.makeText(context, "Google Play Store unavailable in emulator mode.", Toast.LENGTH_SHORT).show()
+                    viewModel.simulatePurchase(tier) {
+                        showPaywallSheet = false
+                        showProSuccessDialog = true
+                    }
+                }
+            },
+            onSimulatePurchase = { tier ->
+                viewModel.simulatePurchase(tier) {
+                    showPaywallSheet = false
+                    showProSuccessDialog = true
                 }
             },
             onRestorePurchases = {
@@ -131,6 +148,7 @@ fun SettingsScreen(
                     if (success) {
                         Toast.makeText(context, "Purchases restored!", Toast.LENGTH_SHORT).show()
                         showPaywallSheet = false
+                        showProSuccessDialog = true
                     } else {
                         Toast.makeText(context, "No active subscriptions found.", Toast.LENGTH_SHORT).show()
                     }

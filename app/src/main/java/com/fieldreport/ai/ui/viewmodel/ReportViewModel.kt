@@ -233,6 +233,40 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         billingRepository.launchBillingFlow(activity, productDetails)
     }
 
+    fun simulatePurchase(tier: com.fieldreport.ai.ui.components.PaywallTier, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            val isLifetime = tier == com.fieldreport.ai.ui.components.PaywallTier.LIFETIME
+            val tierStr = when (tier) {
+                com.fieldreport.ai.ui.components.PaywallTier.MONTHLY -> "PRO_MONTHLY"
+                com.fieldreport.ai.ui.components.PaywallTier.ANNUAL -> "PRO_ANNUAL"
+                com.fieldreport.ai.ui.components.PaywallTier.LIFETIME -> "PRO_LIFETIME"
+            }
+            settingsRepository.updateEntitlement(
+                remainingPdfs = 999,
+                isSubscribed = !isLifetime,
+                isLifetime = isLifetime,
+                tier = tierStr
+            )
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                try {
+                    val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                    val userDoc = hashMapOf(
+                        "isSubscribed" to (!isLifetime),
+                        "isLifetime" to isLifetime,
+                        "subscriptionTier" to tierStr,
+                        "updatedAt" to System.currentTimeMillis()
+                    )
+                    firestore.collection("users").document(user.uid)
+                        .set(userDoc, com.google.firebase.firestore.SetOptions.merge())
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            onComplete()
+        }
+    }
+
     fun restorePurchases(onComplete: (Boolean) -> Unit) {
         billingRepository.restorePurchases(onComplete)
     }
