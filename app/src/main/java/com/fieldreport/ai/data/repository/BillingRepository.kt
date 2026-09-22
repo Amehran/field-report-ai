@@ -99,10 +99,10 @@ class BillingRepository(
             client.queryProductDetailsAsync(paramsInApp) { resultInApp, productDetailsListInApp ->
                 val combined = mutableListOf<ProductDetails>()
                 if (resultSubs.responseCode == BillingClient.BillingResponseCode.OK) {
-                    combined.addAll(productDetailsListSubs)
+                    combined.addAll(productDetailsListSubs.productDetailsList)
                 }
                 if (resultInApp.responseCode == BillingClient.BillingResponseCode.OK) {
-                    combined.addAll(productDetailsListInApp)
+                    combined.addAll(productDetailsListInApp.productDetailsList)
                 }
                 _products.value = combined
             }
