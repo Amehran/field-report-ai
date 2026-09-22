@@ -57,3 +57,8 @@ recordings/
 *.mp4
 *.jpg.tmp
 
+# iOS Build Outputs
+iosApp/build/
+*.xcworkspace
+
+

@@ -1,0 +1,290 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9F0000012C9E000000000001 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000112C9E000000000001 /* iOSApp.swift */; };
+		9F0000022C9E000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000122C9E000000000002 /* ContentView.swift */; };
+		9F0000032C9E000000000003 /* ReportListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000132C9E000000000003 /* ReportListViewModel.swift */; };
+		9F0000042C9E000000000004 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000142C9E000000000004 /* SettingsViewModel.swift */; };
+		9F0000052C9E000000000005 /* DictationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000152C9E000000000005 /* DictationView.swift */; };
+		9F0000062C9E000000000006 /* ReportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000162C9E000000000006 /* ReportDetailView.swift */; };
+		9F0000072C9E000000000007 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000172C9E000000000007 /* SettingsView.swift */; };
+		9F0000082C9E000000000008 /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0000182C9E000000000008 /* shared.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9F0000102C9E000000000010 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F0000112C9E000000000001 /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		9F0000122C9E000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9F0000132C9E000000000003 /* ReportListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/ReportListViewModel.swift; sourceTree = "<group>"; };
+		9F0000142C9E000000000004 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/SettingsViewModel.swift; sourceTree = "<group>"; };
+		9F0000152C9E000000000005 /* DictationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/DictationView.swift; sourceTree = "<group>"; };
+		9F0000162C9E000000000006 /* ReportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/ReportDetailView.swift; sourceTree = "<group>"; };
+		9F0000172C9E000000000007 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/SettingsView.swift; sourceTree = "<group>"; };
+		9F0000182C9E000000000008 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9F0000202C9E000000000020 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F0000082C9E000000000008 /* shared.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9F0000302C9E000000000030 = {
+			isa = PBXGroup;
+			children = (
+				9F0000312C9E000000000031 /* iosApp */,
+				9F0000322C9E000000000032 /* Frameworks */,
+				9F0000102C9E000000000010 /* iosApp.app */,
+			);
+			sourceTree = "<group>";
+		};
+		9F0000312C9E000000000031 /* iosApp */ = {
+			isa = PBXGroup;
+			children = (
+				9F0000112C9E000000000001 /* iOSApp.swift */,
+				9F0000122C9E000000000002 /* ContentView.swift */,
+				9F0000132C9E000000000003 /* ReportListViewModel.swift */,
+				9F0000142C9E000000000004 /* SettingsViewModel.swift */,
+				9F0000152C9E000000000005 /* DictationView.swift */,
+				9F0000162C9E000000000006 /* ReportDetailView.swift */,
+				9F0000172C9E000000000007 /* SettingsView.swift */,
+			);
+			path = iosApp;
+			sourceTree = "<group>";
+		};
+		9F0000322C9E000000000032 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9F0000182C9E000000000008 /* shared.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9F0000402C9E000000000040 /* iosApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F0000502C9E000000000050 /* Build configuration list for PBXNativeTarget "iosApp" */;
+			buildPhases = (
+				9F0000602C9E000000000060 /* Compile Kotlin Framework */,
+				9F0000702C9E000000000070 /* Sources */,
+				9F0000202C9E000000000020 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			name = iosApp;
+			productName = iosApp;
+			productReference = 9F0000102C9E000000000010 /* iosApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9F0000002C9E000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					9F0000402C9E000000000040 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 9F0000512C9E000000000051 /* Build configuration list for PBXProject "iosApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9F0000302C9E000000000030;
+			productRefGroup = 9F0000302C9E000000000030;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9F0000402C9E000000000040 /* iosApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9F0000602C9E000000000060 /* Compile Kotlin Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Compile Kotlin Framework";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home \"$SRCROOT/../gradlew\" -p \"$SRCROOT/..\" :shared:embedAndSignAppleFrameworkForXcode\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9F0000702C9E000000000070 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F0000012C9E000000000001 /* iOSApp.swift in Sources */,
+				9F0000022C9E000000000002 /* ContentView.swift in Sources */,
+				9F0000032C9E000000000003 /* ReportListViewModel.swift in Sources */,
+				9F0000042C9E000000000004 /* SettingsViewModel.swift in Sources */,
+				9F0000052C9E000000000005 /* DictationView.swift in Sources */,
+				9F0000062C9E000000000006 /* ReportDetailView.swift in Sources */,
+				9F0000072C9E000000000007 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9F0000522C9E000000000052 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_BITCODE = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Field Report AI requires microphone access to record site dictations for automated report generation.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Field Report AI uses speech recognition to convert your site dictations into report text.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fieldreport.ai.iosApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9F0000532C9E000000000053 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_BITCODE = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Field Report AI requires microphone access to record site dictations for automated report generation.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Field Report AI uses speech recognition to convert your site dictations into report text.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fieldreport.ai.iosApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9F0000502C9E000000000050 /* Build configuration list for PBXNativeTarget "iosApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F0000522C9E000000000052 /* Debug */,
+				9F0000532C9E000000000053 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9F0000512C9E000000000051 /* Build configuration list for PBXProject "iosApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F0000522C9E000000000052 /* Debug */,
+				9F0000532C9E000000000053 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9F0000002C9E000000000000 /* Project object */;
+}

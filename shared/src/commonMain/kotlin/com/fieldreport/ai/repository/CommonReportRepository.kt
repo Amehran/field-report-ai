@@ -9,10 +9,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class CommonReportRepository(
-    private val apiClient: CloudRunApiClient = CloudRunApiClient()
+    private val apiClient: CloudRunApiClient
 ) {
+    constructor() : this(CloudRunApiClient())
+
     private val _reports = MutableStateFlow<List<SharedReport>>(emptyList())
     val reports: StateFlow<List<SharedReport>> = _reports.asStateFlow()
+
+    fun getReportsList(): List<SharedReport> = _reports.value
 
     fun addReport(report: SharedReport) {
         val current = _reports.value.toMutableList()

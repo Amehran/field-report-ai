@@ -18,6 +18,8 @@ class CommonSettingsRepository {
     )
     val entitlement: StateFlow<SharedEntitlement> = _entitlement.asStateFlow()
 
+    fun getEntitlementState(): SharedEntitlement = _entitlement.value
+
     fun updateEntitlement(
         remainingPdfs: Int,
         isSubscribed: Boolean,
