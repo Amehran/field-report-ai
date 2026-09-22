@@ -31,7 +31,14 @@ import com.fieldreport.ai.data.model.ThemeMode
 import com.fieldreport.ai.ui.components.FieldReportTopBar
 import com.fieldreport.ai.ui.components.PaywallSheet
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
+import android.graphics.Bitmap
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.ui.graphics.asAndroidPath
+import androidx.compose.ui.input.pointer.pointerInput
 import java.io.File
+import java.io.FileOutputStream
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,20 +66,48 @@ fun SettingsScreen(
     var localTechnicianName by remember(settingsTechnicianName) { mutableStateOf(settingsTechnicianName) }
     var localBusinessName by remember(businessName) { mutableStateOf(businessName) }
 
+    var showSignaturePadDialog by remember { mutableStateOf(false) }
+
+    // Helper to copy selected/captured URIs to internal storage for permanent access
+    fun copyUriToInternalStorage(sourceUri: Uri, fileName: String): String? {
+        return try {
+            val brandingDir = File(context.filesDir, "branding")
+            if (!brandingDir.exists()) brandingDir.mkdirs()
+            val destFile = File(brandingDir, fileName)
+            context.contentResolver.openInputStream(sourceUri)?.use { input ->
+                destFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+            destFile.toURI().toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun saveBitmapToInternalStorage(bitmap: Bitmap, fileName: String): String? {
+        return try {
+            val brandingDir = File(context.filesDir, "branding")
+            if (!brandingDir.exists()) brandingDir.mkdirs()
+            val destFile = File(brandingDir, fileName)
+            FileOutputStream(destFile).use { out ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+            }
+            destFile.toURI().toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     // Launchers for Logo & Signature
     val logoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            try {
-                context.contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            viewModel.setCompanyLogoUri(uri.toString())
+            val savedPath = copyUriToInternalStorage(uri, "company_logo.png") ?: uri.toString()
+            viewModel.setCompanyLogoUri(savedPath)
         }
     }
 
@@ -80,15 +115,8 @@ fun SettingsScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            try {
-                context.contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            viewModel.setSignatureUri(uri.toString())
+            val savedPath = copyUriToInternalStorage(uri, "signature.png") ?: uri.toString()
+            viewModel.setSignatureUri(savedPath)
         }
     }
 
@@ -97,7 +125,8 @@ fun SettingsScreen(
         contract = ActivityResultContracts.TakePicture()
     ) { success: Boolean ->
         if (success && tempCameraUri != null) {
-            viewModel.setSignatureUri(tempCameraUri.toString())
+            val savedPath = copyUriToInternalStorage(tempCameraUri!!, "signature.png") ?: tempCameraUri.toString()
+            viewModel.setSignatureUri(savedPath)
         }
     }
 
@@ -442,6 +471,15 @@ fun SettingsScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         OutlinedButton(
+                            onClick = { showSignaturePadDialog = true },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(Icons.Default.Create, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Draw")
+                        }
+
+                        OutlinedButton(
                             onClick = {
                                 try {
                                     val photoFile = File(context.cacheDir, "sig_capture_${System.currentTimeMillis()}.jpg")
@@ -473,6 +511,153 @@ fun SettingsScreen(
                                 Icon(Icons.Default.Delete, contentDescription = "Remove Signature", tint = MaterialTheme.colorScheme.error)
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    if (showSignaturePadDialog) {
+        SignaturePadDialog(
+            onDismiss = { showSignaturePadDialog = false },
+            onSaveSignature = { bitmap ->
+                val savedPath = saveBitmapToInternalStorage(bitmap, "signature.png")
+                viewModel.setSignatureUri(savedPath)
+                showSignaturePadDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+fun SignaturePadDialog(
+    onDismiss: () -> Unit,
+    onSaveSignature: (Bitmap) -> Unit
+) {
+    var paths by remember { mutableStateOf(listOf<androidx.compose.ui.graphics.Path>()) }
+    var currentPath by remember { mutableStateOf<androidx.compose.ui.graphics.Path?>(null) }
+
+    androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface,
+            tonalElevation = 6.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Draw Technician Signature",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(androidx.compose.ui.graphics.Color.White)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                        .pointerInput(Unit) {
+                            detectDragGestures(
+                                onDragStart = { offset ->
+                                    val newPath = androidx.compose.ui.graphics.Path().apply {
+                                        moveTo(offset.x, offset.y)
+                                    }
+                                    currentPath = newPath
+                                },
+                                onDrag = { change, _ ->
+                                    currentPath?.lineTo(change.position.x, change.position.y)
+                                    currentPath = currentPath?.let { p ->
+                                        androidx.compose.ui.graphics.Path().apply { addPath(p) }
+                                    }
+                                },
+                                onDragEnd = {
+                                    currentPath?.let { p ->
+                                        paths = paths + p
+                                    }
+                                    currentPath = null
+                                }
+                            )
+                        }
+                ) {
+                    androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
+                        paths.forEach { path ->
+                            drawPath(
+                                path = path,
+                                color = androidx.compose.ui.graphics.Color(0xFF0F766E),
+                                style = androidx.compose.ui.graphics.drawscope.Stroke(
+                                    width = 4f,
+                                    cap = androidx.compose.ui.graphics.StrokeCap.Round,
+                                    join = androidx.compose.ui.graphics.StrokeJoin.Round
+                                )
+                            )
+                        }
+                        currentPath?.let { path ->
+                            drawPath(
+                                path = path,
+                                color = androidx.compose.ui.graphics.Color(0xFF0F766E),
+                                style = androidx.compose.ui.graphics.drawscope.Stroke(
+                                    width = 4f,
+                                    cap = androidx.compose.ui.graphics.StrokeCap.Round,
+                                    join = androidx.compose.ui.graphics.StrokeJoin.Round
+                                )
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextButton(onClick = {
+                        paths = emptyList()
+                        currentPath = null
+                    }) {
+                        Text("Clear")
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    TextButton(onClick = onDismiss) {
+                        Text("Cancel")
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Button(
+                        onClick = {
+                            if (paths.isNotEmpty()) {
+                                val bitmap = Bitmap.createBitmap(600, 300, Bitmap.Config.ARGB_8888)
+                                val canvas = android.graphics.Canvas(bitmap)
+                                canvas.drawColor(android.graphics.Color.WHITE)
+                                val paint = android.graphics.Paint().apply {
+                                    color = android.graphics.Color.parseColor("#0F766E")
+                                    strokeWidth = 6f
+                                    style = android.graphics.Paint.Style.STROKE
+                                    strokeCap = android.graphics.Paint.Cap.ROUND
+                                    strokeJoin = android.graphics.Paint.Join.ROUND
+                                    isAntiAlias = true
+                                }
+                                paths.forEach { composePath ->
+                                    val androidPath = composePath.asAndroidPath()
+                                    val matrix = android.graphics.Matrix()
+                                    matrix.postScale(2f, 1.5f)
+                                    val scaledPath = android.graphics.Path()
+                                    androidPath.transform(matrix, scaledPath)
+                                    canvas.drawPath(scaledPath, paint)
+                                }
+                                onSaveSignature(bitmap)
+                            }
+                        }
+                    ) {
+                        Text("Save Signature")
                     }
                 }
             }

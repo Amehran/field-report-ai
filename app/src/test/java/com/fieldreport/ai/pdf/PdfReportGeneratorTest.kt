@@ -129,4 +129,29 @@ class PdfReportGeneratorTest {
         verify { mockCanvas.drawText("TECHNICIAN SIGNATURE", 36f, any(), any()) }
         verify { mockCanvas.drawText("Alex Smith", 36f, any(), any()) }
     }
+
+    @Test
+    fun `generatePdf handles custom logoUri and signatureUri parameters`() {
+        val report = ReportEntity(
+            id = "rep-branding",
+            userId = "user-1",
+            status = ReportStatus.APPROVED,
+            customerName = "Branded Client",
+            jobTitle = "Custom Branding Job"
+        )
+
+        val file = PdfReportGenerator.generatePdf(
+            context = mockContext,
+            report = report,
+            mediaItems = emptyList(),
+            businessName = "ACME HEATING & AIR",
+            logoUri = "file:///tmp/dummy_logo.png",
+            signatureUri = "file:///tmp/dummy_signature.png"
+        )
+
+        assertNotNull(file)
+        assertEquals("Report_rep-branding.pdf", file.name)
+        verify { mockCanvas.drawText("ACME HEATING & AIR", any(), 40f, any()) }
+        verify { mockCanvas.drawText("TECHNICIAN SIGNATURE", 36f, any(), any()) }
+    }
 }
