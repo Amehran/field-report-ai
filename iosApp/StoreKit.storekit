@@ -1,0 +1,96 @@
+{
+  "identifier" : "D684307C",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "149.99",
+      "familyShareable" : true,
+      "internalID" : "1001",
+      "localizations" : [
+        {
+          "description" : "Unlimited field reports and voice dictation forever.",
+          "displayName" : "Field Report Pro Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.fieldreport.ai.lifetime",
+      "referenceName" : "Pro Lifetime License",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "2001",
+      "localizations" : [
+
+      ],
+      "name" : "Pro Subscriptions",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "2002",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Monthly pro subscription with unlimited AI dictations.",
+              "displayName" : "Pro Monthly Pass",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.fieldreport.ai.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Pro Monthly Pass",
+          "subscriptionGroupID" : "2001",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "89.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "2003",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Annual pro subscription with 25% discount.",
+              "displayName" : "Pro Annual License",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.fieldreport.ai.annual",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Pro Annual License",
+          "subscriptionGroupID" : "2001",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

@@ -15,6 +15,7 @@
 		9F0000062C9E000000000006 /* ReportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000162C9E000000000006 /* ReportDetailView.swift */; };
 		9F0000072C9E000000000007 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000172C9E000000000007 /* SettingsView.swift */; };
 		9F0000082C9E000000000008 /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0000182C9E000000000008 /* shared.framework */; };
+		9F0000092C9E000000000009 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000192C9E000000000009 /* StoreKitManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		9F0000162C9E000000000006 /* ReportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/ReportDetailView.swift; sourceTree = "<group>"; };
 		9F0000172C9E000000000007 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/SettingsView.swift; sourceTree = "<group>"; };
 		9F0000182C9E000000000008 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F0000192C9E000000000009 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/StoreKitManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				9F0000152C9E000000000005 /* DictationView.swift */,
 				9F0000162C9E000000000006 /* ReportDetailView.swift */,
 				9F0000172C9E000000000007 /* SettingsView.swift */,
+				9F0000192C9E000000000009 /* StoreKitManager.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 				9F0000052C9E000000000005 /* DictationView.swift in Sources */,
 				9F0000062C9E000000000006 /* ReportDetailView.swift in Sources */,
 				9F0000072C9E000000000007 /* SettingsView.swift in Sources */,
+				9F0000092C9E000000000009 /* StoreKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
