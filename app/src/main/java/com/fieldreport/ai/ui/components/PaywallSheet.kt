@@ -142,8 +142,8 @@ fun PaywallSheet(
             val monthlyPrice = monthlyProduct?.subscriptionOfferDetails?.firstOrNull()
                 ?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice ?: "$9.99"
             val annualPrice = annualProduct?.subscriptionOfferDetails?.firstOrNull()
-                ?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice ?: "$89.99"
-            val lifetimePrice = lifetimeProduct?.oneTimePurchaseOfferDetails?.formattedPrice ?: "$199.99"
+                ?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice ?: "$79.99"
+            val lifetimePrice = lifetimeProduct?.oneTimePurchaseOfferDetails?.formattedPrice ?: "$149.99"
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
