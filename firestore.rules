@@ -2,8 +2,48 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // User Profile & Entitlement Protection
+    match /users/{userId} {
+      // Users can read their own profile and entitlement state
+      allow read: if isOwner(userId);
+
+      // Allow initial document creation without protected entitlement fields
+      allow create: if isOwner(userId) 
+        && !request.resource.data.keys().hasAny(['isSubscribed', 'isLifetime', 'subscriptionTier', 'freePdfsRemaining']);
+
+      // Allow updating non-entitlement fields (e.g. displayName, settings)
+      allow update: if isOwner(userId) 
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isSubscribed', 'isLifetime', 'subscriptionTier', 'freePdfsRemaining']);
+
+      // Disallow client deletion of user profile
+      allow delete: if false;
+
+      // Subcollection reports
+      match /reports/{reportId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Top-Level Reports collection (if synced at top level)
+    match /reports/{reportId} {
+      allow read, update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Anti-Tampering Device Hash tracking (Server Admin SDK only)
+    match /devices/{deviceId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
     }
   }
 }

@@ -3,7 +3,18 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     match /users/{userId}/{allPaths=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // User can only access files in their own folder
+      allow read: if request.auth != null && request.auth.uid == userId;
+      
+      // Enforce file size (<20MB) and valid content types (image, audio, pdf)
+      allow write: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size < 20 * 1024 * 1024
+        && (
+          request.resource.contentType.matches('image/.*') ||
+          request.resource.contentType.matches('audio/.*') ||
+          request.resource.contentType == 'application/pdf'
+        );
     }
   }
 }
