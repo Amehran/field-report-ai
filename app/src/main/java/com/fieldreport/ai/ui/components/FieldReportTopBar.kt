@@ -57,21 +57,11 @@ fun FieldReportTopBar(
         }
     }
 
-    val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-
     Surface(
         color = containerColor,
         shadowElevation = if (showBottomDivider) 3.dp else 0.dp
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            // Status bar background fill
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(statusBarHeight)
-                    .background(containerColor)
-            )
-
             TopAppBar(
                 title = {
                     Text(
@@ -89,8 +79,9 @@ fun FieldReportTopBar(
                 actions = {
                     actions?.invoke(this)
                 },
+                windowInsets = WindowInsets.statusBars,
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
+                    containerColor = containerColor,
                     titleContentColor = titleContentColor,
                     navigationIconContentColor = navigationIconContentColor,
                     actionIconContentColor = actionIconContentColor
