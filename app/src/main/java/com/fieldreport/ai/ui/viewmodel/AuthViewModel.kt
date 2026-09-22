@@ -159,6 +159,21 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 }
         }
     }
+
+    fun sendPasswordResetEmail(email: String, onResult: (Boolean, String) -> Unit) {
+        if (email.isBlank()) {
+            onResult(false, "Please enter your email address first.")
+            return
+        }
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onResult(true, "Password reset link sent to $email")
+                } else {
+                    onResult(false, task.exception?.message ?: "Failed to send reset email.")
+                }
+            }
+    }
     
     fun signOut() {
         auth.signOut()

@@ -50,6 +50,8 @@ fun LoginScreen(
     var isSignUpMode by remember { mutableStateOf(false) }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var resetMessage by remember { mutableStateOf<String?>(null) }
+    var resetSuccess by remember { mutableStateOf(false) }
 
     val googleLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -133,7 +135,10 @@ fun LoginScreen(
                 ) {
                     Tab(
                         selected = !isSignUpMode,
-                        onClick = { isSignUpMode = false },
+                        onClick = { 
+                            isSignUpMode = false 
+                            resetMessage = null
+                        },
                         text = {
                             Text(
                                 "Sign In",
@@ -144,7 +149,10 @@ fun LoginScreen(
                     )
                     Tab(
                         selected = isSignUpMode,
-                        onClick = { isSignUpMode = true },
+                        onClick = { 
+                            isSignUpMode = true 
+                            resetMessage = null
+                        },
                         text = {
                             Text(
                                 "Sign Up",
@@ -159,7 +167,10 @@ fun LoginScreen(
 
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = { 
+                        email = it
+                        resetMessage = null
+                    },
                     label = { Text("Email Address") },
                     placeholder = { Text("you@business.com") },
                     singleLine = true,
@@ -188,7 +199,32 @@ fun LoginScreen(
                     )
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                if (!isSignUpMode) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(
+                            onClick = {
+                                authViewModel.sendPasswordResetEmail(email) { success, msg ->
+                                    resetSuccess = success
+                                    resetMessage = msg
+                                }
+                            }
+                        ) {
+                            Text(
+                                text = "Forgot password?",
+                                color = Teal600,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                } else {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
 
                 Button(
                     onClick = {
@@ -250,7 +286,10 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextButton(
-                    onClick = { isSignUpMode = !isSignUpMode }
+                    onClick = { 
+                        isSignUpMode = !isSignUpMode
+                        resetMessage = null
+                    }
                 ) {
                     Text(
                         text = if (isSignUpMode) "Already have an account? Sign In" else "Don't have an account? Sign Up",
@@ -260,6 +299,16 @@ fun LoginScreen(
                     )
                 }
                 
+                if (resetMessage != null) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = resetMessage!!,
+                        color = if (resetSuccess) Emerald700 else MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 if (authState is AuthState.Error) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
@@ -273,4 +322,5 @@ fun LoginScreen(
         }
     }
 }
+
 
