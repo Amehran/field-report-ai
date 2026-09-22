@@ -157,7 +157,18 @@ class SettingsRepository(private val context: Context) {
         }
     }
 
+    private val commonSettingsRepo = com.fieldreport.ai.repository.CommonSettingsRepository()
+
+    val commonEntitlement = commonSettingsRepo.entitlement
+
     suspend fun updateEntitlement(remainingPdfs: Int, isSubscribed: Boolean, isLifetime: Boolean, tier: String) {
+        val sharedTier = when {
+            isLifetime -> com.fieldreport.ai.model.SharedTier.LIFETIME_PASS
+            isSubscribed -> com.fieldreport.ai.model.SharedTier.PRO_SUBSCRIBED
+            else -> com.fieldreport.ai.model.SharedTier.FREE_TRIAL
+        }
+        commonSettingsRepo.updateEntitlement(remainingPdfs, isSubscribed, isLifetime, sharedTier)
+        
         context.dataStore.edit { preferences ->
             preferences[PREF_FREE_PDFS_REMAINING] = remainingPdfs
             preferences[PREF_IS_SUBSCRIBED] = isSubscribed
