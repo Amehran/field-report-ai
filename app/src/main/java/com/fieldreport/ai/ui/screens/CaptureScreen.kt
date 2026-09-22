@@ -49,6 +49,8 @@ import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import java.io.File
 
+import com.fieldreport.ai.data.model.ReportTone
+
 class ExplicitTakePictureContract : ActivityResultContract<Uri, Boolean>() {
     override fun createIntent(context: Context, input: Uri): Intent {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
@@ -91,6 +93,7 @@ fun CaptureScreen(
     onClose: () -> Unit
 ) {
     val context = LocalContext.current
+    var selectedTone by remember { mutableStateOf(ReportTone.STANDARD) }
     var customerName by remember { mutableStateOf("") }
     var jobTitle by remember { mutableStateOf("") }
     var typedNotes by remember { mutableStateOf("") }
@@ -256,7 +259,7 @@ fun CaptureScreen(
                 ) {
                     Button(
                         onClick = {
-                            viewModel.generateReportDraft(customerName, jobTitle, typedNotes.ifBlank { null })
+                            viewModel.generateReportDraft(customerName, jobTitle, typedNotes.ifBlank { null }, selectedTone)
                             onNavigateToReview()
                         },
                         modifier = Modifier
@@ -339,6 +342,33 @@ fun CaptureScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp)
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "AI Report Tone",
+                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(bottom = 6.dp)
+                    )
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                        ReportTone.values().forEachIndexed { index, tone ->
+                            SegmentedButton(
+                                selected = selectedTone == tone,
+                                onClick = { selectedTone = tone },
+                                shape = SegmentedButtonDefaults.itemShape(index = index, count = ReportTone.values().size)
+                            ) {
+                                Text(
+                                    text = tone.displayName,
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = selectedTone.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

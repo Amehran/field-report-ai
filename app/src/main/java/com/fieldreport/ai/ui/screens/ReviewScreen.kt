@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fieldreport.ai.data.db.MediaItemEntity
 import com.fieldreport.ai.data.model.ReportStatus
+import com.fieldreport.ai.data.model.ReportTone
 import com.fieldreport.ai.ui.theme.*
 import com.fieldreport.ai.ui.viewmodel.ReportViewModel
 import com.fieldreport.ai.ui.components.FieldReportTopBar
@@ -281,6 +282,48 @@ fun ReviewScreen(
                                     innerTextField()
                                 }
                             )
+                        }
+
+                        Spacer(modifier = Modifier.height(14.dp))
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        Spacer(modifier = Modifier.height(14.dp))
+
+                        val activeTone = try {
+                            ReportTone.valueOf(report?.reportTone ?: "STANDARD")
+                        } catch (e: Exception) {
+                            ReportTone.STANDARD
+                        }
+
+                        Text(
+                            text = "AI REPORT TONE",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            letterSpacing = 0.5.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                            ReportTone.values().forEachIndexed { index, tone ->
+                                SegmentedButton(
+                                    selected = activeTone == tone,
+                                    onClick = {
+                                        if (activeTone != tone && report != null) {
+                                            viewModel.generateReportDraft(
+                                                customerName = report!!.customerName,
+                                                jobTitle = report!!.jobTitle,
+                                                typedNotes = report!!.typedNotes,
+                                                tone = tone
+                                            )
+                                        }
+                                    },
+                                    shape = SegmentedButtonDefaults.itemShape(index = index, count = ReportTone.values().size)
+                                ) {
+                                    Text(
+                                        text = tone.displayName,
+                                        style = MaterialTheme.typography.labelSmall
+                                    )
+                                }
+                            }
                         }
                     }
                 }

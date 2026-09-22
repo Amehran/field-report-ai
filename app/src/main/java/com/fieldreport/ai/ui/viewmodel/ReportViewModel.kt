@@ -400,7 +400,12 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun generateReportDraft(customerName: String, jobTitle: String, typedNotes: String?) {
+    fun generateReportDraft(
+        customerName: String,
+        jobTitle: String,
+        typedNotes: String?,
+        tone: com.fieldreport.ai.data.model.ReportTone = com.fieldreport.ai.data.model.ReportTone.STANDARD
+    ) {
         val reportId = _currentReportId.value ?: return
         
         viewModelScope.launch {
@@ -408,12 +413,13 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
             val finalCustomerName = customerName.ifBlank { report?.customerName?.takeIf { it.isNotBlank() } ?: "Customer" }
             val finalJobTitle = jobTitle.ifBlank { report?.jobTitle?.takeIf { it.isNotBlank() } ?: "General Service" }
 
-            // Ensure header is updated in DB prior to draft generation
+            // Ensure header & tone are updated in DB prior to draft generation
             if (report != null) {
                 repository.updateReport(
                     report.copy(
                         customerName = finalCustomerName,
                         jobTitle = finalJobTitle,
+                        reportTone = tone.name,
                         status = ReportStatus.DRAFT,
                         updatedAt = System.currentTimeMillis()
                     )
@@ -435,7 +441,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                 }
 
                 if (user == null) {
-                    repository.generateLocalMockDraft(reportId, typedNotes)
+                    repository.generateLocalMockDraft(reportId, typedNotes, tone)
                     return@launch
                 }
 
@@ -492,6 +498,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                     val jsonBody = JSONObject().apply {
                         put("jobTitle", finalJobTitle)
                         put("customerName", finalCustomerName)
+                        put("reportTone", tone.name)
                         if (typedNotes != null) put("typedNotes", typedNotes)
                         put("mediaUris", JSONArray(storageMediaUris))
                     }
@@ -521,6 +528,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                                     val newReport = latestReport.copy(
                                         customerName = finalCustomerName,
                                         jobTitle = finalJobTitle,
+                                        reportTone = tone.name,
                                         typedNotes = typedNotes ?: latestReport.typedNotes,
                                         initialStatus = draftJson.optString("initialStatus", ""),
                                         resolutionStepsJson = draftJson.optString("resolutionStepsJson", ""),
@@ -542,11 +550,11 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                 }
                 
                 // Fallback to local draft generator if API response or token fails
-                repository.generateLocalMockDraft(reportId, typedNotes)
+                repository.generateLocalMockDraft(reportId, typedNotes, tone)
             } catch (e: Exception) {
                 e.printStackTrace()
                 // Fallback safely to ensure draft is always created without crashing
-                repository.generateLocalMockDraft(reportId, typedNotes)
+                repository.generateLocalMockDraft(reportId, typedNotes, tone)
             }
         }
     }

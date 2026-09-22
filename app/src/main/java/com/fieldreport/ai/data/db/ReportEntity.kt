@@ -32,6 +32,7 @@ data class ReportEntity(
     val technicianName: String? = null,
     val technicianComments: String? = null,
     val aiAgentMode: AiAgentMode = AiAgentMode.CLOUD,
+    val reportTone: String = "STANDARD",
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
     val approvedAt: Long? = null
