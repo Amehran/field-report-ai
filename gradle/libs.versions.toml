@@ -1,7 +1,7 @@
 [versions]
 okhttp = "4.12.0"
 playServicesCoroutines = "1.8.0"
-playBilling = "6.2.0"
+playBilling = "7.1.1"
 agp = "8.3.1"
 kotlin = "1.9.22"
 coreKtx = "1.12.0"
