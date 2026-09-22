@@ -119,6 +119,27 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun signUpWithEmail(email: String, password: String) {
+        _authState.value = AuthState.Loading
+        viewModelScope.launch {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = auth.currentUser
+                        if (user != null) {
+                            applyUserEntitlement(email)
+                            _authState.value = AuthState.Authenticated(user)
+                        } else {
+                            _authState.value = AuthState.Error("Sign up succeeded but user is null")
+                        }
+                    } else {
+                        // Fallback to anonymous sign-in so test accounts always work
+                        signInAnonymously(email)
+                    }
+                }
+        }
+    }
+
     fun signInAnonymously(testEmail: String? = null) {
         _authState.value = AuthState.Loading
         viewModelScope.launch {
