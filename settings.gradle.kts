@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "FieldReportAI"
 include(":app")
+include(":shared")
