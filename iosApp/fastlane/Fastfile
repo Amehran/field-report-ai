@@ -1,0 +1,39 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Runs unit tests and builds simulator binary"
+  lane :test do
+    sh("cd ../.. && JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home ./gradlew test")
+    xcodebuild(
+      project: "iosApp.xcodeproj",
+      target: "iosApp",
+      sdk: "iphonesimulator"
+    )
+  end
+
+  desc "Builds and uploads iOS app to TestFlight"
+  lane :beta do
+    sh("cd ../.. && JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home ./gradlew :shared:linkReleaseFrameworkIosArm64")
+    build_app(
+      project: "iosApp.xcodeproj",
+      scheme: "iosApp",
+      export_method: "app-store"
+    )
+    upload_to_testflight(skip_waiting_for_build_processing: true)
+  end
+
+  desc "Builds and submits iOS app to App Store"
+  lane :release do
+    sh("cd ../.. && JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home ./gradlew :shared:linkReleaseFrameworkIosArm64")
+    build_app(
+      project: "iosApp.xcodeproj",
+      scheme: "iosApp",
+      export_method: "app-store"
+    )
+    upload_to_app_store(
+      force: true,
+      skip_metadata: false,
+      skip_screenshots: false
+    )
+  end
+end
