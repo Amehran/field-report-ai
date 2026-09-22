@@ -42,6 +42,8 @@ import com.fieldreport.ai.data.repository.SettingsRepository
 import com.android.billingclient.api.ProductDetails
 import android.app.Activity
 
+private const val BACKEND_BASE_URL = "https://field-report-backend-598464152783.us-central1.run.app"
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class ReportViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -142,7 +144,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                         }
 
                         val request = Request.Builder()
-                            .url("http://10.0.2.2:8080/v1/reports/verify-export")
+                            .url("$BACKEND_BASE_URL/v1/reports/verify-export")
                             .addHeader("Authorization", "Bearer $idToken")
                             .post(jsonBody.toString().toRequestBody("application/json".toMediaType()))
                             .build()
@@ -206,7 +208,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                             put("isLifetime", isLifetime)
                         }
                         val request = Request.Builder()
-                            .url("http://10.0.2.2:8080/v1/subscriptions/verify")
+                            .url("$BACKEND_BASE_URL/v1/subscriptions/verify")
                             .addHeader("Authorization", "Bearer $idToken")
                             .post(jsonBody.toString().toRequestBody("application/json".toMediaType()))
                             .build()
@@ -504,7 +506,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
                     }
                     
                     val request = Request.Builder()
-                        .url("http://10.0.2.2:8080/v1/reports/generate")
+                        .url("$BACKEND_BASE_URL/v1/reports/generate")
                         .addHeader("Authorization", "Bearer $idToken")
                         .addHeader("X-Idempotency-Key", reportId)
                         .post(jsonBody.toString().toRequestBody("application/json".toMediaType()))
