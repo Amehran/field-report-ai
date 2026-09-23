@@ -29,7 +29,13 @@ struct ContentView: View {
                     } else {
                         List {
                             ForEach(viewModel.filteredReports, id: \.id) { report in
-                                NavigationLink(destination: ReportReadyView(report: report, viewModel: viewModel)) {
+                                NavigationLink(destination: Group {
+                                    if report.isDraft {
+                                        ReviewReportView(report: report, viewModel: viewModel)
+                                    } else {
+                                        ReportReadyView(report: report, viewModel: viewModel)
+                                    }
+                                }) {
                                     HStack {
                                         VStack(alignment: .leading, spacing: 6) {
                                             HStack {

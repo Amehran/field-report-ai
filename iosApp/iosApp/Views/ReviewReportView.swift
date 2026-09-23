@@ -266,6 +266,29 @@ struct ReviewReportView: View {
         }
         .navigationTitle("Review Report")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.currentReviewReport = report
+            if !report.inspectorName.isEmpty && viewModel.currentTechnicianName.isEmpty {
+                viewModel.currentTechnicianName = report.inspectorName
+            }
+            if !report.summary.isEmpty && (viewModel.currentWorkDoneText.isEmpty || viewModel.currentWorkDoneText.contains("Executed primary repair")) {
+                viewModel.currentWorkDoneText = report.summary
+            }
+            if !report.notes.isEmpty {
+                if report.notes.count > 0 && (viewModel.currentIssueText.isEmpty || viewModel.currentIssueText.contains("Primary issue identified")) {
+                    viewModel.currentIssueText = report.notes[0]
+                }
+                if report.notes.count > 1 && viewModel.currentWorkDoneText.isEmpty {
+                    viewModel.currentWorkDoneText = report.notes[1]
+                }
+            }
+            viewModel.updateCurrentDraftInRepository()
+        }
+        .onChange(of: viewModel.currentTechnicianName) { _ in viewModel.updateCurrentDraftInRepository() }
+        .onChange(of: viewModel.currentIssueText) { _ in viewModel.updateCurrentDraftInRepository() }
+        .onChange(of: viewModel.currentWorkDoneText) { _ in viewModel.updateCurrentDraftInRepository() }
+        .onChange(of: viewModel.currentCommentsText) { _ in viewModel.updateCurrentDraftInRepository() }
+        .onChange(of: viewModel.selectedTone) { _ in viewModel.updateCurrentDraftInRepository() }
         .background(
             NavigationLink(
                 destination: Group {

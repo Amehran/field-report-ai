@@ -49,4 +49,19 @@ class RepositoryTest {
         repo.deleteReport("rep_1")
         assertEquals(0, repo.reports.value.size)
     }
+
+    @Test
+    fun testCommonReportRepositoryUpsert() {
+        val repo = CommonReportRepository()
+        val draft = SharedReport(id = "rep_2", title = "Draft Title", isDraft = true)
+        repo.upsertReport(draft)
+        assertEquals(1, repo.reports.value.size)
+        assertTrue(repo.reports.value.first().isDraft)
+
+        val finalReport = SharedReport(id = "rep_2", title = "Final Title", isDraft = false)
+        repo.upsertReport(finalReport)
+        assertEquals(1, repo.reports.value.size)
+        assertEquals("Final Title", repo.reports.value.first().title)
+        assertFalse(repo.reports.value.first().isDraft)
+    }
 }

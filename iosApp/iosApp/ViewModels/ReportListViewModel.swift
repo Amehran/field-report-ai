@@ -21,6 +21,50 @@ enum AiTone: String, CaseIterable, Identifiable {
     }
 }
 
+struct PersistedReport: Codable {
+    let id: String
+    let title: String
+    let jobSite: String
+    let inspectorName: String
+    let date: String
+    let clientName: String
+    let summary: String
+    let notes: [String]
+    let photoUrls: [String]
+    let isDraft: Bool
+    let pdfUrl: String?
+
+    init(from report: SharedReport) {
+        self.id = report.id
+        self.title = report.title
+        self.jobSite = report.jobSite
+        self.inspectorName = report.inspectorName
+        self.date = report.date
+        self.clientName = report.clientName
+        self.summary = report.summary
+        self.notes = report.notes
+        self.photoUrls = report.photoUrls
+        self.isDraft = report.isDraft
+        self.pdfUrl = report.pdfUrl
+    }
+
+    func toSharedReport() -> SharedReport {
+        SharedReport(
+            id: id,
+            title: title,
+            jobSite: jobSite,
+            inspectorName: inspectorName,
+            date: date,
+            clientName: clientName,
+            summary: summary,
+            notes: notes,
+            photoUrls: photoUrls,
+            isDraft: isDraft,
+            pdfUrl: pdfUrl
+        )
+    }
+}
+
 @MainActor
 class ReportListViewModel: ObservableObject {
     @Published var reports: [SharedReport] = []
@@ -47,14 +91,33 @@ class ReportListViewModel: ObservableObject {
     @Published var currentCommentsText: String = ""
 
     private let reportRepository: CommonReportRepository
+    private let userDefaultsKey = "SavedFieldReportsList"
 
     init(reportRepository: CommonReportRepository = CommonReportRepository()) {
         self.reportRepository = reportRepository
-        loadReports()
+        loadReportsFromUserDefaults()
     }
 
     func loadReports() {
         self.reports = reportRepository.getReportsList()
+    }
+
+    func saveReportsToUserDefaults() {
+        let persistedList = reports.map { PersistedReport(from: $0) }
+        if let encoded = try? JSONEncoder().encode(persistedList) {
+            UserDefaults.standard.set(encoded, forKey: userDefaultsKey)
+        }
+    }
+
+    func loadReportsFromUserDefaults() {
+        if let data = UserDefaults.standard.data(forKey: userDefaultsKey),
+           let decoded = try? JSONDecoder().decode([PersistedReport].self, from: data) {
+            let sharedReports = decoded.map { $0.toSharedReport() }
+            for report in sharedReports {
+                reportRepository.upsertReport(report: report)
+            }
+        }
+        loadReports()
     }
 
     var filteredReports: [SharedReport] {
@@ -71,6 +134,7 @@ class ReportListViewModel: ObservableObject {
     func deleteReport(id: String) {
         reportRepository.deleteReport(reportId: id)
         loadReports()
+        saveReportsToUserDefaults()
     }
 
     func resetFormState() {
@@ -115,11 +179,37 @@ class ReportListViewModel: ObservableObject {
             pdfUrl: nil
         )
 
+        reportRepository.upsertReport(report: newReport)
+        loadReports()
+        saveReportsToUserDefaults()
+
         currentReviewReport = newReport
         currentIssueText = "Primary issue identified during initial inspection."
         currentWorkDoneText = rawNotes
         isLoading = false
         completion(newReport)
+    }
+
+    func updateCurrentDraftInRepository() {
+        guard let report = currentReviewReport else { return }
+        let updatedNotes = [currentIssueText, currentWorkDoneText, currentCommentsText].filter { !$0.isEmpty }
+        let updatedReport = SharedReport(
+            id: report.id,
+            title: report.title,
+            jobSite: report.jobSite,
+            inspectorName: currentTechnicianName.isEmpty ? report.inspectorName : currentTechnicianName,
+            date: report.date,
+            clientName: report.clientName,
+            summary: currentWorkDoneText.isEmpty ? report.summary : currentWorkDoneText,
+            notes: updatedNotes,
+            photoUrls: report.photoUrls,
+            isDraft: true,
+            pdfUrl: nil
+        )
+        currentReviewReport = updatedReport
+        reportRepository.upsertReport(report: updatedReport)
+        loadReports()
+        saveReportsToUserDefaults()
     }
 
     func approveAndGeneratePdf(
@@ -135,11 +225,12 @@ class ReportListViewModel: ObservableObject {
                     title: report.title,
                     jobSite: report.jobSite,
                     inspectorName: currentTechnicianName.isEmpty ? report.inspectorName : currentTechnicianName,
-                    notes: [currentIssueText, currentWorkDoneText],
-                    userEmail: nil
+                    notes: [currentIssueText, currentWorkDoneText, currentCommentsText].filter { !$0.isEmpty },
+                    userEmail: nil,
+                    existingReportId: report.id
                 )
-                self.loadReports()
-                self.isLoading = false
+
+                let pdfUrlStr = response.pdfUrl ?? "https://field-report-backend-598464152783.us-central1.run.app/pdf/\(report.id).pdf"
 
                 let finalizedReport = SharedReport(
                     id: report.id,
@@ -148,12 +239,17 @@ class ReportListViewModel: ObservableObject {
                     inspectorName: self.currentTechnicianName.isEmpty ? report.inspectorName : self.currentTechnicianName,
                     date: report.date,
                     clientName: report.clientName,
-                    summary: self.currentWorkDoneText,
-                    notes: [self.currentIssueText, self.currentWorkDoneText],
-                    photoUrls: [],
+                    summary: response.summary ?? self.currentWorkDoneText,
+                    notes: [self.currentIssueText, self.currentWorkDoneText, self.currentCommentsText].filter { !$0.isEmpty },
+                    photoUrls: report.photoUrls,
                     isDraft: false,
-                    pdfUrl: response.pdfUrl ?? "https://field-report-backend-598464152783.us-central1.run.app/pdf/\(report.id).pdf"
+                    pdfUrl: pdfUrlStr
                 )
+
+                self.reportRepository.upsertReport(report: finalizedReport)
+                self.loadReports()
+                self.saveReportsToUserDefaults()
+                self.isLoading = false
 
                 self.currentReviewReport = finalizedReport
                 completion(finalizedReport)
@@ -168,11 +264,14 @@ class ReportListViewModel: ObservableObject {
                     date: report.date,
                     clientName: report.clientName,
                     summary: self.currentWorkDoneText,
-                    notes: [self.currentIssueText, self.currentWorkDoneText],
-                    photoUrls: [],
+                    notes: [self.currentIssueText, self.currentWorkDoneText, self.currentCommentsText].filter { !$0.isEmpty },
+                    photoUrls: report.photoUrls,
                     isDraft: false,
                     pdfUrl: nil
                 )
+                self.reportRepository.upsertReport(report: fallbackReport)
+                self.loadReports()
+                self.saveReportsToUserDefaults()
                 completion(fallbackReport)
             }
         }
@@ -197,9 +296,11 @@ class ReportListViewModel: ObservableObject {
                     jobSite: jobSite,
                     inspectorName: inspectorName,
                     notes: notesList,
-                    userEmail: nil
+                    userEmail: nil,
+                    existingReportId: nil
                 )
                 self.loadReports()
+                self.saveReportsToUserDefaults()
                 self.isLoading = false
                 if response.success {
                     completion(self.reports.first)

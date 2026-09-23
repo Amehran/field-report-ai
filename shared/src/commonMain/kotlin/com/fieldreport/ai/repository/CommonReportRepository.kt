@@ -24,16 +24,29 @@ class CommonReportRepository(
         _reports.value = current
     }
 
+    fun upsertReport(report: SharedReport) {
+        val current = _reports.value.toMutableList()
+        val index = current.indexOfFirst { it.id == report.id }
+        if (index != -1) {
+            current[index] = report
+        } else {
+            current.add(0, report)
+        }
+        _reports.value = current
+    }
+
     fun deleteReport(reportId: String) {
         _reports.value = _reports.value.filter { it.id != reportId }
     }
 
+    @kotlin.jvm.JvmOverloads
     suspend fun generatePdfReport(
         title: String,
         jobSite: String,
         inspectorName: String,
         notes: List<String>,
-        userEmail: String? = null
+        userEmail: String? = null,
+        existingReportId: String? = null
     ): GenerateReportResponse {
         val request = GenerateReportRequest(
             title = title,
@@ -44,8 +57,9 @@ class CommonReportRepository(
         )
         val response = apiClient.generateReport(request)
         if (response.success && response.pdfUrl != null) {
+            val targetId = existingReportId ?: response.reportId ?: "report_${notes.hashCode()}"
             val newReport = SharedReport(
-                id = response.reportId ?: "report_${notes.hashCode()}",
+                id = targetId,
                 title = title,
                 jobSite = jobSite,
                 inspectorName = inspectorName,
@@ -54,7 +68,7 @@ class CommonReportRepository(
                 isDraft = false,
                 pdfUrl = response.pdfUrl
             )
-            addReport(newReport)
+            upsertReport(newReport)
         }
         return response
     }
