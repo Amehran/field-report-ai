@@ -15,7 +15,6 @@ struct NewReportView: View {
     @State private var audioEngine = AVAudioEngine()
 
     // Photo picker state
-    @State private var selectedPhotoItems: [PhotosPickerItem] = []
     @State private var showCameraPicker = false
     @State private var showPhotoSourceDialog = false
 
@@ -23,8 +22,8 @@ struct NewReportView: View {
     @State private var navigateToReview = false
     @State private var createdReport: SharedReport? = nil
 
-    private let tealColor = Color(red: 15/255, green: 118/255, blue: 110/255) // #0F766E
-    private let lightTealPill = Color(red: 243/255, green: 232/255, blue: 255/255) // #F3E8FF tint
+    private let tealColor = Color(red: 15/255, green: 118/255, blue: 110/255)
+    private let lightTealPill = Color(red: 243/255, green: 232/255, blue: 255/255)
 
     var body: some View {
         NavigationView {
@@ -38,23 +37,39 @@ struct NewReportView: View {
                             .foregroundColor(.secondary)
 
                         VStack(spacing: 12) {
-                            TextField("Customer Name", text: $viewModel.customerName)
-                                .padding()
-                                .background(Color(UIColor.systemBackground))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                                )
+                            HStack {
+                                TextField("Customer Name", text: $viewModel.customerName)
+                                if !viewModel.customerName.isEmpty {
+                                    Button(action: { viewModel.customerName = "" }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                            }
+                            .padding()
+                            .background(Color(UIColor.systemBackground))
+                            .cornerRadius(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                            )
 
-                            TextField("Job Name", text: $viewModel.jobName)
-                                .padding()
-                                .background(Color(UIColor.systemBackground))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                                )
+                            HStack {
+                                TextField("Job Name", text: $viewModel.jobName)
+                                if !viewModel.jobName.isEmpty {
+                                    Button(action: { viewModel.jobName = "" }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                            }
+                            .padding()
+                            .background(Color(UIColor.systemBackground))
+                            .cornerRadius(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                            )
                         }
 
                         // AI Report Tone Selector
@@ -127,8 +142,12 @@ struct NewReportView: View {
 
                         if viewModel.capturedImages.isEmpty {
                             HStack(spacing: 12) {
-                                PhotoPlaceholderCard(tag: "BEFORE")
-                                PhotoPlaceholderCard(tag: "AFTER")
+                                PhotoPlaceholderCard(tag: "BEFORE") {
+                                    showPhotoSourceDialog = true
+                                }
+                                PhotoPlaceholderCard(tag: "AFTER") {
+                                    showPhotoSourceDialog = true
+                                }
                             }
                         } else {
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -142,24 +161,23 @@ struct NewReportView: View {
                                                     .frame(width: 100, height: 110)
                                                     .cornerRadius(12)
                                                     .clipped()
-
-                                                // Tag selector menu
-                                                Menu {
-                                                    ForEach(PhotoTag.allCases) { tag in
-                                                        Button(tag.rawValue) {
-                                                            viewModel.capturedImages[index].tag = tag
+                                                    .onTapGesture {
+                                                        // Cycle tag on tap matching Android onToggleLabel()
+                                                        let tags = PhotoTag.allCases
+                                                        if let currentIndex = tags.firstIndex(of: item.tag) {
+                                                            let nextIndex = (currentIndex + 1) % tags.count
+                                                            viewModel.capturedImages[index].tag = tags[nextIndex]
                                                         }
                                                     }
-                                                } label: {
-                                                    Text(item.tag.rawValue)
-                                                        .font(.caption2)
-                                                        .bold()
-                                                        .padding(.horizontal, 8)
-                                                        .padding(.vertical, 4)
-                                                        .background(Color.teal.opacity(0.2))
-                                                        .foregroundColor(.teal)
-                                                        .cornerRadius(6)
-                                                }
+
+                                                Text(item.tag.rawValue)
+                                                    .font(.caption2)
+                                                    .bold()
+                                                    .padding(.horizontal, 8)
+                                                    .padding(.vertical, 4)
+                                                    .background(Color.teal.opacity(0.2))
+                                                    .foregroundColor(.teal)
+                                                    .cornerRadius(6)
                                             }
 
                                             Button(action: {
@@ -276,36 +294,73 @@ struct NewReportView: View {
                             )
                         } else {
                             // Text Editor for Manual Typing
-                            TextEditor(text: $viewModel.typedNotes)
-                                .frame(height: 120)
-                                .padding(8)
-                                .background(Color(UIColor.systemBackground))
-                                .cornerRadius(12)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                                )
+                            VStack(alignment: .trailing, spacing: 4) {
+                                TextEditor(text: $viewModel.typedNotes)
+                                    .frame(height: 120)
+                                    .padding(8)
+                                    .background(Color(UIColor.systemBackground))
+                                    .cornerRadius(12)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                                    )
+
+                                if !viewModel.typedNotes.isEmpty {
+                                    Button(action: { viewModel.typedNotes = "" }) {
+                                        Text("Clear notes")
+                                            .font(.caption)
+                                            .foregroundColor(.red)
+                                    }
+                                }
+                            }
                         }
                     }
 
-                    // Pricing (Optional) Section
+                    // Pricing Section
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Pricing (Optional)")
                             .font(.headline)
                             .bold()
 
                         HStack(spacing: 12) {
-                            TextField("Labor ($)", text: $viewModel.laborCost)
-                                .keyboardType(.decimalPad)
-                                .padding()
-                                .background(Color(UIColor.systemBackground))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                                )
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Labor Cost")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                TextField("0.00", text: $viewModel.laborCost)
+                                    .keyboardType(.decimalPad)
+                                    .onChange(of: viewModel.laborCost) { _ in calculateTotalCost() }
+                                    .padding()
+                                    .background(Color(UIColor.systemBackground))
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                                    )
+                            }
 
-                            TextField("Materials ($)", text: $viewModel.materialsCost)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Parts Cost")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                TextField("0.00", text: $viewModel.materialsCost)
+                                    .keyboardType(.decimalPad)
+                                    .onChange(of: viewModel.materialsCost) { _ in calculateTotalCost() }
+                                    .padding()
+                                    .background(Color(UIColor.systemBackground))
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                                    )
+                            }
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Total Cost")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            TextField("0.00", text: $viewModel.totalCost)
                                 .keyboardType(.decimalPad)
                                 .padding()
                                 .background(Color(UIColor.systemBackground))
@@ -315,16 +370,6 @@ struct NewReportView: View {
                                         .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                                 )
                         }
-
-                        TextField("Total Amount ($)", text: $viewModel.totalCost)
-                            .keyboardType(.decimalPad)
-                            .padding()
-                            .background(Color(UIColor.systemBackground))
-                            .cornerRadius(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                            )
                     }
 
                     // Bottom Action Button: Generate report
@@ -360,12 +405,11 @@ struct NewReportView: View {
                 }
             }
             .confirmationDialog("Add Photo", isPresented: $showPhotoSourceDialog) {
-                Button("Take Photo with Camera") {
+                Button("📷 Camera") {
                     showCameraPicker = true
                 }
-                Button("Choose from Photo Library") {
-                    // Trigger photos picker sheet or handled via PhotosPicker binding
-                    showCameraPicker = true // fallback to camera/library picker
+                Button("🖼️ Gallery") {
+                    showCameraPicker = true
                 }
                 Button("Cancel", role: .cancel) {}
             }
@@ -387,6 +431,15 @@ struct NewReportView: View {
                     EmptyView()
                 }
             )
+        }
+    }
+
+    private func calculateTotalCost() {
+        let labor = Double(viewModel.laborCost) ?? 0.0
+        let parts = Double(viewModel.materialsCost) ?? 0.0
+        let total = labor + parts
+        if total > 0 {
+            viewModel.totalCost = String(format: "%.2f", total)
         }
     }
 
@@ -467,27 +520,30 @@ struct NewReportView: View {
 
 struct PhotoPlaceholderCard: View {
     let tag: String
+    let onClick: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(tag)
-                .font(.caption2)
-                .bold()
-                .padding(.horizontal, 6)
-                .padding(.vertical, 3)
-                .background(tag == "BEFORE" ? Color.gray.opacity(0.2) : Color.teal.opacity(0.2))
-                .foregroundColor(tag == "BEFORE" ? .gray : .teal)
-                .cornerRadius(4)
-                .padding(8)
+        Button(action: onClick) {
+            VStack(alignment: .leading) {
+                Text(tag)
+                    .font(.caption2)
+                    .bold()
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background(tag == "BEFORE" ? Color.gray.opacity(0.2) : Color.teal.opacity(0.2))
+                    .foregroundColor(tag == "BEFORE" ? .gray : .teal)
+                    .cornerRadius(4)
+                    .padding(8)
 
-            Spacer()
+                Spacer()
+            }
+            .frame(width: 90, height: 100)
+            .background(Color(UIColor.systemBackground))
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+            )
         }
-        .frame(width: 90, height: 100)
-        .background(Color(UIColor.systemBackground))
-        .cornerRadius(12)
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-        )
     }
 }

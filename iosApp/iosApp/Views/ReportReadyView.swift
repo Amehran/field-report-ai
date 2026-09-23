@@ -18,10 +18,12 @@ struct ReportReadyView: View {
 
     @State private var showShareSheet = false
     @State private var showCopiedAlert = false
+    @State private var showDeletePrompt = false
     @ObservedObject private var settingsViewModel = SettingsViewModel()
+    @ObservedObject private var storeKitManager = StoreKitManager.shared
 
     private let tealColor = Color(red: 15/255, green: 118/255, blue: 110/255)
-    private let darkHeaderColor = Color(red: 15/255, green: 23/255, blue: 42/255) // #0F172A
+    private let darkHeaderColor = Color(red: 15/255, green: 23/255, blue: 42/255)
 
     var body: some View {
         VStack(spacing: 20) {
@@ -89,9 +91,7 @@ struct ReportReadyView: View {
 
             // Bottom Actions
             VStack(spacing: 14) {
-                Button(action: {
-                    showShareSheet = true
-                }) {
+                Button(action: handleShare) {
                     Text("Share PDF")
                         .font(.headline)
                         .bold()
@@ -114,7 +114,22 @@ struct ReportReadyView: View {
         }
         .navigationTitle("Report Ready")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showShareSheet) {
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                // Entitlement Status Badge (Matching Android lines 142-166)
+                Text(storeKitManager.isSubscribed || storeKitManager.isLifetime ? "Pro Active" : "\(settingsViewModel.remainingPdfs) free exports")
+                    .font(.caption2)
+                    .bold()
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(storeKitManager.isSubscribed || storeKitManager.isLifetime ? Color.green.opacity(0.2) : Color.gray.opacity(0.2))
+                    .foregroundColor(storeKitManager.isSubscribed || storeKitManager.isLifetime ? .green : .primary)
+                    .cornerRadius(12)
+            }
+        }
+        .sheet(isPresented: $showShareSheet, onDismiss: {
+            showDeletePrompt = true
+        }) {
             ShareSheet(activityItems: [
                 report.pdfUrl ?? "Field Report for \(report.title)",
                 "Completed Field Report summary: \(report.summary)"
@@ -127,6 +142,18 @@ struct ReportReadyView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        .alert("Delete Report Data?", isPresented: $showDeletePrompt) {
+            Button("Delete", role: .destructive) {
+                viewModel.deleteReport(id: report.id)
+            }
+            Button("Keep", role: .cancel) {}
+        } message: {
+            Text("You have shared this report. Would you like to delete the report record and all associated media from your device?")
+        }
+    }
+
+    private func handleShare() {
+        showShareSheet = true
     }
 
     private func copySummaryToClipboard() {

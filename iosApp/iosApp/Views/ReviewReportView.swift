@@ -22,7 +22,7 @@ struct ReviewReportView: View {
                                 .font(.caption2)
                                 .bold()
                                 .foregroundColor(.secondary)
-                            Text("Customer: \(report.title)")
+                            Text("\(report.clientName.isEmpty ? "Customer" : report.clientName): \(report.jobSite.isEmpty ? "General Service" : report.jobSite)")
                                 .font(.headline)
                                 .bold()
                         }
@@ -47,6 +47,7 @@ struct ReviewReportView: View {
                             .foregroundColor(.secondary)
                         TextField("Add Technician Name...", text: $viewModel.currentTechnicianName)
                             .font(.subheadline)
+                            .bold()
                     }
 
                     Divider()
@@ -88,7 +89,7 @@ struct ReviewReportView: View {
                 .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(16)
 
-                // Issue Section Card
+                // Issue Section Card with Attached Photos Carousel
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Issue")
                         .font(.headline)
@@ -105,12 +106,48 @@ struct ReviewReportView: View {
                             .background(Color(UIColor.systemBackground))
                             .cornerRadius(10)
                     }
+
+                    // Attached Photos Carousel (Matching Android lines 362-400)
+                    if !viewModel.capturedImages.isEmpty {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("ATTACHED PHOTOS")
+                                .font(.caption2)
+                                .bold()
+                                .foregroundColor(.secondary)
+
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 10) {
+                                    ForEach(viewModel.capturedImages) { item in
+                                        ZStack(alignment: .topLeading) {
+                                            Image(uiImage: item.image)
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 90, height: 90)
+                                                .cornerRadius(10)
+                                                .clipped()
+
+                                            Text(item.tag.rawValue)
+                                                .font(.caption2)
+                                                .bold()
+                                                .padding(.horizontal, 6)
+                                                .padding(.vertical, 3)
+                                                .background(tealColor)
+                                                .foregroundColor(.white)
+                                                .cornerRadius(6)
+                                                .padding(4)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.top, 6)
+                    }
                 }
                 .padding(16)
                 .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(16)
 
-                // Service Section Card
+                // Service Section Card with Detailed Cost Summary Breakdown
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Service")
                         .font(.headline)
@@ -128,22 +165,52 @@ struct ReviewReportView: View {
                             .cornerRadius(10)
                     }
 
-                    // Cost Summary
+                    // Detailed Cost Summary Breakdown (Matching Android lines 457-490)
                     VStack(alignment: .leading, spacing: 8) {
                         Text("COST SUMMARY")
                             .font(.caption2)
                             .bold()
                             .foregroundColor(.secondary)
 
-                        HStack {
-                            Text("Total Amount:")
-                                .font(.subheadline)
-                                .bold()
-                            Spacer()
-                            Text(viewModel.totalCost.isEmpty ? "$ 0.00" : "$\(viewModel.totalCost)")
-                                .font(.headline)
-                                .bold()
-                                .foregroundColor(tealColor)
+                        VStack(spacing: 6) {
+                            if let laborVal = Double(viewModel.laborCost), laborVal > 0 {
+                                HStack {
+                                    Text("Labor:")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                    Text(String(format: "$ USD %.2f", laborVal))
+                                        .font(.subheadline)
+                                        .bold()
+                                }
+                            }
+
+                            if let partsVal = Double(viewModel.materialsCost), partsVal > 0 {
+                                HStack {
+                                    Text("Parts:")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                    Text(String(format: "$ USD %.2f", partsVal))
+                                        .font(.subheadline)
+                                        .bold()
+                                }
+                            }
+
+                            if (Double(viewModel.laborCost) ?? 0) > 0 || (Double(viewModel.materialsCost) ?? 0) > 0 {
+                                Divider()
+                            }
+
+                            HStack {
+                                Text("Total Amount:")
+                                    .font(.subheadline)
+                                    .bold()
+                                Spacer()
+                                Text(viewModel.totalCost.isEmpty ? "$ 0.00" : "$ USD \(viewModel.totalCost)")
+                                    .font(.headline)
+                                    .bold()
+                                    .foregroundColor(tealColor)
+                            }
                         }
                         .padding(12)
                         .background(Color(UIColor.systemBackground))
@@ -154,14 +221,18 @@ struct ReviewReportView: View {
                 .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(16)
 
-                // Comments Card
-                VStack(alignment: .leading, spacing: 10) {
+                // Comments Card with Subtitle (Matching Android line 512)
+                VStack(alignment: .leading, spacing: 6) {
                     Text("Comments")
                         .font(.headline)
                         .bold()
 
+                    Text("Additional technician notes or observations for the customer.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+
                     TextEditor(text: $viewModel.currentCommentsText)
-                        .frame(height: 60)
+                        .frame(height: 70)
                         .padding(6)
                         .background(Color(UIColor.systemBackground))
                         .cornerRadius(10)
