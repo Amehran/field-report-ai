@@ -32,13 +32,13 @@ class SettingsViewModel: ObservableObject {
         }
     }
 
-    @Published var companyName: String = "Acme Construction" {
+    @Published var companyName: String = "" {
         didSet {
             UserDefaults.standard.set(companyName, forKey: "company_name")
         }
     }
 
-    @Published var defaultContractor: String = "General Contracting LLC" {
+    @Published var defaultContractor: String = "" {
         didSet {
             UserDefaults.standard.set(defaultContractor, forKey: "default_contractor")
         }

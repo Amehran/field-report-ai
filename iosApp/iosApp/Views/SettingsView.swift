@@ -137,23 +137,39 @@ struct SettingsView: View {
                             .bold()
 
                         VStack(spacing: 10) {
-                            TextField("Technician Name", text: $viewModel.defaultContractor)
-                                .padding()
-                                .background(Color(UIColor.systemBackground))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                                )
+                            HStack {
+                                TextField("Technician Name", text: $viewModel.defaultContractor)
+                                if !viewModel.defaultContractor.isEmpty {
+                                    Button(action: { viewModel.defaultContractor = "" }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                            }
+                            .padding()
+                            .background(Color(UIColor.systemBackground))
+                            .cornerRadius(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                            )
 
-                            TextField("Business Name", text: $viewModel.companyName)
-                                .padding()
-                                .background(Color(UIColor.systemBackground))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                                )
+                            HStack {
+                                TextField("Business Name", text: $viewModel.companyName)
+                                if !viewModel.companyName.isEmpty {
+                                    Button(action: { viewModel.companyName = "" }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                            }
+                            .padding()
+                            .background(Color(UIColor.systemBackground))
+                            .cornerRadius(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                            )
 
                             HStack {
                                 Text("Currency")

@@ -15,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -322,6 +324,16 @@ fun SettingsScreen(
                 value = localTechnicianName,
                 onValueChange = { localTechnicianName = it },
                 label = { Text("Technician Name") },
+                trailingIcon = {
+                    if (localTechnicianName.isNotEmpty()) {
+                        IconButton(onClick = {
+                            localTechnicianName = ""
+                            viewModel.setTechnicianName("")
+                        }) {
+                            Icon(Icons.Default.Clear, contentDescription = "Clear Technician Name")
+                        }
+                    }
+                },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -329,6 +341,16 @@ fun SettingsScreen(
                 value = localBusinessName,
                 onValueChange = { localBusinessName = it },
                 label = { Text("Business Name") },
+                trailingIcon = {
+                    if (localBusinessName.isNotEmpty()) {
+                        IconButton(onClick = {
+                            localBusinessName = ""
+                            viewModel.setBusinessName("")
+                        }) {
+                            Icon(Icons.Default.Clear, contentDescription = "Clear Business Name")
+                        }
+                    }
+                },
                 modifier = Modifier.fillMaxWidth()
             )
 
