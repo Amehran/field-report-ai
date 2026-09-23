@@ -77,6 +77,30 @@ class StoreKitManager: ObservableObject {
         await updateEntitlements()
     }
 
+    func restorePurchasesSync() {
+        Task {
+            await restorePurchases()
+        }
+    }
+
+    func purchasePro() {
+        Task {
+            if let product = products.first {
+                _ = await purchase(product)
+            } else {
+                // Simulated purchase for testing/demo
+                settingsRepository.updateEntitlement(
+                    remainingPdfs: 9999,
+                    isSubscribed: true,
+                    isLifetime: false,
+                    tier: SharedTier.proSubscribed
+                )
+                self.isSubscribed = true
+                self.currentTierName = "Pro Subscribed"
+            }
+        }
+    }
+
     func updateEntitlements() async {
         var activeSub = false
         var activeLifetime = false

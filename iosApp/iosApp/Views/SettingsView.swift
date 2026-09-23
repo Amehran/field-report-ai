@@ -1,30 +1,14 @@
 import SwiftUI
 import StoreKit
 
-enum AppThemeMode: String, CaseIterable, Identifiable {
-    case system = "System"
-    case light = "Light"
-    case dark = "Dark"
-
-    var id: String { rawValue }
-}
-
-enum AiAgentMode: String, CaseIterable, Identifiable {
-    case local = "On-Device (Local)"
-    case cloud = "Cloud (Gemini)"
-
-    var id: String { rawValue }
-}
-
 struct SettingsView: View {
-    @StateObject private var viewModel = SettingsViewModel()
+    @EnvironmentObject private var viewModel: SettingsViewModel
     @StateObject private var storeKitManager = StoreKitManager.shared
     @State private var showPaywall = false
-    @State private var selectedTheme: AppThemeMode = .system
-    @State private var selectedAiAgent: AiAgentMode = .cloud
 
     private let tealColor = Color(red: 15/255, green: 118/255, blue: 110/255)
-    private let lightTealPill = Color(red: 243/255, green: 232/255, blue: 255/255)
+
+    let currencies = ["$ USD", "€ EUR", "£ GBP", "C$ CAD", "A$ AUD", "¥ JPY", "₹ INR", "CHF", "NZ$ NZD", "Mex$ MXN"]
 
     var body: some View {
         NavigationView {
@@ -73,11 +57,11 @@ struct SettingsView: View {
                             .bold()
 
                         VStack(alignment: .leading, spacing: 6) {
-                            Text("Free Trial (0 PDF exports remaining)")
+                            Text(storeKitManager.isSubscribed || storeKitManager.isLifetime ? "Pro Subscription Active" : "Free Trial (\(viewModel.remainingPdfs) PDF exports remaining)")
                                 .font(.subheadline)
                                 .bold()
 
-                            Text("Upgrade to Field Report Pro for unlimited exports and priority support.")
+                            Text(storeKitManager.isSubscribed || storeKitManager.isLifetime ? "You have unlimited access to PDF exports & cloud AI features." : "Upgrade to Field Report Pro for unlimited exports and priority support.")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
 
@@ -98,7 +82,7 @@ struct SettingsView: View {
                     .background(Color(UIColor.secondarySystemBackground))
                     .cornerRadius(16)
 
-                    // App Theme Section
+                    // App Theme Section (Live Theme Switching!)
                     VStack(alignment: .leading, spacing: 10) {
                         Text("App Theme")
                             .font(.headline)
@@ -106,20 +90,11 @@ struct SettingsView: View {
 
                         HStack(spacing: 0) {
                             ForEach(AppThemeMode.allCases) { theme in
-                                Button(action: { selectedTheme = theme }) {
-                                    HStack(spacing: 4) {
-                                        if selectedTheme == theme {
-                                            Image(systemName: "checkmark")
-                                                .font(.caption)
-                                        }
-                                        Text(theme.rawValue)
-                                            .font(.subheadline)
-                                            .fontWeight(selectedTheme == theme ? .bold : .regular)
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 10)
-                                    .background(selectedTheme == theme ? lightTealPill : Color.clear)
-                                    .foregroundColor(selectedTheme == theme ? .purple : .primary)
+                                ThemePillButton(
+                                    title: theme.rawValue,
+                                    isSelected: viewModel.selectedTheme == theme
+                                ) {
+                                    viewModel.setTheme(theme)
                                 }
                             }
                         }
@@ -139,20 +114,11 @@ struct SettingsView: View {
 
                         HStack(spacing: 0) {
                             ForEach(AiAgentMode.allCases) { mode in
-                                Button(action: { selectedAiAgent = mode }) {
-                                    HStack(spacing: 4) {
-                                        if selectedAiAgent == mode {
-                                            Image(systemName: "checkmark")
-                                                .font(.caption)
-                                        }
-                                        Text(mode.rawValue)
-                                            .font(.subheadline)
-                                            .fontWeight(selectedAiAgent == mode ? .bold : .regular)
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 10)
-                                    .background(selectedAiAgent == mode ? lightTealPill : Color.clear)
-                                    .foregroundColor(selectedAiAgent == mode ? .purple : .primary)
+                                ThemePillButton(
+                                    title: mode.rawValue,
+                                    isSelected: viewModel.selectedAiAgent == mode
+                                ) {
+                                    viewModel.setAiAgent(mode)
                                 }
                             }
                         }
@@ -191,12 +157,26 @@ struct SettingsView: View {
 
                             HStack {
                                 Text("Currency")
-                                    .font(.caption)
+                                    .font(.subheadline)
                                     .foregroundColor(.secondary)
                                 Spacer()
-                                Text("$ USD")
-                                    .font(.subheadline)
-                                    .bold()
+                                Menu {
+                                    ForEach(currencies, id: \.self) { curr in
+                                        Button(curr) {
+                                            viewModel.currency = curr
+                                        }
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text(viewModel.currency)
+                                            .font(.subheadline)
+                                            .bold()
+                                            .foregroundColor(.primary)
+                                        Image(systemName: "chevron.up.chevron.down")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
                             }
                             .padding()
                             .background(Color(UIColor.systemBackground))
@@ -221,139 +201,29 @@ struct SettingsView: View {
     }
 }
 
-struct PaywallView: View {
-    @StateObject private var storeKitManager = StoreKitManager.shared
-    @Environment(\.presentationMode) var presentationMode
-
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 50))
-                    .foregroundColor(.yellow)
-                    .padding(.top)
-
-                Text("Field Report AI Pro")
-                    .font(.title)
-                    .bold()
-
-                Text("Unlock unlimited voice dictation, custom branding, multi-photo attachments, and direct Cloud PDF sync.")
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-
-                ScrollView {
-                    VStack(spacing: 12) {
-                        if storeKitManager.products.isEmpty {
-                            SubscriptionPlanCard(
-                                title: "Monthly Pass",
-                                price: "$9.99 / month",
-                                badge: nil,
-                                isPurchased: storeKitManager.purchasedProductIDs.contains("com.fieldreport.ai.monthly")
-                            ) {}
-
-                            SubscriptionPlanCard(
-                                title: "Annual Pro",
-                                price: "$89.99 / year",
-                                badge: "Save 25%",
-                                isPurchased: storeKitManager.purchasedProductIDs.contains("com.fieldreport.ai.annual")
-                            ) {}
-
-                            SubscriptionPlanCard(
-                                title: "Lifetime License",
-                                price: "$149.99 one-time",
-                                badge: "Best Value",
-                                isPurchased: storeKitManager.purchasedProductIDs.contains("com.fieldreport.ai.lifetime")
-                            ) {}
-                        } else {
-                            ForEach(storeKitManager.products, id: \.id) { product in
-                                SubscriptionPlanCard(
-                                    title: product.displayName,
-                                    price: product.displayPrice,
-                                    badge: product.id.contains("annual") ? "Save 25%" : (product.id.contains("lifetime") ? "Best Value" : nil),
-                                    isPurchased: storeKitManager.purchasedProductIDs.contains(product.id)
-                                ) {
-                                    Task {
-                                        _ = await storeKitManager.purchase(product)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                }
-
-                Button(action: {
-                    Task {
-                        await storeKitManager.restorePurchases()
-                    }
-                }) {
-                    Text("Restore Purchases")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                }
-
-                if let error = storeKitManager.purchaseError {
-                    Text(error)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                }
-
-                Spacer()
-            }
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }
-        }
-    }
-}
-
-struct SubscriptionPlanCard: View {
+struct ThemePillButton: View {
     let title: String
-    let price: String
-    let badge: String?
-    let isPurchased: Bool
-    let onPurchase: () -> Void
+    let isSelected: Bool
+    let action: () -> Void
+
+    private let tealColor = Color(red: 15/255, green: 118/255, blue: 110/255)
 
     var body: some View {
-        Button(action: onPurchase) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                    Text(price)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                Spacer()
-                if isPurchased {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.green)
-                        .font(.title2)
-                } else if let badge = badge {
-                    Text(badge)
+        Button(action: action) {
+            HStack(spacing: 4) {
+                if isSelected {
+                    Image(systemName: "checkmark")
                         .font(.caption)
                         .bold()
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.orange)
-                        .cornerRadius(6)
                 }
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(isSelected ? .bold : .regular)
             }
-            .padding()
-            .background(Color(UIColor.secondarySystemBackground))
-            .cornerRadius(12)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(isPurchased ? Color.green : Color.clear, lineWidth: 2)
-            )
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(isSelected ? tealColor.opacity(0.18) : Color.clear)
+            .foregroundColor(isSelected ? tealColor : .primary)
         }
     }
 }

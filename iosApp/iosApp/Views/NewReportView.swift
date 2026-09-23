@@ -443,6 +443,8 @@ struct NewReportView: View {
         }
     }
 
+
+
     private func formattedCurrentDate() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d, yyyy • h:mm a"

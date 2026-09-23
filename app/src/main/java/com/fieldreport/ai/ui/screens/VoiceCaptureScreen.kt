@@ -151,7 +151,7 @@ fun VoiceCaptureScreen(
                 }
             )
         },
-        containerColor = Slate50
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -177,13 +177,13 @@ fun VoiceCaptureScreen(
                 Box(
                     modifier = Modifier
                         .size(120.dp)
-                        .background(Teal100, CircleShape),
+                        .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         Icons.Default.Mic,
                         contentDescription = "Recording mic",
-                        tint = Teal600,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.size(56.dp)
                     )
                 }
@@ -194,7 +194,7 @@ fun VoiceCaptureScreen(
                     text = timerText,
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Slate900
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -202,7 +202,7 @@ fun VoiceCaptureScreen(
                 Text(
                     text = "Listening...",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Slate500
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -240,7 +240,7 @@ fun VoiceCaptureScreen(
                 Text(
                     text = "Tell us what you completed and what the customer should know.",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = Slate600,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )

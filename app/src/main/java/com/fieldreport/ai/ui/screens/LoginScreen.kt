@@ -73,7 +73,7 @@ fun LoginScreen(
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Slate50
+        color = MaterialTheme.colorScheme.background
     ) {
         Box(
             modifier = Modifier
@@ -109,7 +109,7 @@ fun LoginScreen(
                 Text(
                     text = "Field Report AI",
                     style = MaterialTheme.typography.displayLarge,
-                    color = Slate900
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -117,7 +117,7 @@ fun LoginScreen(
                 Text(
                     text = if (isSignUpMode) "Create an account to start generating reports" else "A professional report, before\nyou leave the job.",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = Slate600,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
 
@@ -126,8 +126,8 @@ fun LoginScreen(
                 // Mode Selector (Sign In vs Sign Up Tab Row)
                 TabRow(
                     selectedTabIndex = if (isSignUpMode) 1 else 0,
-                    containerColor = Slate100,
-                    contentColor = Teal600,
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
@@ -143,7 +143,7 @@ fun LoginScreen(
                             Text(
                                 "Sign In",
                                 fontWeight = if (!isSignUpMode) FontWeight.Bold else FontWeight.Normal,
-                                color = if (!isSignUpMode) Teal600 else Slate600
+                                color = if (!isSignUpMode) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     )
@@ -157,7 +157,7 @@ fun LoginScreen(
                             Text(
                                 "Sign Up",
                                 fontWeight = if (isSignUpMode) FontWeight.Bold else FontWeight.Normal,
-                                color = if (isSignUpMode) Teal600 else Slate600
+                                color = if (isSignUpMode) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     )
@@ -177,8 +177,8 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Teal600,
-                        unfocusedBorderColor = Slate200
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     )
                 )
 
@@ -194,8 +194,8 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Teal600,
-                        unfocusedBorderColor = Slate200
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     )
                 )
 
@@ -273,13 +273,13 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
-                    border = ButtonDefaults.outlinedButtonBorder.copy(brush = androidx.compose.ui.graphics.SolidColor(Slate200)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                     enabled = authState !is AuthState.Loading
                 ) {
                     Text(
                         text = "G  Continue with Google",
                         style = MaterialTheme.typography.labelLarge,
-                        color = Slate900
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
 

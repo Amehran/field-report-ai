@@ -21,6 +21,7 @@
 		9F00000C2C9E00000000000C /* NewReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00001C2C9E00000000000C /* NewReportView.swift */; };
 		9F00000D2C9E00000000000D /* ReviewReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00001D2C9E00000000000D /* ReviewReportView.swift */; };
 		9F00000E2C9E00000000000E /* ReportReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00001E2C9E00000000000E /* ReportReadyView.swift */; };
+		9F00000F2C9E00000000000F /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00001F2C9E00000000000F /* PaywallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		9F00001C2C9E00000000000C /* NewReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/NewReportView.swift; sourceTree = "<group>"; };
 		9F00001D2C9E00000000000D /* ReviewReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/ReviewReportView.swift; sourceTree = "<group>"; };
 		9F00001E2C9E00000000000E /* ReportReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/ReportReadyView.swift; sourceTree = "<group>"; };
+		9F00001F2C9E00000000000F /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/PaywallView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				9F00001C2C9E00000000000C /* NewReportView.swift */,
 				9F00001D2C9E00000000000D /* ReviewReportView.swift */,
 				9F00001E2C9E00000000000E /* ReportReadyView.swift */,
+				9F00001F2C9E00000000000F /* PaywallView.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				9F00000C2C9E00000000000C /* NewReportView.swift in Sources */,
 				9F00000D2C9E00000000000D /* ReviewReportView.swift in Sources */,
 				9F00000E2C9E00000000000E /* ReportReadyView.swift in Sources */,
+				9F00000F2C9E00000000000F /* PaywallView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

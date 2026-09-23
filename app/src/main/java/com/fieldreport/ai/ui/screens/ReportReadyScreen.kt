@@ -261,12 +261,12 @@ fun ReportReadyScreen(
                         Text(
                             text = report?.customerName ?: "Miller Residence",
                             style = MaterialTheme.typography.titleLarge,
-                            color = Slate900
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = report?.jobTitle ?: "Kitchen repair",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Slate500
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -274,13 +274,13 @@ fun ReportReadyScreen(
                         Text(
                             text = "COMPLETED",
                             style = MaterialTheme.typography.labelMedium,
-                            color = Teal600
+                            color = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = report?.customerSummary ?: "Cabinet hinge replaced and door aligned.",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Slate600
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         Spacer(modifier = Modifier.height(20.dp))

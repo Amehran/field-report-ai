@@ -3,13 +3,13 @@ import shared
 
 @main
 struct iOSApp: App {
-    init() {
-        // Any global initialization for KMP shared module if needed
-    }
+    @StateObject private var settingsViewModel = SettingsViewModel()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(settingsViewModel)
+                .preferredColorScheme(settingsViewModel.colorScheme)
         }
     }
 }
