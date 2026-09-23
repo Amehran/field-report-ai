@@ -4,6 +4,8 @@ build/
 /build
 app/build/
 /app/build
+shared/build/
+.kotlin/
 *.apk
 *.aab
 
@@ -14,6 +16,10 @@ GoogleService-Info.plist
 .env
 .env.*
 !.env.example
+*.keystore
+*.jks
+*.mobileprovision
+*.cer
 
 # IDE & Editor Files
 .idea/
@@ -25,6 +31,15 @@ GoogleService-Info.plist
 .classpath
 .settings/
 .vscode/
+
+# Xcode & iOS Build Outputs
+iosApp/build/
+DerivedData/
+.swiftpm/
+xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcworkspace
 
 # OS Files
 .DS_Store
@@ -56,9 +71,3 @@ recordings/
 *.m4a
 *.mp4
 *.jpg.tmp
-
-# iOS Build Outputs
-iosApp/build/
-*.xcworkspace
-
-
