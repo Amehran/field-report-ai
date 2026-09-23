@@ -17,6 +17,10 @@
 		9F0000082C9E000000000008 /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0000182C9E000000000008 /* shared.framework */; };
 		9F0000092C9E000000000009 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0000192C9E000000000009 /* StoreKitManager.swift */; };
 		9F00000A2C9E00000000000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F00001A2C9E00000000000A /* Assets.xcassets */; };
+		9F00000B2C9E00000000000B /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00001B2C9E00000000000B /* ImagePicker.swift */; };
+		9F00000C2C9E00000000000C /* NewReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00001C2C9E00000000000C /* NewReportView.swift */; };
+		9F00000D2C9E00000000000D /* ReviewReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00001D2C9E00000000000D /* ReviewReportView.swift */; };
+		9F00000E2C9E00000000000E /* ReportReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00001E2C9E00000000000E /* ReportReadyView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +35,10 @@
 		9F0000182C9E000000000008 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F0000192C9E000000000009 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/StoreKitManager.swift; sourceTree = "<group>"; };
 		9F00001A2C9E00000000000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9F00001B2C9E00000000000B /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/ImagePicker.swift; sourceTree = "<group>"; };
+		9F00001C2C9E00000000000C /* NewReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/NewReportView.swift; sourceTree = "<group>"; };
+		9F00001D2C9E00000000000D /* ReviewReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/ReviewReportView.swift; sourceTree = "<group>"; };
+		9F00001E2C9E00000000000E /* ReportReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/ReportReadyView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +74,10 @@
 				9F0000172C9E000000000007 /* SettingsView.swift */,
 				9F0000192C9E000000000009 /* StoreKitManager.swift */,
 				9F00001A2C9E00000000000A /* Assets.xcassets */,
+				9F00001B2C9E00000000000B /* ImagePicker.swift */,
+				9F00001C2C9E00000000000C /* NewReportView.swift */,
+				9F00001D2C9E00000000000D /* ReviewReportView.swift */,
+				9F00001E2C9E00000000000E /* ReportReadyView.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -175,6 +187,10 @@
 				9F0000062C9E000000000006 /* ReportDetailView.swift in Sources */,
 				9F0000072C9E000000000007 /* SettingsView.swift in Sources */,
 				9F0000092C9E000000000009 /* StoreKitManager.swift in Sources */,
+				9F00000B2C9E00000000000B /* ImagePicker.swift in Sources */,
+				9F00000C2C9E00000000000C /* NewReportView.swift in Sources */,
+				9F00000D2C9E00000000000D /* ReviewReportView.swift in Sources */,
+				9F00000E2C9E00000000000E /* ReportReadyView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +229,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Field Report AI requires microphone access to record site dictations for automated report generation.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Field Report AI uses speech recognition to convert your site dictations into report text.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Field Report AI requires camera access to attach site inspection photos.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Field Report AI requires photo library access to attach site inspection photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

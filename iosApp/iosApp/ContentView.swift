@@ -3,8 +3,7 @@ import shared
 
 struct ContentView: View {
     @StateObject private var viewModel = ReportListViewModel()
-    @State private var showDictationSheet = false
-    @State private var selectedReport: SharedReport? = nil
+    @State private var showNewReportSheet = false
 
     var body: some View {
         TabView {
@@ -29,7 +28,7 @@ struct ContentView: View {
                     } else {
                         List {
                             ForEach(viewModel.filteredReports, id: \.id) { report in
-                                NavigationLink(destination: ReportDetailView(report: report, viewModel: viewModel)) {
+                                NavigationLink(destination: ReportReadyView(report: report, viewModel: viewModel)) {
                                     VStack(alignment: .leading, spacing: 6) {
                                         HStack {
                                             Text(report.title.isEmpty ? "Untitled Report" : report.title)
@@ -74,14 +73,18 @@ struct ContentView: View {
                 .navigationTitle("Field Reports")
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
-                        Button(action: { showDictationSheet = true }) {
-                            Image(systemName: "mic.badge.plus")
-                                .font(.headline)
+                        Button(action: {
+                            viewModel.resetFormState()
+                            showNewReportSheet = true
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title3)
+                                .foregroundColor(Color(red: 15/255, green: 118/255, blue: 110/255))
                         }
                     }
                 }
-                .sheet(isPresented: $showDictationSheet) {
-                    DictationView(viewModel: viewModel)
+                .sheet(isPresented: $showNewReportSheet) {
+                    NewReportView(viewModel: viewModel)
                 }
             }
             .tabItem {
